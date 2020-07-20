@@ -3,7 +3,7 @@
 usage() { echo "Requires [-w|-h], aborting..." >&2 ; exit 1 ; }
 
 ansible_pull() {
-  ansible_repo="https://github.com/bradleyfrank/bootstraps.git"
+  ansible_repo="https://github.com/bradleyfrank/dotfiles.git"
   dotfiles_dir="$HOME"/.dotfiles
   skip_tags="$1"
 
