@@ -27,8 +27,8 @@ ansible-pull --url https://github.com/bradleyfrank/dotfiles.git --directory ~/.d
 ```
 
 The argument `skip_tags` can be:
-* `home_only`: use this for a work computer
 * `work_only`: use this for a personal computer
+* `home_only`: use this for a work computer
 
 Once applied, the script `~/.local/bin/dotfiles` provides a wrapper for managing dotfiles, and takes the following arguments:
 
