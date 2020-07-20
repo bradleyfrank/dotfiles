@@ -11,7 +11,7 @@ function __prompt_command() {
         red="\[\e[38;5;160m\]" \
      orange="\[\e[38;5;166m\]"
 
-  _CWD="in ${blue}\W${reset}" _HOST="" _PYENV="" _PROMPT=""
+  _CWD="${blue}\W${reset}" _HOST="" _PYENV="" _PROMPT=""
 
   GIT_PS1_SHOWDIRTYSTATE=true
   GIT_PS1_SHOWSTASHSTATE=true
