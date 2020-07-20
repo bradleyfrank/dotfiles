@@ -1,0 +1,48 @@
+---
+# tasks file for packages
+
+- name: Install Homebrew taps
+  homebrew_tap:
+    name: "{{ taps }}"
+
+
+- name: Install base Homebrew packages
+  homebrew:
+    name: "{{ base_formulas }}"
+
+- name: Install home-only Homebrew packages
+  homebrew:
+    name: "{{ home_formulas }}"
+  tags:
+    - home_only
+
+
+- name: Install base Homebrew casks
+  homebrew_cask:
+    name: "{{ base_casks }}"
+    accept_external_apps: True
+
+- name: Install home-only Homebrew casks
+  homebrew_cask:
+    name: "{{ home_casks }}"
+    accept_external_apps: True
+  tags:
+    - home_only
+
+- name: Install work-only Homebrew casks
+  homebrew_cask:
+    name: "{{ work_casks }}"
+    accept_external_apps: True
+  tags:
+    - work_only
+
+
+- name: Install base Mac App Store applications
+  command:
+    cmd: "/usr/local/bin/mas install {{ item }}"
+  with_items: "{{ base_apps }}"
+
+- name: Install home-only Mac App Store applications
+  command:
+    cmd: "/usr/local/bin/mas install {{ item }}"
+  with_items: "{{ home_apps }}"

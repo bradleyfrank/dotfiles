@@ -1,0 +1,76 @@
+---
+# tasks file for environment
+
+- name: Make additional shells available
+  blockinfile:
+    path: /etc/shells
+    block: |
+      /usr/local/bin/bash
+      /usr/local/bin/fish
+      /usr/local/bin/zsh
+  when: ansible_facts['os_family'] == 'Darwin'
+  become: True
+
+- name: Make zsh default
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: "{{ shell }}"
+  become: True
+
+- name: Create ~/Development folder structure
+  file:
+    path: "{{ ansible_env.HOME }}/Development/{{ item }}"
+    state: directory
+    recurse: True
+    mode: '0755'
+  with_items: ['Projects', 'Build', 'Scratch']
+
+- name: Ensure ~/.ssh directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: '0700'
+
+- name: Fix permissions on authorized_keys
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+    state: touch
+    mode: '0600'
+
+- name: Install GitHub deploy key
+  copy:
+    src: github
+    dest: "{{ ansible_env.HOME }}/.ssh/deploy_key"
+    mode: '0600'
+  tags:
+    - home_only
+
+- name: Clone projects
+  git:
+    repo: "git@github.com:bradleyfrank/{{ item }}.git"
+    dest: "{{ ansible_env.HOME }}/Development/Projects/{{ item }}"
+    key_file: "{{ ansible_env.HOME }}/.ssh/deploy_key"
+    version: master
+    track_submodules: True
+    accept_hostkey: True
+    force: True
+  with_items: "{{ my_git_projects }}"
+  tags:
+    - home_only
+
+- name: Remove GitHub deploy key
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh/deploy_key"
+    state: absent
+
+- name: Install VSCode extensions
+  command:
+    cmd: "{{ vscode }} --install-extension {{ item }}"
+  with_items: "{{ vscode_extensions }}"
+  tags: packages
+
+- name: Install Python packages
+  pip:
+    name: "{{ python_packages }}"
+    extra_args: --user
+  tags: packages

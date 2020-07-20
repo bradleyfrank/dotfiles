@@ -1,0 +1,36 @@
+---
+# tasks file for packages
+
+- name: Load DE packages lists
+  include_vars: "de/{{ desktop }}.yml"
+
+- name: Upgrade all packages
+  become: True
+  dnf:
+    name: "*"
+    state: latest
+
+- name: Install OS packages
+  become: True
+  package:
+    name: "{{ base_packages + de_packages }}"
+    state: present
+  tags: packages
+
+- name: Install home-only OS packages
+  become: True
+  package:
+    name: "{{ home_packages }}"
+    state: present
+  tags:
+    - home_only
+    - packages
+
+- name: Install work-only OS packages
+  become: True
+  package:
+    name: "{{ work_packages }}"
+    state: present
+  tags:
+    - work_only
+    - packages

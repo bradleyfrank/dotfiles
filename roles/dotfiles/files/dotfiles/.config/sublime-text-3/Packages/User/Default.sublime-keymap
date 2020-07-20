@@ -1,0 +1,12 @@
+[
+  {
+    "keys": ["super+f"],
+    "command": "show_panel",
+    "args": {"panel": "replace"}
+  },
+  {
+    "keys": ["ctrl+f"],
+    "command": "show_panel",
+    "args": {"panel": "replace"}
+  }
+]

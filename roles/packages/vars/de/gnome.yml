@@ -1,0 +1,25 @@
+---
+# vars file for packages
+
+de_packages:
+  - audacious
+  - celluloid
+  - gedit-plugin-codecomment
+  - gedit-plugin-colorpicker
+  - gedit-plugin-git
+  - gedit-plugin-joinlines
+  - gedit-plugin-multiedit
+  - gnome-extensions-app
+  - gnome-shell-extension-auto-move-windows
+  - gnome-shell-extension-dash-to-dock
+  - gnome-shell-extension-gpaste
+  - gnome-shell-extension-system-monitor-applet
+  - gnome-shell-theme-yaru
+  - gnote
+  - gpaste*
+  - libgnome-keyring
+  - meld
+  - mpv
+  - nextcloud-client-nautilus
+  - transmission-gtk
+  - yaru-icon-theme

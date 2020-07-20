@@ -1,0 +1,8 @@
+#threadTree treechildren::-moz-tree-row(even) {
+	/*background-color: rgb(232,232,232);*/
+}
+
+#threadTree treechildren::-moz-tree-row {
+	height: 2em !important;
+	border-top: 1px solid rgb(187, 186, 186) !important;
+}

@@ -1,0 +1,8 @@
+---
+# tasks file for repositories
+
+- name: Install repos
+  include_tasks: "{{ ansible_distribution }}.yml"
+  args:
+    apply:
+      become: True

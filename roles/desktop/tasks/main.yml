@@ -1,0 +1,5 @@
+---
+# tasks file for desktop
+
+- name: Apply desktop settings
+  include_tasks: "{{ desktop }}.yml"

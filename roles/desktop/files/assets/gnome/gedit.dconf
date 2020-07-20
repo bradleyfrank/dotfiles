@@ -1,0 +1,20 @@
+[org/gnome/gedit/preferences/editor]
+auto-indent=true
+auto-save=true
+background-pattern='none'
+bracket-matching=true
+display-line-numbers=true
+display-overview-map=true
+display-right-margin=true
+editor-font='Source Code Pro 11'
+highlight-current-line=true
+insert-spaces=true
+right-margin-position=uint32 80
+scheme='solarized-light'
+tabs-size=uint32 2
+use-default-font=false
+wrap-last-split-mode='word'
+
+[org/gnome/gedit/preferences/ui]
+show-tabs-mode='auto'
+side-panel-visible=false

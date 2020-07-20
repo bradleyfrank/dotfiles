@@ -1,0 +1,6 @@
+---
+# vars file for packages
+
+de_packages:
+  - meld
+  - nextcloud-client-nemo

@@ -1,0 +1,417 @@
+---
+
+#
+# Miscellaneous application settings
+#
+
+- name: Disable prompting to use new exteral drives as Time Machine volume
+  osx_defaults:
+    domain: com.apple.TimeMachine
+    key: DoNotOfferNewDisksForBackup
+    type: bool
+    value: 'true'
+
+- name: Enable advanced features in Disk Utility
+  osx_defaults:
+    domain: com.apple.DiskUtility
+    key: "{{ item }}"
+    type: bool
+    value: 'true'
+  loop:
+    - DUDebugMenuEnabled
+    - advanced-image-options
+
+- name: Sort conversations in Mail by most recent on top
+  osx_defaults:
+    domain: com.apple.mail
+    key: ConversationViewSortDescending
+    type: int
+    value: '1'
+
+- name: Open new Terminal tabs in the default directory
+  osx_defaults:
+    domain: com.apple.Terminal
+    key: NewTabWorkingDirectoryBehavior
+    type: int
+    value: '1'
+
+- name: Set TextEdit to use plain text mode as default
+  osx_defaults:
+    domain: com.apple.TextEdit
+    key: RichText
+    type: int
+    value: '0'
+
+#
+# Safari settings
+#
+
+- name: Enable web developer extras in Safari
+  osx_defaults:
+    domain: com.apple.Safari
+    key: "{{ item }}"
+    type: bool
+    value: 'true'
+  loop:
+    - IncludeInternalDebugMenu
+    - IncludeDevelopMenu
+    - WebKitDeveloperExtrasEnabledPreferenceKey
+    - com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled
+
+- name: Disable Safari autofills
+  osx_defaults:
+    domain: com.apple.Safari
+    key: "{{ item }}"
+    type: bool
+    value: 'false'
+  loop:
+    - autofillfromaddressbook
+    - autofillpasswords
+    - autofillcreditcarddata
+    - autofillmiscellaneousforms
+
+- name: Quit printer app after print jobs complete
+  osx_defaults:
+    domain: com.apple.print.PrintingPrefs
+    key: "Quit When Finished"
+    type: bool
+    value: 'true'
+
+#
+# Finder and Desktop settings
+#
+
+- name: Show filename extensions by default
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: AppleShowAllExtensions
+    type: bool
+    value: 'true'
+
+- name: Disable creation of .DS_Store files on network volumes
+  osx_defaults:
+    domain: com.apple.desktopservices
+    key: DSDontWriteNetworkStores
+    type: bool
+    value: 'true'
+
+- name: Hide icons on the desktop
+  osx_defaults:
+    domain: com.apple.finder
+    key: "{{ item }}"
+    type: bool
+    value: 'false'
+  loop:
+    - ShowExternalHardDrivesOnDesktop
+    - ShowHardDrivesOnDesktop
+    - ShowRemovableMediaOnDesktop
+    - ShowMountedServersOnDesktop
+    - CreateDesktop
+
+- name: Enable status bar and breadcrumbs in Finder
+  osx_defaults:
+    domain: com.apple.finder
+    key: "{{ item }}"
+    type: bool
+    value: 'true'
+  loop:
+    - ShowStatusBar
+    - ShowPathbar
+
+- name: Disable Finder warnings
+  osx_defaults:
+    domain: com.apple.finder
+    key: "{{ item }}"
+    type: bool
+    value: 'false'
+  loop:
+    - WarnOnEmptyTrash
+    - FXEnableExtensionChangeWarning
+
+- name: Set default Finder view to list
+  osx_defaults:
+    domain: com.apple.finder
+    key: FXPreferredViewStyle
+    type: string
+    value: "Nlsv"
+
+- name: Set default Finder location to ~/Downloads
+  osx_defaults:
+    domain: com.apple.finder
+    key: "{{ item.key }}"
+    type: string
+    value: "{{ item.value }}"
+  loop:
+    - { key: 'NewWindowTarget', value: "PfLo" }
+    - { key: 'NewWindowTargetPath', value: "file://{{ homedir }}/Downloads/" }
+
+- name: Auto-hide the Dock
+  osx_defaults:
+    domain: com.apple.finder
+    key: autohide
+    type: bool
+    value: 'true'
+
+- name: Disable icon bouncing in the Dock
+  osx_defaults:
+    domain: com.apple.finder
+    key: no-bouncing
+    type: bool
+    value: 'true'
+
+- name: Set Dock size
+  osx_defaults:
+    domain: com.apple.dock
+    key: tilesize
+    type: int
+    value: '43'
+
+- name: Reset persistent apps in Dock
+  osx_defaults:
+    domain: com.apple.dock
+    key: persistent-apps
+    type: array
+    value: ''
+
+- name: Save screenshots to ~/Downloads
+  osx_defaults:
+    domain: com.apple.screencapture
+    key: location
+    value: "{{ homedir }}/Downloads"
+
+- name: Set expose hot corners
+  osx_defaults:
+    domain: com.apple.dock
+    key: "{{ item.key }}"
+    type: int
+    value: "{{ item.value }}"
+  loop:
+    # bottom-left: show desktop
+    - { key: 'wvous-bl-corner', value: '4' }
+    - { key: 'wvous-bl-modifier', value: '0' }
+    # bottom-right: screen saver
+    - { key: 'wvous-br-corner', value: '5' }
+    - { key: 'wvous-br-modifier', value: '0' }
+    # top-left: mission control
+    - { key: 'wvous-tl-corner', value: '2' }
+    - { key: 'wvous-tl-modifier', value: '0' }
+    # top-right: application windows
+    - { key: 'wvous-tr-corner', value: '3' }
+    - { key: 'wvous-tr-modifier', value: '0' }
+
+- name: Disable automatically rearranging Spaces
+  osx_defaults:
+    domain: com.apple.dock
+    key: mru-spaces
+    type: bool
+    value: 'false'
+
+- name: Set screensaver timeouts
+  osx_defaults:
+    domain: com.apple.screensaver
+    key: "{{ item.key }}"
+    type: int
+    value: "{{ item.value }}"
+  loop:
+    - { key: 'askForPassword', value: '1' }
+    - { key: 'askForPasswordDelay', value: '5' }
+    - { key: 'idleTime', value: "300" }
+
+#
+# Miscellaneous dialogue box settings
+#
+
+- name: Expand save and print panel by default
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: "{{ item }}"
+    type: bool
+    value: 'true'
+  loop:
+    - NSNavPanelExpandedStateForSaveMode
+    - NSNavPanelExpandedStateForSaveMode2
+    - PMPrintingExpandedStateForPrint
+    - PMPrintingExpandedStateForPrint2
+
+#
+# Mouse and Trackpad and Keyboard settings
+#
+
+- name: Configure bluetooth Apple trackpad
+  osx_defaults:
+    domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key: "{{ item.key }}"
+    type: int
+    value: "{{ item.value }}"
+  loop:
+    - { key: 'Clicking', value: '1' } # tap-to-click
+    - { key: 'trackpadRightClick', value: '1' } # 2 finger tap right-click
+    - { key: 'trackpadPinch', value: '1' } # pinch to zoom
+    - { key: 'trackpadRotate', value: '1' } # 2 finger rotate
+    - { key: 'TrackpadThreeFingerHorizSwipeGesture', value: '1' } # 3 finger swipe between pages
+    - { key: 'trackpadTwoFingerDoubleTapGesture', value: '1' } # smart zoom
+    - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: '3' } # Notification Center
+    - { key: 'trackpadThreeFingerTapGesture', value: '2' } # perform look up
+
+- name: Configure builtin Apple trackpad
+  osx_defaults:
+    domain: com.apple.AppleMultitouchtrackpad
+    key: "{{ item.key }}"
+    type: int
+    value: "{{ item.value }}"
+  loop:
+    - { key: 'Clicking', value: '1' } # tap-to-click
+    - { key: 'trackpadRightClick', value: '1' } # 2 finger tap right-click
+    - { key: 'trackpadPinch', value: '1' } # pinch to zoom
+    - { key: 'trackpadRotate', value: '1' } # 2 finger rotate
+    - { key: 'TrackpadThreeFingerHorizSwipeGesture', value: '1' } # 3 finger swipe between pages
+    - { key: 'trackpadTwoFingerDoubleTapGesture', value: '1' } # smart zoom
+    - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: '3' } # Notification Center
+    - { key: 'trackpadThreeFingerTapGesture', value: '2' } # perform look up
+
+- name: Enable palm detection for trackpad
+  osx_defaults:
+    domain: com.apple.AppleMultitouchtrackpad
+    key: trackpadHandResting
+    type: bool
+    value: 'true'
+
+- name: Enable tap-to-click on Apple mouse
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: com.apple.mouse.tapBehavior
+    type: int
+    value: '1'
+
+- name: Set global two finger horizontal swipe between pages
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: AppleEnableSwipeNavigateWithScrolls
+    type: bool
+    value: 'true'
+
+- name: Set very low key repeat rates
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: "{{ item.key }}"
+    type: int
+    value: "{{ item.value }}"
+  loop:
+    - { key: 'InitialKeyRepeat', value: "25" }
+    - { key: 'KeyRepeat', value: '1' }
+
+#
+# Security settings
+#
+
+- name: Check for software updates daily
+  osx_defaults:
+    domain: com.apple.SoftwareUpdate
+    key: ScheduleFrequency
+    type: int
+    value: '1'
+
+- name: Check FileVault status
+  command:
+    cmd: fdesetup isactive
+  become: True
+  register: fv_isactive
+  ignore_errors: True
+
+- name: Enable FileVault
+  command:
+    cmd: "fdesetup enable -user {{ ansible_env.USER }} -keychain"
+  become: True
+  when: fv_isactive.stdout != "true"
+
+- name: Enable firewall
+  command:
+    cmd: '/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on'
+  become: True
+
+- name: Put display to sleep after 15 minutes
+  command:
+    cmd: 'pmset displaysleep 15'
+  become: True
+
+- name: Put computer to sleep after 30 minutes
+  command:
+    cmd: 'pmset sleep 30'
+  become: True
+
+- name: Disable Gatekeeper
+  command:
+    cmd: 'spctl --master-disable'
+  become: True
+
+#
+# Files and Folders settings
+#
+
+- name: Enable locate database
+  command:
+    cmd: 'launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist'
+  become: True
+
+- name: Unhide ~/Library directory (part 1 of 2)
+  command:
+    cmd: "chflags nohidden {{ homedir }}/Library"
+
+- name: Unhide ~/Library directory (part 2 of 2)
+  command:
+    cmd: "xattr -d com.apple.FinderInfo {{ homedir }}/Library"
+
+- name: Unhide /Volumes directory
+  command:
+    cmd: 'chflags nohidden /Volumes'
+  become: True
+
+- name: Check if VSCode configs are symlinked
+  stat:
+    path: "{{ vscode_config }}"
+  register: macos_vscode_config_path
+
+- name: Delete original VSCode configs
+  file:
+    state: absent
+    path: "{{ vscode_config }}"
+  when: macos_vscode_config_path.stat.islnk
+
+- name: Symlink VSCode configs to match Linux
+  file:
+    src: "{{ homedir }}/.config/Code"
+    dest: "{{ vscode_config }}"
+    owner: "{{ ansible_env.USER }}"
+    group: admin
+    state: link
+  when: not macos_vscode_config_path.stat.islnk
+
+- name: Create TextMate Bundle support bin directory
+  file:
+    path: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
+    state: directory
+
+- name: Create a symlink to the patched version of `par` for TextMate
+  file:
+    src: /usr/local/bin/par
+    dest: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
+    owner: "{{ ansible_env.USER }}"
+    group: admin
+    state: link
+
+- name: Symlink Fonts directory to match Linux
+  file:
+    src: "{{ homedir }}/Library/Fonts"
+    dest: "{{ homedir }}/.local/share/fonts"
+    owner: "{{ ansible_env.USER }}"
+    group: admin
+    state: link
+
+#
+# Restart services to apply settings
+#
+
+- name: Restart dock to apply changes
+  command:
+    cmd: 'killall Dock'
+  become: True

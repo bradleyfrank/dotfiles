@@ -1,0 +1,5 @@
+---
+- name: Update dotfiles
+  hosts: localhost
+  roles:
+    - dotfiles

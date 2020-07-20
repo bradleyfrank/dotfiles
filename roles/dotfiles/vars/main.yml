@@ -1,0 +1,4 @@
+---
+# vars file for dotfiles
+
+vim_extensions_path: "{{ ansible_env.HOME }}/.vim/pack/default/start"

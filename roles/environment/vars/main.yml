@@ -1,0 +1,42 @@
+---
+# vars file for environment
+
+python_packages:
+  - black
+  - dns-lexicon
+  - imgur_downloader
+  - pip-autoremove
+  - pip_upgrade_outdated
+  - pycodestyle
+  - pydf
+  - pyflakes
+  - pylint
+  - tmuxp
+  - tuir
+
+my_git_projects:
+  - bootstraps
+  - dotfiles
+  - dotfiles-minimal
+  - home-server
+  - hugo-site
+  - scripts_archive
+  - system_builds
+
+vscode_extensions:
+  - bitzl.vscode-puppet
+  - bungcip.better-toml
+  - donjayamanne.githistory
+  - haaaad.ansible
+  - kirozen.dokuwiki
+  - mhutchie.git-graph
+  - mikestead.dotenv
+  - ms-azuretools.vscode-docker
+  - redhat.vscode-yaml
+  - Remisa.shellman
+  - rogalmic.bash-debug
+  - samuelcolvin.jinjahtml
+  - shd101wyy.markdown-preview-enhanced
+  - timonwong.shellcheck
+  - Tyriar.sort-lines
+  - vortizhe.simple-ruby-erb

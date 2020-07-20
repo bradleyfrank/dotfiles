@@ -1,0 +1,1 @@
+alias -g progress='--info=progress2'

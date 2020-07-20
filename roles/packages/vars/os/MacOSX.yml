@@ -1,0 +1,134 @@
+---
+# vars file for packages
+
+taps:
+  - homebrew/bundle
+  - homebrew/cask
+  - homebrew/cask-fonts
+  - homebrew/core
+
+
+base_formulas:
+  - awscli
+  - bash
+  - bash-completion@2
+  - bat
+  - bcal
+  - cabextract
+  - coreutils
+  - dict
+  - diff-so-fancy
+  - findutils
+  - fdupes
+  - flac
+  - gawk
+  - ghostscript
+  - git
+  - glances
+  - gnu-sed
+  - gnu-tar
+  - gnu-which
+  - grep
+  - gzip
+  - hexyl
+  - hh
+  - iftop
+  - kpcli
+  - keychain
+  - lame
+  - less
+  - markdown
+  - mas
+  - mtr
+  - most
+  - ncdu
+  - neofetch
+  - nmap
+  - p7zip
+  - par
+  - prettyping
+  - python
+  - rename
+  - rpm2cpio
+  - rsync
+  - shellcheck
+  - shfmt
+  - ssh-copy-id
+  - stow
+  - tmux
+  - tree
+  - vim
+  - watch
+  - wget
+  - yamllint
+  - youtube-dl
+  - zsh
+
+home_formulas:
+  - eye-d3
+  - ffsend
+
+
+base_casks:
+  - appcleaner
+  - bartender
+  - balenaetcher
+  - chromium
+  - fedora-media-writer
+  - firefox
+  - font-clear-sans
+  - font-roboto
+  - font-source-code-pro
+  - google-chrome
+  - iina
+  - logitech-options
+  - keepassx
+  - keepingyouawake
+  - keka
+  - macdown
+  - meld
+  - monitorcontrol
+  - transmission
+  - typora
+  - visual-studio-code
+  - vlc
+  - webarchiveextractor
+  - xquartz
+
+home_casks:
+  - 1password
+  - anylist
+  - calibre
+  - fantastical
+  - istat-menus
+  - musicbrainz-picard
+  - plexamp
+  - signal
+  - spotify
+  - spotify-notifications
+  - stay
+  - textmate
+  - transmit
+
+work_casks:
+  - dozer
+  - jumpcut
+  - menumeters
+  - rectangle
+
+
+base_apps:
+  - 409183694 # Keynote
+  - 409201541 # Pages
+  - 409203825 # Numbers
+  - 425424353 # The Unarchiver
+
+home_apps:
+  - 407963104 # Pixelmator
+  - 441258766 # Magnet
+  - 568494494 # Pocket
+  - 924726344 # Deliveries
+  - 1179623856 # Pastebot
+  - 1289378661 # Twitterific
+  - 1320666476 # Wipr
+  - 1449412482 # Reeder 4

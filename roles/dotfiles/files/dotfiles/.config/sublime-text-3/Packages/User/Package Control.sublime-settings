@@ -1,0 +1,15 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Package Control",
+		"Puppet",
+		"Solarized Color Scheme",
+		"SublimeLinter",
+		"SublimeLinter-contrib-puppet-lint",
+		"SublimeLinter-shellcheck"
+	]
+}

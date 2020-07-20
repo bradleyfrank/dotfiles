@@ -1,0 +1,34 @@
+---
+
+- name: Set 'look and feel' to Breeze theme
+  command:
+    cmd: lookandfeeltool --apply org.kde.breeze.desktop
+
+- name: Make double-click the default
+  command:
+    cmd: kwriteconfig5 --file kdeglobals --group "KDE" --key "SingleClick" "false"
+
+- name: Make caps lock a control key
+  command:
+    cmd: kwriteconfig5 --file kxkbrc --group "Layout" --key "Options" "ctrl:nocaps"
+
+- name: Install default Kate settings
+  copy:
+    src: assets/kde/katerc
+    dest: "{{ homedir }}/.config/katerc"
+
+- name: Install default KWrite settings
+  copy:
+    src: assets/kde/kwriterc
+    dest: "{{ homedir }}/.config/kwriterc"
+
+- name: Install default Dolphin settings
+  copy:
+    src: assets/kde/dolphinrc
+    dest: "{{ homedir }}/.config/dolphinrc"
+
+- name: Install default desktop settings
+  template:
+    src: kde/plasma-org.kde.plasma.desktop-appletsrc.j2
+    dest: "{{ homedir }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
+    mode: '0600'

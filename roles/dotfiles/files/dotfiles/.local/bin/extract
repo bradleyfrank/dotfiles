@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -eu
+
+SAVEIFS=$IFS
+IFS="$(printf '\n\t')"
+
+_cpio() {
+  local f="$1"
+
+  if [[ "$f" == *.zstd ]]; then
+    local nf="${f//.zstd}"
+    zstd -d "$f" -o "$nf"
+    f="$nf"
+  fi
+
+  local d="${f%%.*}"
+  mkdir "$d"
+  mv "$f" "$d"/
+  pushd "$d" >/dev/null 2>&1 || return 1
+  cpio -id < ./"$f"
+  popd >/dev/null 2>&1 || return 1
+  mv "$d"/"$f" .
+}
+
+if [[ -z "$1" ]]; then
+  # display usage if no parameters given
+  echo "Usage: extract <file1> [file2] ... [fileN]"
+  _done
+fi
+
+for n in "$@"; do
+  if [[ -f "$n" ]]; then
+    case "${n%,}" in
+      *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar) 
+                          tar xvf "$n" ;;
+      *.lzma)             unlzma ./"$n" ;;
+      *.bz2)              bunzip2 ./"$n" ;;
+      *.cbr|*.rar)        unrar x -ad ./"$n" ;;
+      *.gz)               gunzip ./"$n" ;;
+      *.cbz|*.epub|*.zip) mkdir "${n%.*}" && unzip "$n" -d "${n%.*}" ;;
+      *.z)                uncompress ./"$n" ;;
+      *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
+                          7z x ./"$n" ;;
+      *.xz)               unxz ./"$n" ;;
+      *.exe)              cabextract ./"$n" ;;
+      *.cpio*)            _cpio "$n" ;;
+      *.cba|*.ace)        unace x ./"$n" ;;
+      *)                  echo "unknown archive method" ; IFS=$SAVEIFS ; return 1 ;;
+    esac
+  else
+    echo "file does not exist"
+    IFS=$SAVEIFS
+    return 1
+  fi
+done
+
+IFS=$SAVEIFS
+exit 0
