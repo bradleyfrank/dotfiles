@@ -1,5 +1,6 @@
 ---
 - name: Update dotfiles
   hosts: localhost
+  gather_facts: False
   roles:
     - dotfiles
