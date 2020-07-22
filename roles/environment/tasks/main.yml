@@ -8,7 +8,7 @@
       /usr/local/bin/bash
       /usr/local/bin/fish
       /usr/local/bin/zsh
-  when: "{{ ansible_os_family }}" == 'Darwin'
+  when: ansible_os_family == 'Darwin'
   become: True
 
 - name: Make zsh default
