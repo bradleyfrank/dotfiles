@@ -9,13 +9,22 @@
   with_filetree: dotfiles/
   when: item.state == 'directory'
 
-- name: Apply dotfiles
+- name: Apply shared dotfiles
   copy:
     src: "{{ item.src }}"
     dest: "{{ ansible_env.HOME }}/{{ item.path }}"
     mode: '0755'
   with_filetree: dotfiles/
   when: item.state == 'file'
+
+- name: Apply home-only dotfiles
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ ansible_env.HOME }}/{{ item.path }}"
+  with_filetree: home/
+  when: item.state == 'file'
+  tags:
+    - home_only
 
 - name: Create vim extensions directory path
   file:
