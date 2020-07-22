@@ -3,3 +3,19 @@
 
 - name: Apply desktop settings
   include_tasks: "{{ desktop }}.yml"
+
+- name: Make additional shells available
+  blockinfile:
+    path: /etc/shells
+    block: |
+      /usr/local/bin/bash
+      /usr/local/bin/fish
+      /usr/local/bin/zsh
+  when: ansible_os_family == 'Darwin'
+  become: True
+
+- name: Make zsh default
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: "{{ shell }}"
+  become: True

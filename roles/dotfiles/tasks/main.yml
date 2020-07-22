@@ -1,6 +1,20 @@
 ---
 # tasks file for dotfiles
 
+- name: Create ~/Development folder structure
+  file:
+    path: "{{ ansible_env.HOME }}/Development/{{ item }}"
+    state: directory
+    recurse: True
+    mode: '0755'
+  with_items: ['Projects', 'Build', 'Scratch']
+
+- name: Configure ~/.ssh directory
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: '0700'
+
 - name: Create dotfile directories
   file:
     path: "{{ ansible_env.HOME }}/{{ item.path }}"
@@ -56,3 +70,15 @@
     repo: https://github.com/vim-airline/vim-airline-themes.git
     dest: "{{ vim_extensions_path }}/vim-airline-themes"
     depth: '1'
+
+- name: Install VSCode extensions
+  command:
+    cmd: "{{ vscode }} --install-extension {{ item }}"
+  with_items: "{{ vscode_extensions }}"
+  tags: packages
+
+- name: Install Python packages
+  pip:
+    name: "{{ python_packages }}"
+    extra_args: --user
+  tags: packages
