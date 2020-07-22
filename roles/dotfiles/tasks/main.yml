@@ -37,8 +37,7 @@
     repo: https://github.com/vim-airline/vim-airline.git
     dest: "{{ vim_extensions_path }}/vim-airline"
     depth: '1'
-    version: 'v0.11'
-    update: False
+    version: "{{ vim_airline_version }}"
 
 - name: Install vim-airline-themes
   git:
