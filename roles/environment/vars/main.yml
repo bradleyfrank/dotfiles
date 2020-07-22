@@ -14,21 +14,11 @@ python_packages:
   - tmuxp
   - tuir
 
-my_git_projects:
-  - bootstraps
-  - dotfiles
-  - dotfiles-minimal
-  - home-server
-  - hugo-site
-  - scripts_archive
-  - system_builds
-
 vscode_extensions:
   - bitzl.vscode-puppet
   - bungcip.better-toml
   - donjayamanne.githistory
   - haaaad.ansible
-  - kirozen.dokuwiki
   - mhutchie.git-graph
   - mikestead.dotenv
   - ms-azuretools.vscode-docker

@@ -8,6 +8,6 @@
     vscode_config: "{{ homedir }}/Library/Application Support/VSCode"
   roles:
     - packages
-    - dotfiles
     - environment
+    - dotfiles
     - desktop

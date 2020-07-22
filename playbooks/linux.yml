@@ -8,6 +8,6 @@
   roles:
     - repositories
     - packages
-    - dotfiles
     - environment
+    - dotfiles
     - desktop

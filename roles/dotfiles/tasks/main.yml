@@ -26,6 +26,18 @@
   tags:
     - home_only
 
+- name: Set proper permissions on ~/.ssh/authorized_keys
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
+    state: touch
+    mode: '0600'
+
+- name: Set proper permissions on ~/.ssh/config
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh/config"
+    state: touch
+    mode: '0644'
+
 - name: Create vim extensions directory path
   file:
     path: "{{ vim_extensions_path }}"
