@@ -73,15 +73,15 @@ function ytdl-video() {
   youtube-dl \
     --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
     --merge-output-format mp4 \
-    -o "%(title)s.%(ext)s" \'"$1"\'
+    -o "%(title)s.%(ext)s" "$1"
 }
 
 # Download YouTube video as music only
 function ytdl-music() {
   if [[ "$_OSTYPE" == "darwin" ]]; then
     youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
-      --postprocessor-args "-strict experimental" \'"$1"\'
+      --postprocessor-args "-strict experimental" "$1"
   else
-    youtube-dl --format bestaudio --extract-audio --audio-format mp3 \'"$1"\'
+    youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"
   fi
 }

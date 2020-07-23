@@ -6,3 +6,18 @@
 
 - name: Install packages for OS
   include_tasks: "{{ ansible_distribution }}.yml"
+
+
+- name: Install VSCode extensions
+  command:
+    cmd: "{{ vscode }} --install-extension --force {{ item }}"
+  with_items: "{{ vscode_extensions }}"
+  tags:
+    - packages
+
+- name: Install Python packages
+  pip:
+    name: "{{ python_packages }}"
+    extra_args: --user
+  tags:
+    - packages

@@ -366,26 +366,6 @@
     cmd: 'chflags nohidden /Volumes'
   become: True
 
-- name: Check if VSCode configs are symlinked
-  stat:
-    path: "{{ vscode_config }}"
-  register: macos_vscode_config_path
-
-- name: Delete original VSCode configs
-  file:
-    state: absent
-    path: "{{ vscode_config }}"
-  when: macos_vscode_config_path.stat.islnk
-
-- name: Symlink VSCode configs to match Linux
-  file:
-    src: "{{ homedir }}/.config/Code"
-    dest: "{{ vscode_config }}"
-    owner: "{{ ansible_env.USER }}"
-    group: admin
-    state: link
-  when: not macos_vscode_config_path.stat.islnk
-
 - name: Create TextMate Bundle support bin directory
   file:
     path: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"

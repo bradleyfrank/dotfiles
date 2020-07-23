@@ -6,12 +6,14 @@ ansible_pull() {
   ansible_repo="https://github.com/bradleyfrank/dotfiles.git"
   dotfiles_dir="$HOME"/.dotfiles
   skip_tags="$1"
+  system_os="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
   if ansible-pull \
     --url "$ansible_repo" \
     --directory "$dotfiles_dir" \
+    --tags dotfiles \
     --skip-tags "$skip_tags" \
-    playbooks/dotfiles.yml
+    playbooks/"$system_os".yml
   then
     exit 0
   else

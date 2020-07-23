@@ -5,58 +5,78 @@
   file:
     path: "{{ ansible_env.HOME }}/Development/{{ item }}"
     state: directory
-    recurse: True
     mode: '0755'
   with_items: ['Projects', 'Build', 'Scratch']
 
-- name: Configure ~/.ssh directory
-  file:
-    path: "{{ ansible_env.HOME }}/.ssh"
-    state: directory
-    mode: '0700'
-
-- name: Create dotfile directories
+- name: Create shared dotfile directories
   file:
     path: "{{ ansible_env.HOME }}/{{ item.path }}"
     state: directory
     mode: '0755'
-  with_filetree: dotfiles/
+  with_filetree: shared/
   when: item.state == 'directory'
+  tags:
+    - dotfiles
 
 - name: Apply shared dotfiles
   copy:
     src: "{{ item.src }}"
     dest: "{{ ansible_env.HOME }}/{{ item.path }}"
     mode: '0755'
-  with_filetree: dotfiles/
+  with_filetree: shared/
   when: item.state == 'file'
+  tags:
+    - dotfiles
 
 - name: Apply home-only dotfiles
   copy:
     src: "{{ item.src }}"
     dest: "{{ ansible_env.HOME }}/{{ item.path }}"
-  with_filetree: home/
+  with_filetree: home_only/
   when: item.state == 'file'
   tags:
+    - dotfiles
     - home_only
+
+- name: Apply VSCode dotfiles
+  copy:
+    src: individual/Code/
+    dest: "{{ vscode_config }}"
+    mode: '0755'
+  tags:
+    - dotfiles
+
+- name: Set proper permissions on ~/.ssh
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: '0700'
+  tags:
+    - dotfiles
 
 - name: Set proper permissions on ~/.ssh/authorized_keys
   file:
     path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
     state: touch
     mode: '0600'
+  tags:
+    - dotfiles
 
 - name: Set proper permissions on ~/.ssh/config
   file:
     path: "{{ ansible_env.HOME }}/.ssh/config"
     state: touch
     mode: '0644'
+  tags:
+    - dotfiles
 
 - name: Create vim extensions directory path
   file:
     path: "{{ vim_extensions_path }}"
     state: directory
     mode: '0755'
+  tags:
+    - dotfiles
 
 - name: Install vim-airline
   git:
@@ -64,21 +84,15 @@
     dest: "{{ vim_extensions_path }}/vim-airline"
     depth: '1'
     version: "{{ vim_airline_version }}"
+  tags:
+    - dotfiles
+    - packages
 
 - name: Install vim-airline-themes
   git:
     repo: https://github.com/vim-airline/vim-airline-themes.git
     dest: "{{ vim_extensions_path }}/vim-airline-themes"
     depth: '1'
-
-- name: Install VSCode extensions
-  command:
-    cmd: "{{ vscode }} --install-extension {{ item }}"
-  with_items: "{{ vscode_extensions }}"
-  tags: packages
-
-- name: Install Python packages
-  pip:
-    name: "{{ python_packages }}"
-    extra_args: --user
-  tags: packages
+  tags:
+    - dotfiles
+    - packages

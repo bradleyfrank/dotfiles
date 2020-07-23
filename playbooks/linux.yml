@@ -5,6 +5,7 @@
     desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
     shell: /usr/bin/zsh
     vscode: '/usr/bin/code'
+    vscode_config: "{{ homedir }}/.config/Code"
   roles:
     - repositories
     - packages
