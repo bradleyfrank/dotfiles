@@ -63,6 +63,7 @@ base_formulas:
   - yamllint
   - youtube-dl
   - zsh
+  - zsh-syntax-highlighting
 
 home_formulas:
   - eye-d3

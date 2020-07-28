@@ -74,6 +74,7 @@ base_packages:
   - xz
   - youtube-dl
   - zsh
+  - zsh-syntax-highlighting
 
 home_packages:
   - calibre
