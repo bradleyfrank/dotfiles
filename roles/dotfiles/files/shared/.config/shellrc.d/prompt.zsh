@@ -1,13 +1,18 @@
 source ~/.local/share/git/git-prompt.sh
 
-function preexec() { timer=$(($(print -P %D{%s%6.})/1000)) ; }
-
 function precmd() {
-  local ret=$? reset="%f"
-  local blue="%F{33}" cyan="%F{37}" green="%F{64}" magenta="%F{125}" red="%F{160}" orange="%F{166}"
+  local ret=$? git_cwd=""
+  local reset="%f"
+  local blue="%F{33}" \
+        cyan="%F{37}" \
+        violet="%F{61}" \
+        green="%F{64}" \
+        magenta="%F{125}" \
+        red="%F{160}" \
+        orange="%F{166}"
 
-  _CWD="${blue}%1~${reset}" _TIMESTAMP=" ❲${cyan}$(date +%b" "%e" "%T)${reset}❳"
-  _HOST="" _PYENV="" _PROMPT="" _ELAPSED=""
+  _CWD="${blue}%1~${reset}" _TIMESTAMP=" ${orange}❲$(date +%b" "%e" "%T)❳${reset}"
+  _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST=""  _PROMPT=""
 
   GIT_PS1_SHOWDIRTYSTATE=true
   GIT_PS1_SHOWSTASHSTATE=true
@@ -25,25 +30,11 @@ function precmd() {
     *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
   esac
 
-  if [[ -n $timer ]]; then
-    local now elapsed hours minutes seconds millisec
-    now=$(($(print -P %D{%s%6.})/1000))
-    elapsed=$((${now}-${timer}))
-
-    hours="$(printf "%d" $(($elapsed/1000/60/60)))"
-    minutes="$(printf "%d" $(($elapsed/1000/60)))"
-    seconds="$(printf "%d" $(($elapsed/1000%60)))"
-    millisec="$(printf "%d" $(($elapsed%1000)))"
-
-    if [[ "$hours" == "0" ]];    then hours=""    else hours+="h ";    fi
-    if [[ "$minutes" == "0" ]];  then minutes=""  else minutes+="m ";  fi
-    if [[ "$seconds" == "0" ]];  then seconds=""  else seconds+="s ";  fi
-    if [[ "$millisec" == "0" ]]; then millisec="" else millisec+="ms"; fi
-
-    _ELAPSED="${magenta}${hours}${minutes}${seconds}${millisec}${reset}"
-    unset timer
+  if git_cwd="$(git rev-parse --show-toplevel 2> /dev/null)"; then
+    _GIT_PRE=" ❲${violet}$(basename "$git_cwd")${reset}|"
+    _GIT_POST="❳"
   fi
 
-  __git_ps1 "[${_HOST}${_CWD}]" "${_PYENV}${_PROMPT}" " ❲%s❳"
-  RPROMPT="${_ELAPSED}${_TIMESTAMP}"
+  __git_ps1 "❲${_HOST}${_CWD}❳${_GIT_PRE}" "${_GIT_POST}${_PYENV}${_PROMPT}" "%s"
+  RPROMPT="${_TIMESTAMP}"
 }
