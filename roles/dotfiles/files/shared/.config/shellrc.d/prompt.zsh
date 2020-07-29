@@ -11,7 +11,7 @@ function precmd() {
         red="%F{160}" \
         orange="%F{166}"
 
-  _CWD="${blue}%1~${reset}" _TIMESTAMP=" ${orange}❲$(date +%b" "%e" "%T)❳${reset}"
+  _CWD="${blue}%1~${reset}" _TIMESTAMP=" ❲${orange}$(date +%b" "%e" "%T)${reset}❳"
   _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST=""  _PROMPT=""
 
   GIT_PS1_SHOWDIRTYSTATE=true

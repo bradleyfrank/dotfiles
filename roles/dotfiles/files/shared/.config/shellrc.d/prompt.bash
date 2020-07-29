@@ -11,7 +11,7 @@ function _prompt_command() {
         red="\[\e[38;5;160m\]" \
         orange="\[\e[38;5;166m\]"
 
-  _CWD="${blue}\W${reset}" _TIMESTAMP=" ${orange}❲$(date +%b" "%e" "%T)❳${reset}"
+  _CWD="${blue}\W${reset}" _TIMESTAMP=" ❲${orange}$(date +%b" "%e" "%T)${reset}❳"
   _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST=""  _PROMPT=""
 
   GIT_PS1_SHOWDIRTYSTATE=true
