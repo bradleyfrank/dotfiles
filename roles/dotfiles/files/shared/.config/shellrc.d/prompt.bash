@@ -20,7 +20,7 @@ function _prompt_command() {
   GIT_PS1_SHOWCOLORHINTS=true
   GIT_PS1_SHOWUPSTREAM="verbose name"
 
-  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="${orange}%m${reset}:"
+  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="${orange}\h${reset}:"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" ❲${cyan}$(basename "$VIRTUAL_ENV")${reset}❳"
   [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV=" ❲${cyan}${CONDA_DEFAULT_ENV}${reset}❳"
 
