@@ -75,6 +75,7 @@ base_casks:
   - bartender
   - balenaetcher
   - chromium
+  - docker
   - fedora-media-writer
   - firefox
   - font-clear-sans
