@@ -97,14 +97,11 @@
     - dotfiles
     - packages
 
-- name: Load shellrc variables
-  include_vars: shellrc.yml
-  tags:
-    - dotfiles
-
-- name: Test .zshrc template
-  template:
-    src: "zshrc_{{ ansible_distribution }}.j2"
-    dest: "{{ ansible_env.HOME }}/zshrc"
+- name: Build shell rc files
+  include_tasks:
+    file: shell.yml
+    apply:
+      tags:
+        - dotfiles
   tags:
     - dotfiles

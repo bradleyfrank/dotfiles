@@ -1,0 +1,62 @@
+export HOMEBREW_PREFIX=/usr/local
+export HOMEBREW_CELLAR=/usr/local/Cellar
+export HOMEBREW_REPOSITORY=/usr/local/Homebrew
+export INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
+
+{% for item in paths %}
+{{ item }}
+{% endfor %}
+
+{% for item in manpaths %}
+{{ item }}
+{% endfor %}
+
+export PATH
+export MANPATH
+export VISUAL=vim
+export EDITOR=vim
+export CLICOLOR=1
+export HSTR_CONFIG=monochromatic
+
+bindkey -e
+bindkey -s "\C-r" "\C-a hstr -- \C-j"
+
+unsetopt BEEP
+setopt AUTO_CD EXTENDED_GLOB NOMATCH NO_CASE_GLOB NOTIFY CORRECT CORRECT_ALL GLOB_DOTS
+setopt SHARE_HISTORY APPEND_HISTORY HIST_VERIFY EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST HIST_SAVE_NO_DUPS HIST_IGNORE_DUPS HIST_REDUCE_BLANKS
+
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=5000
+
+eval $(dircolors ~/.dir_colors)
+
+source ~/.local/share/git/git-prompt.sh
+
+FPATH=/usr/local/share/zsh-completions:"$FPATH"
+zstyle ':completion:*' list-suffixes expand prefix suffix
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+autoload -Uz compinit && compinit
+
+{{ keychain }}
+
+{% for key, value in aliases.items() %}
+alias {{ key }}='{{ value }}'
+{% endfor %}
+
+{% for key, value in functions.items() %}
+function {{ key }}() {
+  {{ value | indent( width=2, indentfirst=False) }}
+}
+
+{% endfor -%}
+
+if [[ -n "$SSH_CONNECTION" ]]; then
+  if ! tmux has -t main &> /dev/null
+  then tmux new -s main
+  else tmux attach -t main
+  fi
+fi
+
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

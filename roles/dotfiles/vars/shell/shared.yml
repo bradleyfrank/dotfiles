@@ -1,42 +1,40 @@
 ---
   # vars file for dotfiles
 
-aliases:
+shared_paths:
+  - PATH=~/.local/bin:~/bin
+  - PATH="$PATH":/usr/local/bin:/usr/local/sbin
+  - PATH="$PATH":/usr/bin:/usr/sbin:/bin:/sbin
+
+shared_manpaths:
+  - MANPATH=~/.local/share/man
+  - MANPATH=/usr/local/share/man:/usr/share/man:"$MANPATH"
+
+shared_aliases:
   bw: 'bitwise --no-color'
   condense: 'grep -Erv "(^#|^$)"'
   e: 'extract'
   glances: 'glances --theme-white'
   groot: 'cd $(git rev-parse --show-toplevel)'
-  ipa: 'ip -c a'
   isodate: 'date --iso-8601=seconds'
   l1: 'ls -1 --color --classify --human-readable'
   la: 'ls -la --color --classify --human-readable'
   lg: 'ls -Gg --color --classify --human-readable'
   ll: 'ls -l --color --classify --human-readable'
   lt: 'ls -1AS --color --classify --human-readable --group-directories-first --size'
-  lsblk: 'lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
   lsmnt: 'mount | column -t'
   rcp: 'rsync --info=progress2'
   pipi: 'python3 -m pip install --user'
-  proc: 'ps -e --forest -o pid,ppid,user,time,cmd'
   pipu: 'pip_upgrade_outdated -3 --user --verbose'
   pubip: 'dig myip.opendns.com @resolver1.opendns.com'
-  steep: 'brew update ; brew upgrade ; brew cask upgrade ; brew cleanup ; brew doctor'
   tmuxl: 'tmux -f ~/.tmux.min.conf'
 
-functions:
+shared_functions:
   blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
   clint: docker-compose -f "$1" config --quiet
   diceware: keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
-  fproc: |
-    local pid
-    if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"
-    else pid="$(pgrep "$1")"
-    fi
-    ps --forest -o pid,ppid,user,time,cmd -g "$pid"
-  gedit: nohup /usr/bin/gedit "$@" &> /dev/null &
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
   mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
   numware: |-
@@ -62,13 +60,44 @@ functions:
   tardir: tar -czf "${1%/}".tar.gz "$1"
   cheat: curl -s "cheat.sh/$1?style=vs"
   ytdl-video: |-
+    youtube-dl \
     --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
     --merge-output-format mp4 \
     -o "%(title)s.%(ext)s" "$1"
-  ytdl-music: |-
-    if [[ "$(uname -s)" == "Darwin" ]]; then
-      youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
-        --postprocessor-args "-strict experimental" "$1"
-    else
-      youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"
+  precmd: |-
+    local ret=$? git_cwd=""
+    local reset="%f"
+    local blue="%F{33}" \
+          cyan="%F{37}" \
+          violet="%F{61}" \
+          green="%F{64}" \
+          magenta="%F{125}" \
+          red="%F{160}" \
+          orange="%F{166}"
+  
+    _CWD="${blue}%1~${reset}" _TIMESTAMP=" ❲${orange}$(date +%b" "%e" "%T)${reset}❳"
+    _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST="" _PROMPT=""
+  
+    GIT_PS1_SHOWDIRTYSTATE=true
+    GIT_PS1_SHOWSTASHSTATE=true
+    GIT_PS1_SHOWUNTRACKEDFILES=true
+    GIT_PS1_SHOWCOLORHINTS=true
+    GIT_PS1_SHOWUPSTREAM="verbose name"
+  
+    [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="${orange}%m${reset}:"
+    [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" ❲${cyan}$(basename "$VIRTUAL_ENV")${reset}❳"
+    [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV=" ❲${cyan}${CONDA_DEFAULT_ENV}${reset}❳"
+  
+    case "$ret" in
+      0) _PROMPT="%B${green} %# ${reset}%b"   ;;
+      1) _PROMPT="%B${red} %# ${reset}%b"     ;;
+      *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
+    esac
+  
+    if git_cwd="$(git rev-parse --show-toplevel 2> /dev/null)"; then
+      _GIT_PRE=" ❲${violet}$(basename "$git_cwd")${reset}|"
+      _GIT_POST="❳"
     fi
+  
+    __git_ps1 "❲${_HOST}${_CWD}❳${_GIT_PRE}" "${_GIT_POST}${_PYENV}${_PROMPT}" "%s"
+    RPROMPT="${_TIMESTAMP}"
