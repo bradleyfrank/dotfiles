@@ -39,7 +39,7 @@ functions:
   gedit: nohup /usr/bin/gedit "$@" &> /dev/null &
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
   mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
-  numware: |
+  numware: |-
     local length dice pin
     length="${1:-5}"
     [[ $length -lt 2 ]] && { echo "Segment count must be a higher number." >&2 ; return 1 ; }
@@ -47,11 +47,11 @@ functions:
     pin="$(keepassxc-cli generate -L "$length" -n)"
     printf "%s-%s\n" "$dice" "$pin"
   pup: pip_upgrade_outdated -3 --user --verbose
-  pylinter: |
+  pylinter: |-
     black --line-length 79 --diff "$@" | diff-so-fancy
     pylint "$@"
     pycodestyle "$@"
-  sshgen: |
+  sshgen: |-
     local comment password keyfile
     comment="$(id -un)@$(uname -n) on $(date --iso-8601=minute)"
     password="$(keepassxc-cli diceware --words 5 | tr ' ' '-')"
@@ -61,11 +61,11 @@ functions:
     echo "$keyfile : $password"
   tardir: tar -czf "${1%/}".tar.gz "$1"
   cheat: curl -s "cheat.sh/$1?style=vs"
-  ytdl-video: |
+  ytdl-video: |-
     --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
     --merge-output-format mp4 \
     -o "%(title)s.%(ext)s" "$1"
-  ytdl-music: |
+  ytdl-music: |-
     if [[ "$(uname -s)" == "Darwin" ]]; then
       youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
         --postprocessor-args "-strict experimental" "$1"
