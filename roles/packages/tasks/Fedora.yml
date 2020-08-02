@@ -15,7 +15,7 @@
   package:
     name: "{{ base_packages + de_packages }}"
     state: present
-  tags: 
+  tags:
     - packages
 
 - name: Install home-only OS packages

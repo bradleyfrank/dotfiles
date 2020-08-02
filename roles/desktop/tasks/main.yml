@@ -17,5 +17,5 @@
 - name: Make zsh default
   user:
     name: "{{ ansible_env.USER }}"
-    shell: "{{ shell }}"
+    shell: "{{ usr_path }}/bin/zsh"
   become: True
