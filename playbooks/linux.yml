@@ -3,6 +3,7 @@
   hosts: localhost
   vars:
     desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
+    usr_path: "/usr"
     shell: /usr/bin/zsh
     vscode: '/usr/bin/code'
     vscode_config: "{{ homedir }}/.config/Code"

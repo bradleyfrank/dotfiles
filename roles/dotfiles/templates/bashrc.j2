@@ -1,6 +1,35 @@
-#!/bin/bash
+[[ $- != *i* ]] && return
 
-function _prompt_command() {
+bind "set completion-ignore-case on"
+bind "set completion-map-case on"
+bind "set show-all-if-ambiguous on"
+bind "set mark-symlinked-directories on"
+bind "set visible-stats on"
+bind "set menu-complete-display-prefix on"
+bind "TAB":menu-complete
+bind "'\C-r': '\C-a hh -- \C-j'"
+
+shopt -s cdspell
+shopt -s dotglob
+shopt -s no_empty_cmd_completion
+
+{{ keychain }}
+eval $(dircolors ~/.dir_colors)
+
+source ~/.local/share/git/git-prompt.sh
+
+{% for key, value in aliases.items() %}
+alias {{ key }}='{{ value }}'
+{% endfor %}
+
+{% for key, value in functions.items() %}
+function {{ key }}() {
+  {{ value | indent( width=2, indentfirst=False) }}
+}
+
+{% endfor -%}
+
+function bash_prompt() {
   local ret=$? git_cwd=""
   local reset="\[\e[0;0m\]" bold="\[\e[1m\]"
   local blue="\[\e[38;5;33m\]" \
@@ -11,8 +40,8 @@ function _prompt_command() {
         red="\[\e[38;5;160m\]" \
         orange="\[\e[38;5;166m\]"
 
-  _CWD="${blue}\W${reset}" _TIMESTAMP=" ❲${orange}$(date +%b" "%e" "%T)${reset}❳"
-  _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST=""  _PROMPT=""
+  _CWD="${blue}\W${reset}"
+  _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST="" _PROMPT=""
 
   GIT_PS1_SHOWDIRTYSTATE=true
   GIT_PS1_SHOWSTASHSTATE=true
@@ -38,5 +67,4 @@ function _prompt_command() {
   __git_ps1 "❲${_HOST}${_CWD}❳${_GIT_PRE}" "${_GIT_POST}${_PYENV}${_PROMPT}" "%s"
 }
 
-source ~/.local/share/git/git-prompt.sh
-PROMPT_COMMAND='_prompt_command; history -a'
+PROMPT_COMMAND='bash_prompt; history -a'

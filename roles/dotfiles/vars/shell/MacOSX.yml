@@ -3,6 +3,13 @@
 
 keychain: eval "$(keychain --eval --ignore-missing --quiet --inherit any id_rsa id_develop id_home)"
 
+distribution_exports:
+  - CLICOLOR=1
+  - HOMEBREW_PREFIX=/usr/local
+  - HOMEBREW_CELLAR=/usr/local/Cellar
+  - HOMEBREW_REPOSITORY=/usr/local/Homebrew
+  - INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
+
 distribution_paths:
   - PATH="$PATH":~/Library/Python/"$(python3 -V | grep -Eo '\b[0-9]\.[0-9]')"/bin
   - PATH="$PATH":/opt/X11/bin
