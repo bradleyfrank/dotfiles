@@ -40,7 +40,7 @@
 
 - name: Apply VSCode dotfiles
   copy:
-    src: individual/Code/
+    src: individual/vscode/
     dest: "{{ vscode_config }}"
     mode: '0755'
   tags:
@@ -96,3 +96,11 @@
   tags:
     - dotfiles
     - packages
+
+- name: Load shellrc variables
+  include_vars: shellrc.yml
+
+- name: Test .zshrc template
+  template:
+    src: "{{  }}".zshrc.j2
+    dest: "{{ ansible_env.HOME }}/.zshrc2"

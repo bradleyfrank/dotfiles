@@ -1,0 +1,74 @@
+---
+  # vars file for dotfiles
+
+aliases:
+  bw: 'bitwise --no-color'
+  condense: 'grep -Erv "(^#|^$)"'
+  e: 'extract'
+  glances: 'glances --theme-white'
+  groot: 'cd $(git rev-parse --show-toplevel)'
+  ipa: 'ip -c a'
+  isodate: 'date --iso-8601=seconds'
+  l1: 'ls -1 --color --classify --human-readable'
+  la: 'ls -la --color --classify --human-readable'
+  lg: 'ls -Gg --color --classify --human-readable'
+  ll: 'ls -l --color --classify --human-readable'
+  lt: 'ls -1AS --color --classify --human-readable --group-directories-first --size'
+  lsblk: 'lsblk -o "NAME,FSTYPE,SIZE,UUID,MOUNTPOINT"'
+  lsmnt: 'mount | column -t'
+  rcp: 'rsync --info=progress2'
+  pipi: 'python3 -m pip install --user'
+  proc: 'ps -e --forest -o pid,ppid,user,time,cmd'
+  pipu: 'pip_upgrade_outdated -3 --user --verbose'
+  pubip: 'dig myip.opendns.com @resolver1.opendns.com'
+  steep: 'brew update ; brew upgrade ; brew cask upgrade ; brew cleanup ; brew doctor'
+  tmuxl: 'tmux -f ~/.tmux.min.conf'
+
+functions:
+  blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
+  clint: docker-compose -f "$1" config --quiet
+  diceware: keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
+  decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
+  encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
+  fproc: |
+    local pid
+    if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"
+    else pid="$(pgrep "$1")"
+    fi
+    ps --forest -o pid,ppid,user,time,cmd -g "$pid"
+  gedit: nohup /usr/bin/gedit "$@" &> /dev/null &
+  httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
+  mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
+  numware: |
+    local length dice pin
+    length="${1:-5}"
+    [[ $length -lt 2 ]] && { echo "Segment count must be a higher number." >&2 ; return 1 ; }
+    dice="$(keepassxc-cli diceware --words "$((length-1))" | tr " " "-")"
+    pin="$(keepassxc-cli generate -L "$length" -n)"
+    printf "%s-%s\n" "$dice" "$pin"
+  pup: pip_upgrade_outdated -3 --user --verbose
+  pylinter: |
+    black --line-length 79 --diff "$@" | diff-so-fancy
+    pylint "$@"
+    pycodestyle "$@"
+  sshgen: |
+    local comment password keyfile
+    comment="$(id -un)@$(uname -n) on $(date --iso-8601=minute)"
+    password="$(keepassxc-cli diceware --words 5 | tr ' ' '-')"
+    keyfile="$HOME"/.ssh/id_"${1:-rsa}"
+    [[ -e "$keyfile" ]] && keyfile="$HOME"/.ssh/id_"$(date +%s)"
+    ssh-keygen -q -t rsa -b 4096 -N "$password" -C "$comment" -f "$keyfile"
+    echo "$keyfile : $password"
+  tardir: tar -czf "${1%/}".tar.gz "$1"
+  cheat: curl -s "cheat.sh/$1?style=vs"
+  ytdl-video: |
+    --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
+    --merge-output-format mp4 \
+    -o "%(title)s.%(ext)s" "$1"
+  ytdl-music: |
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+      youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
+        --postprocessor-args "-strict experimental" "$1"
+    else
+      youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"
+    fi
