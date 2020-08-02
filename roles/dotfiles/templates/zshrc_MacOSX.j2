@@ -34,5 +34,9 @@ setopt AUTO_CD EXTENDED_GLOB NOMATCH NO_CASE_GLOB NOTIFY CORRECT CORRECT_ALL GLO
 unsetopt BEEP
 
 {% for key, value in aliases.items() %}
-alias {{ key }}=\'{{ value }}\'
+alias {{ key }}='{{ value }}'
+{% endfor %}
+
+{% for key, value in functions.items() %}
+function {{ key }}() { {{ value }} ; }
 {% endfor %}
