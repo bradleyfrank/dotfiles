@@ -99,6 +99,8 @@
 
 - name: Load shellrc variables
   include_vars: shellrc.yml
+  tags:
+    - dotfiles
 
 - name: Test .zshrc template
   template:
