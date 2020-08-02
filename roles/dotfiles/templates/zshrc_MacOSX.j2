@@ -38,5 +38,7 @@ alias {{ key }}='{{ value }}'
 {% endfor %}
 
 {% for key, value in functions.items() %}
-function {{ key }}() { {{ value }} ; }
+function {{ key }}() {
+  {{ value }}
+}
 {% endfor %}
