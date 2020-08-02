@@ -102,5 +102,5 @@
 
 - name: Test .zshrc template
   template:
-    src: "{{  }}".zshrc.j2
+    src: "{{ ansible_os_family }}".zshrc.j2
     dest: "{{ ansible_env.HOME }}/.zshrc2"
