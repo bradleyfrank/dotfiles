@@ -16,3 +16,7 @@
   show = diff-so-fancy | less --tabs=1,5 -RFX
 [include]
   path = ~/.gitconfig.local
+[credential "https://git-codecommit.us-east-1.amazonaws.com"]
+  helper =
+  helper = !aws codecommit credential-helper $@
+  UseHttpPath = true
