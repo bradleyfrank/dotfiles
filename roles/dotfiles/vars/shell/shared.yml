@@ -53,7 +53,7 @@ shared_functions:
     printf "%s-%s\n" "$dice" "$pin"
   pup: pip_upgrade_outdated -3 --user --verbose
   pylinter: |-
-    black --line-length 79 --diff "$@" | diff-so-fancy
+    blackdiff "$@"
     pylint "$@"
     pycodestyle "$@"
   sshgen: |-
