@@ -4,6 +4,15 @@
 # Miscellaneous application settings
 #
 
+- name: Make additional shells available
+  blockinfile:
+    path: /etc/shells
+    block: |
+      /usr/local/bin/bash
+      /usr/local/bin/fish
+      /usr/local/bin/zsh
+  become: True
+
 - name: Disable prompting to use new exteral drives as Time Machine volume
   osx_defaults:
     domain: com.apple.TimeMachine
