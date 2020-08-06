@@ -34,13 +34,3 @@
   vars:
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
-
-- name: Install root bash_profile
-  template:
-    src: 'root.bash_profile.j2'
-    dest: "{{ rootdir }}/.bash_profile"
-
-- name: Install root bashrc
-  template:
-    src: 'root.bashrc.j2'
-    dest: "{{ rootdir }}/.bashrc"

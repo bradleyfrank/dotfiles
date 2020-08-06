@@ -15,3 +15,15 @@
     name: root
     shell: "{{ usr_path }}/bin/bash"
   become: True
+
+- name: Install root bash_profile
+  copy:
+    src: 'root/bash_profile'
+    dest: "{{ rootdir }}/.bash_profile"
+  become: True
+
+- name: Install root bashrc
+  copy:
+    src: 'root/bashrc'
+    dest: "{{ rootdir }}/.bashrc"
+  become: True
