@@ -4,8 +4,14 @@
 - name: Apply desktop settings
   include_tasks: "{{ desktop }}.yml"
 
-- name: Make zsh default
+- name: Make zsh default for user
   user:
     name: "{{ ansible_env.USER }}"
     shell: "{{ usr_path }}/bin/zsh"
+  become: True
+
+- name: Make bash default for root
+  user:
+    name: root
+    shell: "{{ usr_path }}/bin/bash"
   become: True

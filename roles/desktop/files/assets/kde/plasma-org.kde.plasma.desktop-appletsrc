@@ -150,9 +150,6 @@ wallpaperplugin=org.kde.image
 ToolBoxButtonState=topright
 showToolbox=false
 
-[Containments][4][Wallpaper][org.kde.image][General]
-Image=file:///{{ homedir }}/.local/share/backgrounds/f22.jpg
-
 [General]
 immutability=2
 

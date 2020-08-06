@@ -28,7 +28,7 @@
     dest: "{{ homedir }}/.config/dolphinrc"
 
 - name: Install default desktop settings
-  template:
-    src: kde/plasma-org.kde.plasma.desktop-appletsrc.j2
+  copy:
+    src: kde/plasma-org.kde.plasma.desktop-appletsrc
     dest: "{{ homedir }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
     mode: '0600'
