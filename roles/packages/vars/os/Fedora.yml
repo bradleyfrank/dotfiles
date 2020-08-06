@@ -15,22 +15,18 @@ base_packages:
   - fdupes
   - ffmpeg
   - figlet
-  - fish
-  - flameshot
   - foliate
   - fontconfig-enhanced-defaults
   - fontconfig-font-replacements
   - fwupd
   - ghostscript
   - ghostwriter
-  - git
   - glances
   - google-chrome-stable
   - google-noto-emoji-color-fonts
   - hstr
   - htop
   - iftop
-  - jetbrains-mono-fonts
   - keepassxc
   - keychain
   - libmp4v2
@@ -77,6 +73,7 @@ base_packages:
   - zsh-syntax-highlighting
 
 home_packages:
+  - 1password
   - calibre
   - makemkv
   - mkvtoolnix
