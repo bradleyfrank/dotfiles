@@ -4,7 +4,8 @@
   vars:
     desktop: "{{ ansible_distribution }}"
     homedir: "{{ ansible_env.HOME }}"
-    usr_path: "/usr/local"
+    rootdir: '/var/root'
+    usr_path: '/usr/local'
     vscode_config: "{{ homedir }}/Library/Application Support/Code"
   roles:
     - packages
