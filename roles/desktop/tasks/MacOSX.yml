@@ -388,14 +388,6 @@
     group: admin
     state: link
 
-- name: Symlink Fonts directory to match Linux
-  file:
-    src: "{{ homedir }}/Library/Fonts"
-    dest: "{{ homedir }}/.local/share/fonts"
-    owner: "{{ ansible_env.USER }}"
-    group: admin
-    state: link
-
 #
 # Restart services to apply settings
 #

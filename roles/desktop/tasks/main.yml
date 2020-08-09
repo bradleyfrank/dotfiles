@@ -12,7 +12,7 @@
 
 - name: Make bash default for root
   user:
-    name: root
+    name: 'root'
     shell: "{{ usr_path }}/bin/bash"
   become: True
 

@@ -5,16 +5,19 @@
   yum:
     name: https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm
     state: present
+  become: True
 
 - name: Install "rpmfusion-nonfree" repo
   yum:
     name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm
     state: present
+  become: True
 
 - name: Install gpg keys
   rpm_key:
     key: "{{ item.gpgkey }}"
   loop: "{{ repos }}"
+  become: True
 
 - name: Install repositories
   yum_repository:
@@ -27,3 +30,4 @@
     repo_gpgcheck: "{{ item.repo_gpgcheck | default(False) }}"
     skip_if_unavailable: "{{ item.skip_if_unavailable | default(True) }}"
   loop: "{{ repos }}"
+  become: True
