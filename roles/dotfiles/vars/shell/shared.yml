@@ -39,6 +39,7 @@ shared_aliases:
 shared_functions:
   blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
   clint: docker-compose -f "$1" config --quiet
+  crackpdf: qpdf --password='"$1"' --decrypt "$2" "${2%.*}"-decrypted.pdf
   diceware: keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
