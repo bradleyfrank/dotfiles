@@ -90,6 +90,7 @@ base_casks:
   - macdown
   - meld
   - monitorcontrol
+  - sony-ps4-remote-play
   - transmission
   - typora
   - visual-studio-code
