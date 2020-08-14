@@ -79,7 +79,6 @@ base_casks:
   - fedora-media-writer
   - firefox
   - font-clear-sans
-  - font-roboto
   - font-source-code-pro
   - google-chrome
   - iina
@@ -92,7 +91,6 @@ base_casks:
   - monitorcontrol
   - sony-ps4-remote-play
   - transmission
-  - typora
   - visual-studio-code
   - vlc
   - webarchiveextractor
