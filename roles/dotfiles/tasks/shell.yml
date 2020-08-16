@@ -11,6 +11,7 @@
   template:
     src: "zshrc.j2"
     dest: "{{ ansible_env.HOME }}/.zshrc"
+    backup: True
   vars:
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
     paths: "{{ shared_paths + distribution_paths | default([]) }}"
@@ -22,6 +23,7 @@
   template:
     src: 'bash_profile.j2'
     dest: "{{ ansible_env.HOME }}/.bash_profile"
+    backup: True
   vars:
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
     paths: "{{ shared_paths + distribution_paths | default([]) }}"
@@ -31,6 +33,7 @@
   template:
     src: 'bashrc.j2'
     dest: "{{ ansible_env.HOME }}/.bashrc"
+    backup: True
   vars:
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
