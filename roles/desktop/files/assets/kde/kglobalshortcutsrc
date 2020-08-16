@@ -1,0 +1,13 @@
+[kwin]
+Walk Through Windows=Meta+Tab,Alt+Tab,Walk Through Windows
+Walk Through Windows (Reverse)=Meta+Alt+Tab,Alt+Shift+Backtab,Walk Through Windows (Reverse)
+Walk Through Windows of Current Application=,Alt+`,Walk Through Windows of Current Application
+Walk Through Windows of Current Application (Reverse)=Meta+`,Alt+~,Walk Through Windows of Current Application (Reverse)
+
+[org.kde.spectacle.desktop]
+ActiveWindowScreenShot=Meta+@,Meta+Print,Capture Active Window
+CurrentMonitorScreenShot=,none,Capture Current Monitor
+FullScreenScreenShot=Meta+!,Shift+Print,Capture Entire Desktop
+RectangularRegionScreenShot=Meta+#,Meta+Shift+Print,Capture Rectangular Region
+_k_friendly_name=Spectacle
+_launch=,Print,Launch Spectacle
