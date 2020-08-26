@@ -20,7 +20,7 @@ bootstrap_linux() {
 }
 
 main() {
-  ansible_repo="https://github.com/bradleyfrank/bootstraps.git"
+  ansible_repo="https://github.com/bradleyfrank/dotfiles.git"
   system_os="$(uname -s | tr '[:upper:]' '[:lower:]')"
   tmp_checkout="$(mktemp -d)"
 
