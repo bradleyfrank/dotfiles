@@ -52,6 +52,7 @@ base_formulas:
   - rpm2cpio
   - rsync
   - shellcheck
+  - shellharden
   - shfmt
   - ssh-copy-id
   - stow
