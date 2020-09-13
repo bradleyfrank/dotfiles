@@ -49,13 +49,13 @@
 - name: Install base Mac App Store applications
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
-  with_items: "{{ base_apps }}"
+  loop: "{{ base_apps }}"
   tags:
     - packages
 
 - name: Install home-only Mac App Store applications
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
-  with_items: "{{ home_apps }}"
+  loop: "{{ home_apps }}"
   tags:
     - packages

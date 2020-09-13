@@ -98,10 +98,8 @@
     - packages
 
 - name: Build shell rc files
-  include_tasks:
+  import_tasks:
     file: shell.yml
     apply:
       tags:
         - dotfiles
-  tags:
-    - dotfiles

@@ -5,14 +5,15 @@
   include_vars: "os/{{ ansible_distribution }}.yml"
 
 - name: Install packages for OS
-  include_tasks: "{{ ansible_distribution }}.yml"
+  import_tasks: "{{ ansible_distribution }}.yml"
 
 - name: Install VSCode extensions
   command:
     cmd: "{{ usr_path }}/bin/code --install-extension --force {{ item }}"
-  with_items: "{{ vscode_extensions }}"
+  loop: "{{ vscode_extensions }}"
   tags:
     - packages
+    - extensions
 
 - name: Install Python packages
   pip:
@@ -20,3 +21,4 @@
     extra_args: --user
   tags:
     - packages
+    - modules
