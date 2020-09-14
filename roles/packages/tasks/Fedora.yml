@@ -3,12 +3,8 @@
 
 - name: Load DE packages lists
   include_vars: "de/{{ desktop }}.yml"
-
-- name: Upgrade all packages
-  become: True
-  dnf:
-    name: "*"
-    state: latest
+  tags:
+    - packages
 
 - name: Install OS packages
   become: True
