@@ -3,9 +3,13 @@
 
 - name: Load shared variables
   include_vars: shell/shared.yml
+  tags:
+    - dotfiles
 
 - name: Load distribution variables
   include_vars: "shell/{{ ansible_distribution }}.yml"
+  tags:
+    - dotfiles
 
 - name: Build zshrc
   template:
@@ -18,6 +22,8 @@
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
+  tags:
+    - dotfiles
 
 - name: Build bash_profile
   template:
@@ -28,6 +34,8 @@
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
     paths: "{{ shared_paths + distribution_paths | default([]) }}"
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
+  tags:
+    - dotfiles
 
 - name: Build bashrc
   template:
@@ -37,3 +45,5 @@
   vars:
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
+  tags:
+    - dotfiles
