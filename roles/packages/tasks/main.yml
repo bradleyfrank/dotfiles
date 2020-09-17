@@ -11,7 +11,7 @@
 
 - name: Install VSCode extensions
   command:
-    cmd: "{{ usr_path }}/bin/code --install-extension --force {{ item }}"
+    cmd: "{{ usr_path }}/bin/code --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
   tags:
     - packages
