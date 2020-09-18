@@ -14,7 +14,7 @@ Supports systems for work or home.
 * Use `-h` to run on a personal computer
 * Use `-w` to run on a work computer
 
-```
+```shell
 curl -fsSL https://raw.githubusercontent.com/bradleyfrank/dotfiles/master/run.sh | bash -s -- [-h|-w]
 ```
 
@@ -22,11 +22,12 @@ curl -fsSL https://raw.githubusercontent.com/bradleyfrank/dotfiles/master/run.sh
 
 To use Ansible to manage dotfiles only, run the following:
 
-```
+```shell
 ansible-pull --url https://github.com/bradleyfrank/dotfiles.git --directory ~/.dotfiles --skip-tags work_only playbooks/dotfiles.yml
 ```
 
 The argument `skip_tags` can be:
+
 * `work_only`: use this for a personal computer
 * `home_only`: use this for a work computer
 
