@@ -17,10 +17,10 @@ trap cleanup EXIT
 cleanup() {
   command rm -rf "$tmp_checkout"
   command rm -rf "$tmp_json"
-  unset "$SUDOPW"
-  unset "$SKIP_TAGS"
-  unset "$SYSTEM_TYPE"
-  unset "$ANSIBLE_REPO"
+  unset SUDOPW
+  unset SKIP_TAGS
+  unset SYSTEM_TYPE
+  unset ANSIBLE_REPO
 }
 
 enter_sudo_pw() {
@@ -56,13 +56,17 @@ bootstrap_linux() {
   tmp_script="$(mktemp)"
 
   if type dnf > /dev/null; then
-    printf "dnf clean all\ndnf upgrade -y\ndnf install -y ansible git" > "$tmp_script"
+    printf "dnf clean all >/dev/null\ndnf upgrade -y\ndnf install -y ansible git" > "$tmp_script"
   else
     not_supported
   fi
 
   chmod 0755 "$tmp_script"
-  printf "%s" "$SUDOPW" | sudo -S sh "$(tmp_script)"
+
+  if ! printf "%s" "$SUDOPW" | sudo -S sh "$tmp_script"; then
+    prinf "Invalid sudo password."
+    exit 1
+  fi
 }
 
 run_ansible() {
