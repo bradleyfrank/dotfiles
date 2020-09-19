@@ -8,6 +8,14 @@
     mode: '0755'
   with_items: ['Projects', 'Build', 'Scratch']
 
+- name: Create and ensure proper permissions on ~/.ssh
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: '0700'
+  tags:
+    - dotfiles
+
 - name: Create shared dotfile directories
   file:
     path: "{{ ansible_env.HOME }}/{{ item.path }}"
@@ -43,14 +51,6 @@
     src: individual/vscode/
     dest: "{{ vscode_config }}"
     mode: '0755'
-  tags:
-    - dotfiles
-
-- name: Set proper permissions on ~/.ssh
-  file:
-    path: "{{ ansible_env.HOME }}/.ssh"
-    state: directory
-    mode: '0700'
   tags:
     - dotfiles
 
