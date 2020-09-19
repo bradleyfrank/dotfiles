@@ -51,40 +51,25 @@
     type: int
     value: '0'
 
-#
-# Safari settings
-#
-
-- name: Enable web developer extras in Safari
-  osx_defaults:
-    domain: com.apple.Safari
-    key: "{{ item }}"
-    type: bool
-    value: 'true'
-  loop:
-    - IncludeInternalDebugMenu
-    - IncludeDevelopMenu
-    - WebKitDeveloperExtrasEnabledPreferenceKey
-    - com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled
-
-- name: Disable Safari autofills
-  osx_defaults:
-    domain: com.apple.Safari
-    key: "{{ item }}"
-    type: bool
-    value: 'false'
-  loop:
-    - autofillfromaddressbook
-    - autofillpasswords
-    - autofillcreditcarddata
-    - autofillmiscellaneousforms
-
 - name: Quit printer app after print jobs complete
   osx_defaults:
     domain: com.apple.print.PrintingPrefs
     key: "Quit When Finished"
     type: bool
     value: 'true'
+
+- name: Create TextMate Bundle support bin directory
+  file:
+    path: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
+    state: directory
+
+- name: Create a symlink to the patched version of `par` for TextMate
+  file:
+    src: /usr/local/bin/par
+    dest: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
+    owner: "{{ ansible_env.USER }}"
+    group: admin
+    state: link
 
 #
 # Finder and Desktop settings
@@ -195,8 +180,8 @@
     type: int
     value: "{{ item.value }}"
   loop:
-    # bottom-left: show desktop
-    - { key: 'wvous-bl-corner', value: '4' }
+    # bottom-left: application windows
+    - { key: 'wvous-bl-corner', value: '3' }
     - { key: 'wvous-bl-modifier', value: '0' }
     # bottom-right: screen saver
     - { key: 'wvous-br-corner', value: '5' }
@@ -204,8 +189,8 @@
     # top-left: mission control
     - { key: 'wvous-tl-corner', value: '2' }
     - { key: 'wvous-tl-modifier', value: '0' }
-    # top-right: application windows
-    - { key: 'wvous-tr-corner', value: '3' }
+    # top-right: launchpad
+    - { key: 'wvous-tr-corner', value: '11' }
     - { key: 'wvous-tr-modifier', value: '0' }
 
 - name: Disable automatically rearranging Spaces
@@ -225,22 +210,6 @@
     - { key: 'askForPassword', value: '1' }
     - { key: 'askForPasswordDelay', value: '5' }
     - { key: 'idleTime', value: "300" }
-
-#
-# Miscellaneous dialogue box settings
-#
-
-- name: Expand save and print panel by default
-  osx_defaults:
-    domain: NSGlobalDomain
-    key: "{{ item }}"
-    type: bool
-    value: 'true'
-  loop:
-    - NSNavPanelExpandedStateForSaveMode
-    - NSNavPanelExpandedStateForSaveMode2
-    - PMPrintingExpandedStateForPrint
-    - PMPrintingExpandedStateForPrint2
 
 #
 # Mouse and Trackpad and Keyboard settings
@@ -277,13 +246,6 @@
     - { key: 'trackpadTwoFingerDoubleTapGesture', value: '1' } # smart zoom
     - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: '3' } # Notification Center
     - { key: 'trackpadThreeFingerTapGesture', value: '2' } # perform look up
-
-- name: Enable palm detection for trackpad
-  osx_defaults:
-    domain: com.apple.AppleMultitouchtrackpad
-    key: trackpadHandResting
-    type: bool
-    value: 'true'
 
 - name: Enable tap-to-click on Apple mouse
   osx_defaults:
@@ -375,18 +337,17 @@
     cmd: 'chflags nohidden /Volumes'
   become: True
 
-- name: Create TextMate Bundle support bin directory
-  file:
-    path: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
-    state: directory
-
-- name: Create a symlink to the patched version of `par` for TextMate
-  file:
-    src: /usr/local/bin/par
-    dest: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
-    owner: "{{ ansible_env.USER }}"
-    group: admin
-    state: link
+- name: Expand save and print panel by default
+  osx_defaults:
+    domain: NSGlobalDomain
+    key: "{{ item }}"
+    type: bool
+    value: 'true'
+  loop:
+    - NSNavPanelExpandedStateForSaveMode
+    - NSNavPanelExpandedStateForSaveMode2
+    - PMPrintingExpandedStateForPrint
+    - PMPrintingExpandedStateForPrint2
 
 #
 # Restart services to apply settings
