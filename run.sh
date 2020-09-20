@@ -2,9 +2,11 @@
 
 # Set global variables
 SUDOPW=""
+VAULTPW=""
 SKIP_TAGS="work_only"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
+ANSIBLE_VAULT_FILE="$HOME/.ansible_vault_password"
 
 
 # Restores echo command in case of Cntl-c
@@ -15,17 +17,34 @@ trap cleanup EXIT
 
 
 cleanup() {
-  command rm -rf "$tmp_checkout"
-  command rm -rf "$tmp_json"
-  unset SUDOPW
-  unset SKIP_TAGS
-  unset SYSTEM_TYPE
-  unset ANSIBLE_REPO
+  [ -e "$tmp_checkout" ] && rm -rf "$tmp_checkout"
+  [ -e "$tmp_json" ] && rm -rf "$tmp_json"
+  [ -e "$tmp_script" ] && rm -rf "$tmp_script"
+  [ -n "$SUDOPW" ] && unset SUDOPW
+  [ -n "$VAULTPW" ] && unset VAULTPW
+  [ -n "$SKIP_TAGS" ] && unset SKIP_TAGS
+  [ -n "$SYSTEM_TYPE" ] && unset SYSTEM_TYPE
+  [ -n "$ANSIBLE_REPO" ] && unset ANSIBLE_REPO
+}
+
+create_vault_file() {
+  [ -e "$ANSIBLE_VAULT_FILE" ] && return 0
+
+  stty -echo
+  printf "Enter vault password: "
+  read -r VAULTPW
+  stty echo
+  printf "\n"
+
+  printf "%s" "$VAULTPW" > "$ANSIBLE_VAULT_FILE"
+  chmod 0400 "$ANSIBLE_VAULT_FILE"
+
+  unset VAULTPW
 }
 
 enter_sudo_pw() {
   stty -echo
-  printf "Password: "
+  printf "Enter sudo password: "
   read -r SUDOPW
   stty echo
   printf "\n"
@@ -101,6 +120,7 @@ while getopts ':wh' flag; do
   esac
 done
 
+create_vault_file
 enter_sudo_pw
 bootstrap_os
 run_ansible
