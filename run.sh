@@ -83,7 +83,7 @@ bootstrap_linux() {
   chmod 0755 "$tmp_script"
 
   if ! printf "%s" "$SUDOPW" | sudo -S sh "$tmp_script"; then
-    prinf "Invalid sudo password."
+    printf "Invalid sudo password."
     exit 1
   fi
 }
