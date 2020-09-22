@@ -1,6 +1,18 @@
 ---
   # tasks file for dotfiles
 
+- name: Set 'work_only' tag for scripts
+  vars:
+    host_skip_tags: work_only
+  tags:
+    - work_only
+
+- name: Set 'home_only' tag for scripts
+  vars:
+    host_skip_tags: home_only
+  tags:
+    - home_only
+
 - name: Load shared variables
   include_vars: shell/shared.yml
   tags:
