@@ -31,7 +31,8 @@ create_tmp_sudoers() {
   local tmp_sudoers sudopw
   tmp_sudoers="$(mktemp)"
   read -r -s -p "Enter sudo password: " sudopw
-  echo "$(id -un) ALL=(ALL) NOPASSWD: ALL" > "$tmp_sudoers"
+  echo # insert newline
+  printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
   unset sudopw
 }
@@ -39,6 +40,7 @@ create_tmp_sudoers() {
 create_vault_file() {
   [[ -e "$ANSIBLE_VAULT_FILE" ]] && return 0
   read -r -s -p "Enter vault password: " VAULTPW
+  echo # insert newline
   printf "%s" "$VAULTPW" > "$ANSIBLE_VAULT_FILE"
   chmod 0400 "$ANSIBLE_VAULT_FILE"
   unset VAULTPW
