@@ -14,7 +14,7 @@ trap cleanup SIGINT EXIT
 
 cleanup() {
   # cleanup temp files
-  [[ -e "$SUDOERS_FILES" ]] && rm -rf "$SUDOERS_FILES"
+  [[ -e "$SUDOERS_FILES" ]] && sudo rm -rf "$SUDOERS_FILES"
   [[ -e "$tmp_checkout" ]] && rm -rf "$tmp_checkout"
   [[ -e "$tmp_sudoers" ]] && rm -rf "$tmp_sudoers"
 
