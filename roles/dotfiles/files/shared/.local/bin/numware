@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+function make_numware() {
+  local length dice word capital diceware=""
+  length="$1"
+
+  if [[ $length -lt 2 ]]; then
+    echo "Segment count must be a higher number." >&2
+    exit 1
+  fi
+
+  readarray -d " " -t dice < <( keepassxc-cli diceware --words "$length" )
+
+  for word in "${dice[@]}"; do
+    capital="$(printf "%s" "${word:0:1}" | tr '[:lower:]' '[:upper:]')"
+    word="${word%$'\n'}" # remove newline
+    diceware="${capital}${word:1}-${diceware}"
+  done
+
+  printf "%s%s\n" "$diceware" "$(keepassxc-cli generate -L "$length" -n)"
+}
+
+if [[ -n "$1" ]]; then make_numware "$1"; else make_numware 5; fi

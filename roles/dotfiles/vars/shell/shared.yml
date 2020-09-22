@@ -45,13 +45,6 @@ shared_functions:
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
   mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
-  numware: |-
-    local length dice pin
-    length="${1:-5}"
-    [[ $length -lt 2 ]] && { echo "Segment count must be a higher number." >&2 ; return 1 ; }
-    dice="$(keepassxc-cli diceware --words "$((length-1))" | tr " " "-")"
-    pin="$(keepassxc-cli generate -L "$length" -n)"
-    printf "%s-%s\n" "$dice" "$pin"
   pup: pip_upgrade_outdated -3 --user --verbose
   pylinter: |-
     blackdiff "$@"
