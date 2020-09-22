@@ -5,13 +5,12 @@ ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
 ANSIBLE_VAULT_FILE="$HOME/.ansible_vault_password"
 SKIP_TAGS="work_only"
 SUDOERS_FILES="/etc/sudoers.d/tmp_ansible_auth"
-SUDOPW=""
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 VAULTPW=""
 
 
 # Perform cleanup on Cntl-c and exit
-trap cleanup INT EXIT
+trap cleanup SIGINT EXIT
 
 
 cleanup() {
@@ -24,18 +23,17 @@ cleanup() {
   [[ -n "$ANSIBLE_REPO" ]] && unset ANSIBLE_REPO
   [[ -n "$SKIP_TAGS" ]] && unset SKIP_TAGS
   [[ -n "$SUDOERS_FILES" ]] && unset SUDOERS_FILES
-  [[ -n "$SUDOPW" ]] && unset SUDOPW
   [[ -n "$SYSTEM_TYPE" ]] && unset SYSTEM_TYPE
   [[ -n "$VAULTPW" ]] && unset VAULTPW
 }
 
 create_tmp_sudoers() {
-  local tmp_sudoers
+  local tmp_sudoers sudopw
   tmp_sudoers="$(mktemp)"
-  read -r -s -p "Enter sudo password: " SUDOPW
+  read -r -s -p "Enter sudo password: " sudopw
   echo "$(id -un) ALL=(ALL) NOPASSWD: ALL" > "$tmp_sudoers"
-  printf "%s" "$SUDOPW" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
-  unset SUDOPW
+  printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
+  unset sudopw
 }
 
 create_vault_file() {
