@@ -3,6 +3,7 @@
 
 - name: Load shared variables
   include_vars: shell/shared.yml
+  tags:
     - dotfiles
 
 - name: Load distribution variables
