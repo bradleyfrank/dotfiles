@@ -41,6 +41,13 @@ shared_functions:
   clint: docker-compose -f "$1" config --quiet
   crackpdf: qpdf --password="$1" --decrypt "$2" "${2%.*}"-decrypted.pdf
   diceware: keepassxc-cli diceware --words "${1:-5}" | tr " " "-"
+  dotfiles: |-
+    ansible-pull \
+      --url "https://github.com/bradleyfrank/dotfiles.git" \
+      --directory "$HOME"/.dotfiles \
+      --tags dotfiles \
+      --skip-tags "{{ ansible_skip_tags }}" \
+      playbooks/"$(uname -s | tr '[:upper:]' '[:lower:]')".yml
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
