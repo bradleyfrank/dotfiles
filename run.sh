@@ -6,7 +6,6 @@ ANSIBLE_VAULT_FILE="$HOME/.ansible_vault_password"
 SKIP_TAGS="work_only"
 SUDOERS_FILES="/etc/sudoers.d/tmp_ansible_auth"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
-VAULTPW=""
 
 
 # Perform cleanup on Cntl-c and exit
@@ -24,7 +23,6 @@ cleanup() {
   [[ -n "$SKIP_TAGS" ]] && unset SKIP_TAGS
   [[ -n "$SUDOERS_FILES" ]] && unset SUDOERS_FILES
   [[ -n "$SYSTEM_TYPE" ]] && unset SYSTEM_TYPE
-  [[ -n "$VAULTPW" ]] && unset VAULTPW
 }
 
 create_tmp_sudoers() {
@@ -38,12 +36,13 @@ create_tmp_sudoers() {
 }
 
 create_vault_file() {
+  local vaultpw
   [[ -e "$ANSIBLE_VAULT_FILE" ]] && return 0
-  read -r -s -p "Enter vault password: " VAULTPW
+  read -r -s -p "Enter vault password: " vaultpw
   echo # insert newline
-  printf "%s" "$VAULTPW" > "$ANSIBLE_VAULT_FILE"
+  printf "%s" "$vaultpw" > "$ANSIBLE_VAULT_FILE"
   chmod 0400 "$ANSIBLE_VAULT_FILE"
-  unset VAULTPW
+  unset vaultpw
 }
 
 not_supported() {
@@ -93,9 +92,9 @@ run_ansible() {
   then
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
     mv "$tmp_checkout" "$HOME"/.dotfiles
-    return 0
+    exit 0
   else
-    return 1
+    exit 1
   fi
 }
 
@@ -113,5 +112,3 @@ create_tmp_sudoers
 create_vault_file
 bootstrap_os
 run_ansible
-
-exit $?
