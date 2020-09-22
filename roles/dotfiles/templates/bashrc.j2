@@ -50,8 +50,8 @@ function bash_prompt() {
   GIT_PS1_SHOWUPSTREAM="verbose name"
 
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="${orange}\h${reset}:"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" ❲${cyan}$(basename "$VIRTUAL_ENV")${reset}❳"
-  [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV=" ❲${cyan}${CONDA_DEFAULT_ENV}${reset}❳"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" (${cyan}$(basename "$VIRTUAL_ENV")${reset})"
+  [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV=" (${cyan}${CONDA_DEFAULT_ENV}${reset})"
 
   case "$ret" in
     0) _PROMPT="${bold}${green} $ ${reset}"   ;;
@@ -64,7 +64,7 @@ function bash_prompt() {
     _GIT_POST="❳"
   fi
 
-  __git_ps1 "❲${_HOST}${_CWD}❳${_GIT_PRE}" "${_GIT_POST}${_PYENV}${_PROMPT}" "%s"
+  __git_ps1 "[${_HOST}${_CWD}]${_GIT_PRE}" "${_GIT_POST}${_PYENV}${_PROMPT}" "%s"
 }
 
 PROMPT_COMMAND='bash_prompt; history -a'
