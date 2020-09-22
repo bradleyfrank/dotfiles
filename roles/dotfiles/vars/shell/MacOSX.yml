@@ -1,5 +1,5 @@
 ---
-  # vars file for dotfiles
+# vars file for dotfiles
 
 keychain: eval "$(keychain --eval --ignore-missing --quiet --inherit any id_rsa id_develop id_home)"
 
@@ -11,7 +11,7 @@ distribution_exports:
   - INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
 
 distribution_paths:
-  - PATH="$PATH":~/Library/Python/"$(python3 -V | grep -Eo '\b[0-9]\.[0-9]')"/bin
+  - PATH="$PATH":~/Library/Python/3.8/bin
   - PATH="$PATH":/opt/X11/bin
   - PATH=/usr/local/opt/coreutils/libexec/gnubin:"$PATH"
   - PATH=/usr/local/opt/gnu-tar/libexec/gnubin:"$PATH"
@@ -31,7 +31,7 @@ distribution_manpaths:
   - MANPATH=/usr/local/opt/findutils/libexec/gnuman:"$MANPATH"
 
 distribution_aliases:
-  steep: 'brew update ; brew upgrade ; brew cask upgrade ; brew cleanup ; brew doctor'
+  steep: 'brew update ; brew upgrade ; brew cleanup ; brew doctor'
 
 distribution_functions:
   ytdl-music: |-
