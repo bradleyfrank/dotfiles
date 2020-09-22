@@ -32,6 +32,7 @@ create_tmp_sudoers() {
   printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
   unset sudopw
+  printf "\n\n" # insert newlines for readability
 }
 
 create_vault_file() {
@@ -41,6 +42,7 @@ create_vault_file() {
   printf "%s" "$vaultpw" > "$ANSIBLE_VAULT_FILE"
   chmod 0400 "$ANSIBLE_VAULT_FILE"
   unset vaultpw
+  printf "\n\n" # insert newlines for readability
 }
 
 not_supported() {
@@ -65,8 +67,6 @@ bootstrap_macos() {
 }
 
 bootstrap_linux() {
-  printf "\n\n" # insert newlines for readability
-
   if type dnf > /dev/null; then
     sudo dnf clean all
     sudo dnf upgrade -y
