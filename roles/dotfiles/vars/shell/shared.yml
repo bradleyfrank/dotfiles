@@ -46,7 +46,7 @@ shared_functions:
       --url "https://github.com/bradleyfrank/dotfiles.git" \
       --directory "$HOME"/.dotfiles \
       --tags dotfiles \
-      --skip-tags "{{ skip_tags }}" \
+      --skip-tags "{{ ansible_skip_tags | join(', ') }}" \
       playbooks/"$(uname -s | tr '[:upper:]' '[:lower:]')".yml
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"

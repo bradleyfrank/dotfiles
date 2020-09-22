@@ -1,20 +1,8 @@
 ---
   # tasks file for dotfiles
 
-- name: Load shared variables (for home hosts)
-  vars:
-    skip_tags: work_only
+- name: Load shared variables
   include_vars: shell/shared.yml
-  tags:
-    - home_only
-    - dotfiles
-
-- name: Load shared variables (for work hosts)
-  vars:
-    skip_tags: home_only
-  include_vars: shell/shared.yml
-  tags:
-    - work_only
     - dotfiles
 
 - name: Load distribution variables
