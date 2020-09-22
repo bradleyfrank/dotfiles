@@ -29,7 +29,6 @@ create_tmp_sudoers() {
   local tmp_sudoers sudopw
   tmp_sudoers="$(mktemp)"
   read -r -s -p "Enter sudo password: " sudopw
-  echo # insert newline
   printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
   unset sudopw
@@ -39,7 +38,6 @@ create_vault_file() {
   local vaultpw
   [[ -e "$ANSIBLE_VAULT_FILE" ]] && return 0
   read -r -s -p "Enter vault password: " vaultpw
-  echo # insert newline
   printf "%s" "$vaultpw" > "$ANSIBLE_VAULT_FILE"
   chmod 0400 "$ANSIBLE_VAULT_FILE"
   unset vaultpw
@@ -67,6 +65,8 @@ bootstrap_macos() {
 }
 
 bootstrap_linux() {
+  printf "\n\n" # insert newlines for readability
+
   if type dnf > /dev/null; then
     sudo dnf clean all
     sudo dnf upgrade -y
