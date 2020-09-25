@@ -2,27 +2,20 @@
 
 # Set global variables
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
-ANSIBLE_VAULT_FILE="$HOME/.ansible_vault_password"
+REPO_CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
 SUDOERS_FILES="/etc/sudoers.d/tmp_ansible_auth"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 
-# Perform cleanup on Cntl-c and exit
-trap cleanup SIGINT EXIT
+# Perform cleanup on exit
+trap cleanup EXIT
 
 
 cleanup() {
   # cleanup temp files
   [[ -e "$SUDOERS_FILES" ]] && sudo rm -rf "$SUDOERS_FILES"
-  [[ -e "$tmp_checkout" ]] && rm -rf "$tmp_checkout"
-  [[ -e "$tmp_sudoers" ]] && rm -rf "$tmp_sudoers"
-
-  # cleanup temp variables
-  [[ -n "$ANSIBLE_REPO" ]] && unset ANSIBLE_REPO
-  [[ -n "$SKIP_TAGS" ]] && unset SKIP_TAGS
-  [[ -n "$SUDOERS_FILES" ]] && unset SUDOERS_FILES
-  [[ -n "$SYSTEM_TYPE" ]] && unset SYSTEM_TYPE
+  [[ -e "$REPO_CHECKOUT" ]] && rm -rf "$REPO_CHECKOUT"
 }
 
 create_tmp_sudoers() {
@@ -31,16 +24,17 @@ create_tmp_sudoers() {
   read -r -s -p "Enter sudo password: " sudopw
   printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
+  rm -f "$tmp_sudoers"
   unset sudopw
   printf "\n\n" # insert newlines for readability
 }
 
 create_vault_file() {
-  local vaultpw
+  local vaultpw vaultfile="$HOME/.ansible_vault_password"
   [[ -e "$ANSIBLE_VAULT_FILE" ]] && return 0
   read -r -s -p "Enter vault password: " vaultpw
-  printf "%s" "$vaultpw" > "$ANSIBLE_VAULT_FILE"
-  chmod 0400 "$ANSIBLE_VAULT_FILE"
+  printf "%s" "$vaultpw" > "$vaultfile"
+  chmod 0400 "$vaultfile"
   unset vaultpw
   printf "\n\n" # insert newlines for readability
 }
@@ -82,19 +76,17 @@ bootstrap_linux() {
 }
 
 run_ansible() {
-  tmp_checkout="$(mktemp -d)"
-
   if ansible-pull \
     --url "$ANSIBLE_REPO" \
-    --directory "$tmp_checkout" \
+    --directory "$REPO_CHECKOUT" \
     --skip-tags "$SKIP_TAGS" \
     playbooks/"$SYSTEM_TYPE".yml
   then
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
-    mv "$tmp_checkout" "$HOME"/.dotfiles
-    exit 0
+    mv "$REPO_CHECKOUT" "$HOME"/.dotfiles
+    return 0
   else
-    exit 1
+    return 1
   fi
 }
 
@@ -104,7 +96,7 @@ while getopts ':wh' flag; do
   case "$flag" in
     w) SKIP_TAGS="home_only" ;;
     h) SKIP_TAGS="work_only" ;;
-    *) printf "%s\n" "Requires [[-w|-h]], aborting..." >&2 ; exit 1 ;;
+    *) printf "%s\n" "Requires [-w|-h], aborting..." >&2 ; exit 1 ;;
   esac
 done
 
@@ -112,3 +104,5 @@ create_tmp_sudoers
 create_vault_file
 bootstrap_os
 run_ansible
+
+exit $?
