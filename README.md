@@ -4,18 +4,19 @@ Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfile
 
 ## Bootstrapping macOS & Fedora
 
-The `run.sh` script bootstraps Ansible itself before running the playbook.
+The `run.sh` script updates the OS and bootstraps Ansible itself before running the playbook.
 
-* Create vault password file: `echo "password" > ~/.ansible_vault_password`
-* For macOS ensure you're signed into iCloud and the Mac App Store
-
-Supports systems for work or home.
-
-* Use `-h` to run on a personal computer (default)
-* Use `-w` to run on a work computer
+* For macOS ensure iCloud and the Mac App Store are logged in to the appropriate account
+* The script will prompt for the vault password and create `~/.ansible_vault_password`
 
 ```shell
-curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh [-h|-w]
+curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh && rm run.sh
+```
+
+Use the following for non-personal systems, which excludes certain tasks and doesn't install personally licensed software:
+
+```shell
+curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh -w && rm run.sh
 ```
 
 ## Applying dotfiles
@@ -26,9 +27,9 @@ To use Ansible to manage dotfiles only, run the following:
 ansible-pull --url https://github.com/bradleyfrank/dotfiles.git --directory ~/.dotfiles --skip-tags {{ skip_tags }} playbooks/dotfiles.yml
 ```
 
-Values for `{{ skip_tags }}` can be:
+Where `{{ skip_tags }}` can be:
 
-* `work_only`: use this for a personal computer
-* `home_only`: use this for a work computer
+* `work_only`: for a personal system
+* `home_only`: for a non-personal system
 
-Once applied, the script `~/.local/bin/dotfiles` provides a wrapper for managing dotfiles.
+Once applied, the `dotfiles` function provides a wrapper for applying dotfiles.
