@@ -104,6 +104,7 @@ create_tmp_sudoers
 create_vault_file
 bootstrap_os
 run_ansible
-cleanup
 
-exit $?
+rc=$?
+cleanup
+exit "$rc"
