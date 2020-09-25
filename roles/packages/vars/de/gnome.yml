@@ -15,6 +15,7 @@ de_packages:
   - gnome-shell-extension-gpaste
   - gnome-shell-extension-system-monitor-applet
   - gnome-shell-theme-yaru
+  - gnome-tweaks
   - gnote
   - gpaste*
   - libgnome-keyring
