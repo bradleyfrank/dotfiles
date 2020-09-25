@@ -9,7 +9,7 @@ SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 
 # Perform cleanup on exit
-trap cleanup EXIT
+trap cleanup SIGINT
 
 
 cleanup() {
@@ -104,5 +104,6 @@ create_tmp_sudoers
 create_vault_file
 bootstrap_os
 run_ansible
+cleanup
 
 exit $?
