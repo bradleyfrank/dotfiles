@@ -8,7 +8,7 @@ SUDOERS_FILES="/etc/sudoers.d/tmp_ansible_auth"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 
-# Perform cleanup on exit
+# Perform cleanup on Control-c
 trap cleanup SIGINT
 
 
@@ -63,6 +63,7 @@ bootstrap_macos() {
 bootstrap_linux() {
   if type dnf > /dev/null; then
     sudo dnf clean all
+    sudo dnf makecache
     sudo dnf upgrade -y
     sudo dnf install -y ansible git
   elif type apt > /dev/null; then
