@@ -7,6 +7,11 @@ shared_exports:
   - VISUAL=vim
   - EDITOR=vim
   - HSTR_CONFIG=monochromatic
+  - GIT_PS1_SHOWDIRTYSTATE=true
+  - GIT_PS1_SHOWSTASHSTATE=true
+  - GIT_PS1_SHOWUNTRACKEDFILES=true
+  - GIT_PS1_SHOWCOLORHINTS=true
+  - GIT_PS1_SHOWUPSTREAM="verbose name"
 
 shared_paths:
   - PATH=~/.local/bin:~/bin
@@ -52,7 +57,6 @@ shared_functions:
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
   mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
-  pup: pip_upgrade_outdated -3 --user --verbose
   pylinter: |-
     blackdiff "$@"
     pylint "$@"

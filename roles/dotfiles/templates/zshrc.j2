@@ -44,7 +44,7 @@ function {{ key }}() {
 {% endfor -%}
 
 function precmd() {
-  local ret=$? git_cwd=""
+  local ret=$?
   local reset="%f"
   local blue="%F{33}" \
         cyan="%F{37}" \
@@ -52,20 +52,20 @@ function precmd() {
         green="%F{64}" \
         magenta="%F{125}" \
         red="%F{160}" \
-        orange="%F{166}"
+        orange="%F{166}" \
+        base03="%F{234}"
 
-  _CWD="${blue}%1~${reset}"
-  _HOST="" _PYENV="" _GIT_PRE="" _GIT_POST="" _PROMPT=""
+  _CWD="[${blue}%~${reset}]"
+  _DATE="[${violet}$(date +%H:%M:%S)${reset}]"
+  _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
 
-  GIT_PS1_SHOWDIRTYSTATE=true
-  GIT_PS1_SHOWSTASHSTATE=true
-  GIT_PS1_SHOWUNTRACKEDFILES=true
-  GIT_PS1_SHOWCOLORHINTS=true
-  GIT_PS1_SHOWUPSTREAM="verbose name"
+  if [[ -n "$TMUX" ]]; then
+    [[ "$(tmux list-panes | wc -l)" -gt 1 ]] && _CWD="[${blue}%1~${reset}]"
+  fi
 
-  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="${orange}%m${reset}:"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" (${cyan}$(basename "$VIRTUAL_ENV")${reset})"
-  [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV=" (${cyan}${CONDA_DEFAULT_ENV}${reset})"
+  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}%m${reset}]─"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="─[${cyan}$(basename "$VIRTUAL_ENV")${reset}]"
+  [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV="─[${cyan}${CONDA_DEFAULT_ENV}${reset}]"
 
   case "$ret" in
     0) _PROMPT="%B${green} %# ${reset}%b"   ;;
@@ -73,12 +73,10 @@ function precmd() {
     *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
   esac
 
-  if git_cwd="$(git rev-parse --show-toplevel 2> /dev/null)"; then
-    _GIT_PRE=" (${violet}$(basename "$git_cwd")${reset}|"
-    _GIT_POST=")"
-  fi
+  _PREFIX_1="${_NL}┌─"
+  _PREFIX_2="${_NL}└─"
 
-  __git_ps1 "[${_HOST}${_CWD}]${_GIT_PRE}" "${_GIT_POST}${_PYENV}${_PROMPT}" "%s"
+  __git_ps1 "${_PREFIX_1}${_HOST}${_CWD}${_PREFIX_2}${_DATE}${_PYENV}" "${_PROMPT}" "─[%s]"
 }
 
 if [[ -n "$SSH_CONNECTION" ]]; then
