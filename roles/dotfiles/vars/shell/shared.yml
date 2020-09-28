@@ -52,7 +52,7 @@ shared_functions:
       --directory "$HOME"/.dotfiles \
       --tags dotfiles \
       --skip-tags "{{ ansible_skip_tags | join(', ') }}" \
-      playbooks/"$(uname -s | tr '[:upper:]' '[:lower:]')".yml
+      playbooks/site.yml
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"

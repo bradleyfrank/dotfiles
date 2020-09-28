@@ -5,7 +5,6 @@ ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
 REPO_CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
 SUDOERS_FILES="/etc/sudoers.d/tmp_ansible_auth"
-SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 
 # Perform cleanup on Control-c
@@ -45,7 +44,7 @@ not_supported() {
 }
 
 bootstrap_os() {
-  case "$SYSTEM_TYPE" in
+  case "$(uname -s | tr '[:upper:]' '[:lower:]')" in
     darwin) bootstrap_macos ;;
      linux) bootstrap_linux ;;
          *) not_supported   ;;
@@ -81,7 +80,7 @@ run_ansible() {
     --url "$ANSIBLE_REPO" \
     --directory "$REPO_CHECKOUT" \
     --skip-tags "$SKIP_TAGS" \
-    playbooks/"$SYSTEM_TYPE".yml
+    playbooks/site.yml
   then
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
     mv "$REPO_CHECKOUT" "$HOME"/.dotfiles

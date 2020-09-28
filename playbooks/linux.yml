@@ -1,4 +1,5 @@
 ---
+
 - name: Linux Workstation
   hosts: localhost
   vars:

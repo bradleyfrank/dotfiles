@@ -24,7 +24,11 @@ curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh -w && rm r
 To use Ansible to manage dotfiles only, run the following:
 
 ```shell
-ansible-pull --url https://github.com/bradleyfrank/dotfiles.git --directory ~/.dotfiles --skip-tags {{ skip_tags }} playbooks/dotfiles.yml
+ansible-pull \
+  --url https://github.com/bradleyfrank/dotfiles.git \
+  --directory ~/.dotfiles \
+  --skip-tags {{ skip_tags }} \
+  playbooks/site.yml
 ```
 
 Where `{{ skip_tags }}` can be:

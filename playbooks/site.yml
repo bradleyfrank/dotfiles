@@ -1,0 +1,5 @@
+---
+
+- name: Wrapper Playbook
+  hosts: localhost
+  import_playbook: "{{ ansible_system }}.yaml"
