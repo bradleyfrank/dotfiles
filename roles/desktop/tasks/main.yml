@@ -8,22 +8,22 @@
   user:
     name: "{{ ansible_env.USER }}"
     shell: "{{ usr_path }}/bin/zsh"
-  become: True
+  become: true
 
 - name: Make bash default for root
   user:
     name: 'root'
     shell: "{{ usr_path }}/bin/bash"
-  become: True
+  become: true
 
 - name: Install root bash_profile
   copy:
     src: 'root/bash_profile'
     dest: "{{ rootdir }}/.bash_profile"
-  become: True
+  become: true
 
 - name: Install root bashrc
   copy:
     src: 'root/bashrc'
     dest: "{{ rootdir }}/.bashrc"
-  become: True
+  become: true

@@ -24,7 +24,7 @@ alias {{ key }}='{{ value }}'
 
 {% for key, value in functions.items() %}
 function {{ key }}() {
-  {{ value | indent( width=2, indentfirst=False) }}
+  {{ value | indent( width=2, indentfirst=false) }}
 }
 
 {% endfor -%}

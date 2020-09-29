@@ -11,7 +11,7 @@
       /usr/local/bin/bash
       /usr/local/bin/fish
       /usr/local/bin/zsh
-  become: True
+  become: true
 
 - name: Disable prompting to use new exteral drives as Time Machine volume
   osx_defaults:
@@ -285,35 +285,35 @@
 - name: Check FileVault status
   command:
     cmd: fdesetup isactive
-  become: True
+  become: true
   register: fv_isactive
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Enable FileVault
   command:
     cmd: "fdesetup enable -user {{ ansible_env.USER }} -keychain"
-  become: True
+  become: true
   when: fv_isactive.stdout != "true"
 
 - name: Enable firewall
   command:
     cmd: '/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on'
-  become: True
+  become: true
 
 - name: Put display to sleep after 15 minutes
   command:
     cmd: 'pmset displaysleep 15'
-  become: True
+  become: true
 
 - name: Put computer to sleep after 30 minutes
   command:
     cmd: 'pmset sleep 30'
-  become: True
+  become: true
 
 - name: Disable Gatekeeper
   command:
     cmd: 'spctl --master-disable'
-  become: True
+  become: true
 
 #
 # Files and Folders settings
@@ -322,7 +322,7 @@
 - name: Enable locate database
   command:
     cmd: 'launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist'
-  become: True
+  become: true
 
 - name: Unhide ~/Library directory (part 1 of 2)
   command:
@@ -335,7 +335,7 @@
 - name: Unhide /Volumes directory
   command:
     cmd: 'chflags nohidden /Volumes'
-  become: True
+  become: true
 
 - name: Expand save and print panel by default
   osx_defaults:
@@ -356,4 +356,4 @@
 - name: Restart dock to apply changes
   command:
     cmd: 'killall Dock'
-  become: True
+  become: true
