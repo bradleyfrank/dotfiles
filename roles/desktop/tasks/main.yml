@@ -3,27 +3,31 @@
 
 - name: Apply desktop settings
   include_tasks: "{{ desktop }}.yml"
+  tags:
+    - always
 
 - name: Make zsh default for user
   user:
     name: "{{ ansible_env.USER }}"
     shell: "{{ usr_path }}/bin/zsh"
   become: true
+  tags:
+    - shell
 
 - name: Make bash default for root
   user:
-    name: 'root'
+    name: root
     shell: "{{ usr_path }}/bin/bash"
   become: true
+  tags:
+    - root
+    - shell
 
-- name: Install root bash_profile
+- name: Install root dotfiles
   copy:
-    src: 'root/bash_profile'
-    dest: "{{ rootdir }}/.bash_profile"
+    src: root/
+    dest: "{{ rootdir }}/"
+    mode: 0644
   become: true
-
-- name: Install root bashrc
-  copy:
-    src: 'root/bashrc'
-    dest: "{{ rootdir }}/.bashrc"
-  become: true
+  tags:
+    - root

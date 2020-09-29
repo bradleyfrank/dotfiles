@@ -62,6 +62,7 @@
   file:
     path: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
     state: directory
+    mode: 0755
 
 - name: Create a symlink to the patched version of `par` for TextMate
   file:
