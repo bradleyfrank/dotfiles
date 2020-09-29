@@ -23,7 +23,7 @@
 - name: Enable advanced features in Disk Utility
   osx_defaults:
     domain: com.apple.DiskUtility
-    key: "{{ item }}"
+    key: "{item}"
     type: bool
     value: 'true'
   loop:
@@ -60,15 +60,15 @@
 
 - name: Create TextMate Bundle support bin directory
   file:
-    path: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
+    path: "{homedir}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
     state: directory
     mode: 0755
 
 - name: Create a symlink to the patched version of `par` for TextMate
   file:
     src: /usr/local/bin/par
-    dest: "{{ homedir }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
-    owner: "{{ ansible_env.USER }}"
+    dest: "{homedir}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
+    owner: "{ansible_env.USER}"
     group: admin
     state: link
 
@@ -93,7 +93,7 @@
 - name: Hide icons on the desktop
   osx_defaults:
     domain: com.apple.finder
-    key: "{{ item }}"
+    key: "{item}"
     type: bool
     value: 'false'
   loop:
@@ -106,7 +106,7 @@
 - name: Enable status bar and breadcrumbs in Finder
   osx_defaults:
     domain: com.apple.finder
-    key: "{{ item }}"
+    key: "{item}"
     type: bool
     value: 'true'
   loop:
@@ -116,7 +116,7 @@
 - name: Disable Finder warnings
   osx_defaults:
     domain: com.apple.finder
-    key: "{{ item }}"
+    key: "{item}"
     type: bool
     value: 'false'
   loop:
@@ -133,12 +133,14 @@
 - name: Set default Finder location to ~/Downloads
   osx_defaults:
     domain: com.apple.finder
-    key: "{{ item.key }}"
+    key: "{item.key}"
     type: string
-    value: "{{ item.value }}"
+    value: "{item.value}"
   loop:
-    - { key: 'NewWindowTarget', value: "PfLo" }
-    - { key: 'NewWindowTargetPath', value: "file://{{ homedir }}/Downloads/" }
+    - key: 'NewWindowTarget'
+      value: "PfLo"
+    - key: 'NewWindowTargetPath'
+      value: "file://{homedir}/Downloads/"
 
 - name: Auto-hide the Dock
   osx_defaults:
@@ -172,27 +174,35 @@
   osx_defaults:
     domain: com.apple.screencapture
     key: location
-    value: "{{ homedir }}/Downloads"
+    value: "{homedir}/Downloads"
 
 - name: Set expose hot corners
   osx_defaults:
     domain: com.apple.dock
-    key: "{{ item.key }}"
+    key: "{item.key}"
     type: int
-    value: "{{ item.value }}"
+    value: "{item.value}"
   loop:
     # bottom-left: application windows
-    - { key: 'wvous-bl-corner', value: '3' }
-    - { key: 'wvous-bl-modifier', value: '0' }
+    - key: 'wvous-bl-corner'
+      value: '3'
+    - key: 'wvous-bl-modifier'
+      value: '0'
     # bottom-right: screen saver
-    - { key: 'wvous-br-corner', value: '5' }
-    - { key: 'wvous-br-modifier', value: '0' }
+    - key: 'wvous-br-corner'
+      value: '5'
+    - key: 'wvous-br-modifier'
+      value: '0'
     # top-left: mission control
-    - { key: 'wvous-tl-corner', value: '2' }
-    - { key: 'wvous-tl-modifier', value: '0' }
+    - key: 'wvous-tl-corner'
+      value: '2'
+    - key: 'wvous-tl-modifier'
+      value: '0'
     # top-right: launchpad
-    - { key: 'wvous-tr-corner', value: '11' }
-    - { key: 'wvous-tr-modifier', value: '0' }
+    - key: 'wvous-tr-corner'
+      value: '11'
+    - key: 'wvous-tr-modifier'
+      value: '0'
 
 - name: Disable automatically rearranging Spaces
   osx_defaults:
@@ -204,13 +214,16 @@
 - name: Set screensaver timeouts
   osx_defaults:
     domain: com.apple.screensaver
-    key: "{{ item.key }}"
+    key: "{item.key}"
     type: int
-    value: "{{ item.value }}"
+    value: "{item.value}"
   loop:
-    - { key: 'askForPassword', value: '1' }
-    - { key: 'askForPasswordDelay', value: '5' }
-    - { key: 'idleTime', value: "300" }
+    - key: 'askForPassword'
+      value: '1'
+    - key: 'askForPasswordDelay'
+      value: '5'
+    - key: 'idleTime'
+      value: "300"
 
 #
 # Mouse and Trackpad and Keyboard settings
@@ -219,34 +232,50 @@
 - name: Configure bluetooth Apple trackpad
   osx_defaults:
     domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: "{{ item.key }}"
+    key: "{item.key}"
     type: int
-    value: "{{ item.value }}"
+    value: "{item.value}"
   loop:
-    - { key: 'Clicking', value: '1' } # tap-to-click
-    - { key: 'trackpadRightClick', value: '1' } # 2 finger tap right-click
-    - { key: 'trackpadPinch', value: '1' } # pinch to zoom
-    - { key: 'trackpadRotate', value: '1' } # 2 finger rotate
-    - { key: 'TrackpadThreeFingerHorizSwipeGesture', value: '1' } # 3 finger swipe between pages
-    - { key: 'trackpadTwoFingerDoubleTapGesture', value: '1' } # smart zoom
-    - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: '3' } # Notification Center
-    - { key: 'trackpadThreeFingerTapGesture', value: '2' } # perform look up
+    - key: 'Clicking'
+      value: '1'  # tap-to-click
+    - key: 'trackpadRightClick'
+      value: '1'  # 2 finger tap right-click
+    - key: 'trackpadPinch'
+      value: '1'  # pinch to zoom
+    - key: 'trackpadRotate'
+      value: '1'  # 2 finger rotate
+    - key: 'TrackpadThreeFingerHorizSwipeGesture'
+      value: '1'  # 3 finger swipe between pages
+    - key: 'trackpadTwoFingerDoubleTapGesture'
+      value: '1'  # smart zoom
+    - key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture'
+      value: '3'  # Notification Center
+    - key: 'trackpadThreeFingerTapGesture'
+      value: '2'  # perform look up
 
 - name: Configure builtin Apple trackpad
   osx_defaults:
     domain: com.apple.AppleMultitouchtrackpad
-    key: "{{ item.key }}"
+    key: "{item.key}"
     type: int
-    value: "{{ item.value }}"
+    value: "{item.value}"
   loop:
-    - { key: 'Clicking', value: '1' } # tap-to-click
-    - { key: 'trackpadRightClick', value: '1' } # 2 finger tap right-click
-    - { key: 'trackpadPinch', value: '1' } # pinch to zoom
-    - { key: 'trackpadRotate', value: '1' } # 2 finger rotate
-    - { key: 'TrackpadThreeFingerHorizSwipeGesture', value: '1' } # 3 finger swipe between pages
-    - { key: 'trackpadTwoFingerDoubleTapGesture', value: '1' } # smart zoom
-    - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: '3' } # Notification Center
-    - { key: 'trackpadThreeFingerTapGesture', value: '2' } # perform look up
+    - key: 'Clicking'
+      value: '1'  # tap-to-click
+    - key: 'trackpadRightClick'
+      value: '1'  # 2 finger tap right-click
+    - key: 'trackpadPinch'
+      value: '1'  # pinch to zoom
+    - key: 'trackpadRotate'
+      value: '1'  # 2 finger rotate
+    - key: 'TrackpadThreeFingerHorizSwipeGesture'
+      value: '1'  # 3 finger swipe between pages
+    - key: 'trackpadTwoFingerDoubleTapGesture'
+      value: '1'  # smart zoom
+    - key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture'
+      value: '3'  # Notification Center
+    - key: 'trackpadThreeFingerTapGesture'
+      value: '2'  # perform look up
 
 - name: Enable tap-to-click on Apple mouse
   osx_defaults:
@@ -265,12 +294,14 @@
 - name: Set very low key repeat rates
   osx_defaults:
     domain: NSGlobalDomain
-    key: "{{ item.key }}"
+    key: "{item.key}"
     type: int
-    value: "{{ item.value }}"
+    value: "{item.value}"
   loop:
-    - { key: 'InitialKeyRepeat', value: "25" }
-    - { key: 'KeyRepeat', value: '1' }
+    - key: 'InitialKeyRepeat'
+      value: "25"
+    - key: 'KeyRepeat'
+      value: '1'
 
 #
 # Security settings
@@ -292,7 +323,7 @@
 
 - name: Enable FileVault
   command:
-    cmd: "fdesetup enable -user {{ ansible_env.USER }} -keychain"
+    cmd: "fdesetup enable -user {ansible_env.USER} -keychain"
   become: true
   when: fv_isactive.stdout != "true"
 
@@ -327,11 +358,11 @@
 
 - name: Unhide ~/Library directory (part 1 of 2)
   command:
-    cmd: "chflags nohidden {{ homedir }}/Library"
+    cmd: "chflags nohidden {homedir}/Library"
 
 - name: Unhide ~/Library directory (part 2 of 2)
   command:
-    cmd: "xattr -d com.apple.FinderInfo {{ homedir }}/Library"
+    cmd: "xattr -d com.apple.FinderInfo {homedir}/Library"
 
 - name: Unhide /Volumes directory
   command:
@@ -341,7 +372,7 @@
 - name: Expand save and print panel by default
   osx_defaults:
     domain: NSGlobalDomain
-    key: "{{ item }}"
+    key: "{item}"
     type: bool
     value: 'true'
   loop:

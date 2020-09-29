@@ -1,5 +1,5 @@
 ---
-  # tasks file for dotfiles
+# tasks file for dotfiles
 
 - name: Load shared variables
   include_vars: shell/shared.yml

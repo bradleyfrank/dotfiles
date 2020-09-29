@@ -1,5 +1,5 @@
 ---
-  # vars file for dotfiles
+# vars file for dotfiles
 
 shared_exports:
   - PATH

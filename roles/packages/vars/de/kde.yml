@@ -2,6 +2,6 @@
 # vars file for packages
 
 de_packages:
-- kate
-- nextcloud-client-dolphin
-- yakuake
+  - kate
+  - nextcloud-client-dolphin
+  - yakuake

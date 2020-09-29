@@ -120,17 +120,17 @@ work_casks:
 
 
 base_apps:
-  - 409183694 # Keynote
-  - 409201541 # Pages
-  - 409203825 # Numbers
-  - 425424353 # The Unarchiver
+  - 409183694  # Keynote
+  - 409201541  # Pages
+  - 409203825  # Numbers
+  - 425424353  # The Unarchiver
 
 home_apps:
-  - 407963104 # Pixelmator
-  - 441258766 # Magnet
-  - 568494494 # Pocket
-  - 924726344 # Deliveries
-  - 1179623856 # Pastebot
-  - 1289378661 # Twitterific
-  - 1320666476 # Wipr
-  - 1449412482 # Reeder 4
+  - 407963104  # Pixelmator
+  - 441258766  # Magnet
+  - 568494494  # Pocket
+  - 924726344  # Deliveries
+  - 1179623856  # Pastebot
+  - 1289378661  # Twitterific
+  - 1320666476  # Wipr
+  - 1449412482  # Reeder 4
