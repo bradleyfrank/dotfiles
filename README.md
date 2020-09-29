@@ -27,6 +27,7 @@ To use Ansible to manage dotfiles only, run the following:
 ansible-pull \
   --url https://github.com/bradleyfrank/dotfiles.git \
   --directory ~/.dotfiles \
+  --tags dotfiles \
   --skip-tags {{ skip_tags }} \
   playbooks/site.yml
 ```
