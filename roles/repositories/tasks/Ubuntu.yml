@@ -6,12 +6,12 @@
     url: "{{ item.key | default(omit) }}"
     keyring: "{{ item.keyring | default(omit) }}"
     id: "{{ item.id | default(omit) }}"
-    keyserver: "{{ keyserver.id | default(omit) }}"
+    keyserver: "{{ item.keyserver | default(omit) }}"
   loop: "{{ repos }}"
   become: true
 
 - name: Install repositories
   apt_repository:
-    repo: "{{ repo }}"
+    repo: "{{ item.repo }}"
   loop: "{{ repos }}"
   become: true
