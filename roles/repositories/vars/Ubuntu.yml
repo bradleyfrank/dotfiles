@@ -26,20 +26,16 @@ repos:
 
   - name: foliate
     repo: ppa:apandada1/foliate
-    keyserver: keyserver.ubuntu.com
-    id: 95ACDEBD8BFF99ABE0F26A49A507B2BBA7803E3B
+    key: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x95ACDEBD8BFF99ABE0F26A49A507B2BBA7803E3B
 
   - name: hstr
     repo: ppa:ultradvorka/ppa
-    keyserver: keyserver.ubuntu.com
-    id: 1E841C1E5C04D97ABFF8FCB63A9508A2CC6FC1EB
+    key: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x1E841C1E5C04D97ABFF8FCB63A9508A2CC6FC1EB
 
   - name: nextcloud
     repo: ppa:nextcloud-devs/client
-    keyserver: keyserver.ubuntu.com
-    id: 1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
+    key: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x1FCD77DD0DBEF5699AD2610160EE47FBAD3DD469
 
   - name: makemkv
     repo: ppa:heyarje/makemkv-beta
-    keyserver: keyserver.ubuntu.com
-    id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+    key: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x94b56c64ca7278ecfc34e8808540356019f7e55b
