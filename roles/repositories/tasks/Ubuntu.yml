@@ -1,0 +1,15 @@
+---
+# tasks file for repositories
+
+- name: Install gpg keys
+  apt_key:
+    url: "{{ item.key }}"
+    keyring: "{{ item.keyring | default(omit) }}"
+  loop: "{{ repos }}"
+  become: true
+
+- name: Install repositories
+  apt_repository:
+    repo: "{{ repo }}"
+  loop: "{{ repos }}"
+  become: true

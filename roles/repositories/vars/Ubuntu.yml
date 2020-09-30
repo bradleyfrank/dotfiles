@@ -1,0 +1,37 @@
+---
+# vars file for repositories
+
+repos:
+  - name: vscode
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+
+  - name: 1Password
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/1password.gpg] https://onepassword.s3.amazonaws.com/linux/debian edge main
+    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+    keyring: /usr/share/keyrings/1password.gpg
+
+  - name: spotify
+    repo: deb http://repository.spotify.com stable non-free
+    key: https://download.spotify.com/debian/pubkey.gpg
+
+  - name: signal
+    repo: deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main
+    key: https://updates.signal.org/desktop/apt/keys.asc
+
+  - name: chrome
+    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+    key: https://dl.google.com/linux/linux_signing_key.pub
+
+  - name: foliate
+    repo: ppa:apandada1/foliate
+
+  - name: hstr
+    repo: ppa:ultradvorka/ppa
+
+  - name: nextcloud
+    repo: ppa:nextcloud-devs/client
+
+  - name: makemkv
+    repo: ppa:heyarje/makemkv-beta
