@@ -32,7 +32,7 @@ create_tmp_sudoers() {
 
 create_vault_file() {
   local vaultpw vaultfile="$HOME/.ansible_vault_password"
-  [[ -e "$ANSIBLE_VAULT_FILE" ]] && return 0
+  [[ -e "$vaultfile" ]] && return 0
   read -r -s -p "Enter vault password: " vaultpw
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
