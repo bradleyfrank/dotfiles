@@ -2,6 +2,6 @@
 # tasks file for packages
 
 - name: Load shared Linux tasks
-  import_task: Linux.yml
+  import_tasks: Linux.yml
   tags:
     - packages
