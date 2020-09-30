@@ -2,9 +2,10 @@
 
 # Set global variables
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
-REPO_CHECKOUT="$(mktemp -d)"
+CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
-SUDOERS_FILES="/etc/sudoers.d/tmp_ansible_auth"
+SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
+SUDOERS_D_TMP=""
 
 
 # Perform cleanup on Control-c
@@ -13,16 +14,17 @@ trap cleanup SIGINT
 
 cleanup() {
   # cleanup temp files
-  [[ -e "$SUDOERS_FILES" ]] && sudo rm -rf "$SUDOERS_FILES"
-  [[ -e "$REPO_CHECKOUT" ]] && rm -rf "$REPO_CHECKOUT"
+  [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -rf "$SUDOERS_D_TMP"
+  [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
 }
 
 create_tmp_sudoers() {
   local tmp_sudoers sudopw
   tmp_sudoers="$(mktemp)"
+  SUDOERS_D_TMP="/etc/sudoers.d/$(basename "$tmp_sudoers")"
   read -r -s -p "Enter sudo password: " sudopw
   printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
-  printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_FILES"
+  printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_D_TMP"
   rm -f "$tmp_sudoers"
   unset sudopw
   printf "\n\n" # insert newlines for readability
@@ -44,7 +46,7 @@ not_supported() {
 }
 
 bootstrap_os() {
-  case "$(uname -s | tr '[:upper:]' '[:lower:]')" in
+  case "$SYSTEM_TYPE" in
     darwin) bootstrap_macos ;;
      linux) bootstrap_linux ;;
          *) not_supported   ;;
@@ -80,12 +82,12 @@ bootstrap_linux() {
 run_ansible() {
   if ansible-pull \
     --url "$ANSIBLE_REPO" \
-    --directory "$REPO_CHECKOUT" \
+    --directory "$CHECKOUT" \
     --skip-tags "$SKIP_TAGS" \
-    playbooks/site.yml
+    playbooks/"$SYSTEM_TYPE".yml
   then
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
-    mv "$REPO_CHECKOUT" "$HOME"/.dotfiles
+    mv "$CHECKOUT" "$HOME"/.dotfiles
     return 0
   else
     return 1
