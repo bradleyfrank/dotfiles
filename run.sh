@@ -60,19 +60,21 @@ bootstrap_macos() {
 }
 
 bootstrap_linux() {
-  if type dnf > /dev/null; then
-    sudo dnf clean all
-    sudo dnf makecache
-    sudo dnf upgrade -y
-    sudo dnf install -y ansible git
-  elif type apt > /dev/null; then
-    sudo apt-get clean
-    sudo apt-get update
-    sudo apt-get upgrade -y
-    sudo apt-get install -y ansible git
-  else
-    not_supported
-  fi
+  case "$(sed -rn 's/^ID=([a-z]+)/\1/p' /etc/os-release)" in
+    fedora)
+      sudo dnf clean all
+      sudo dnf makecache
+      sudo dnf upgrade -y
+      sudo dnf install -y ansible git
+      ;;
+    ubuntu)
+      sudo apt-get clean
+      sudo apt-get update
+      sudo apt-get upgrade -y
+      sudo apt-get install -y ansible git
+      ;;
+    *) not_supported ;;
+  esac
 }
 
 run_ansible() {

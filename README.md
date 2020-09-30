@@ -10,13 +10,13 @@ The `run.sh` script updates the OS and bootstraps Ansible itself before running 
 * The script will prompt for the vault password and create `~/.ansible_vault_password`
 
 ```shell
-curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh && rm run.sh
+wget https://bradleyfrank.github.io/dotfiles/run.sh -O run.sh && bash run.sh && rm run.sh
 ```
 
 Use the following for non-personal systems, which excludes certain tasks and doesn't install personally licensed software:
 
 ```shell
-curl -O https://bradleyfrank.github.io/dotfiles/run.sh && bash run.sh -w && rm run.sh
+wget https://bradleyfrank.github.io/dotfiles/run.sh  -O run.sh && bash run.sh -w && rm run.sh
 ```
 
 ## Applying dotfiles
