@@ -60,14 +60,14 @@
 
 - name: Create TextMate Bundle support bin directory
   file:
-    path: "{homedir}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
+    path: "{{ ansible_env.HOME }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
     state: directory
     mode: 0755
 
 - name: Create a symlink to the patched version of `par` for TextMate
   file:
     src: /usr/local/bin/par
-    dest: "{homedir}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
     owner: "{ansible_env.USER}"
     group: admin
     state: link
@@ -140,7 +140,7 @@
     - key: 'NewWindowTarget'
       value: "PfLo"
     - key: 'NewWindowTargetPath'
-      value: "file://{homedir}/Downloads/"
+      value: "file://{{ ansible_env.HOME }}/Downloads/"
 
 - name: Auto-hide the Dock
   osx_defaults:
@@ -174,7 +174,7 @@
   osx_defaults:
     domain: com.apple.screencapture
     key: location
-    value: "{homedir}/Downloads"
+    value: "{{ ansible_env.HOME }}/Downloads"
 
 - name: Set expose hot corners
   osx_defaults:
@@ -358,11 +358,11 @@
 
 - name: Unhide ~/Library directory (part 1 of 2)
   command:
-    cmd: "chflags nohidden {homedir}/Library"
+    cmd: "chflags nohidden {{ ansible_env.HOME }}/Library"
 
 - name: Unhide ~/Library directory (part 2 of 2)
   command:
-    cmd: "xattr -d com.apple.FinderInfo {homedir}/Library"
+    cmd: "xattr -d com.apple.FinderInfo {{ ansible_env.HOME }}/Library"
 
 - name: Unhide /Volumes directory
   command:

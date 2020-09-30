@@ -21,7 +21,7 @@
 - name: Apply shared dotfiles
   copy:
     src: assets/kde/
-    dest: "{{ homedir }}/.config/"
+    dest: "{{ ansible_env.HOME }}/.config/"
     mode: 0600
   tags:
     - kde_settings
