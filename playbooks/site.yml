@@ -1,5 +1,7 @@
 ---
 
-- name: Wrapper Playbook
+- name: Bootstrap macOS, Fedora, Ubuntu hosts
   hosts: localhost
+
+- name: Import system-specific playbook
   import_playbook: "{{ ansible_system }}.yaml"
