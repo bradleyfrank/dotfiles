@@ -3,8 +3,10 @@
 
 - name: Install gpg keys
   apt_key:
-    url: "{{ item.key }}"
+    url: "{{ item.key | default(omit) }}"
     keyring: "{{ item.keyring | default(omit) }}"
+    id: "{{ item.id | default(omit) }}"
+    keyserver: "{{ keyserver.id | default(omit) }}"
   loop: "{{ repos }}"
   become: true
 
