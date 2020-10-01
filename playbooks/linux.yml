@@ -4,7 +4,6 @@
   hosts: localhost
   vars:
     desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
-    rootdir: '/root'
     usr_path: '/usr'
     vscode_config: "{{ homedir }}/.config/Code"
   roles:

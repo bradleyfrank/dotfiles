@@ -1,0 +1,36 @@
+---
+# tasks file for desktop
+
+- name: Make zsh default for user
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: "/usr/bin/zsh"
+  become: true
+  tags:
+    - shell
+
+- name: Make bash default for root
+  user:
+    name: root
+    shell: /usr/bin/bash
+  become: true
+  tags:
+    - root
+    - shell
+
+- name: Install root dotfiles
+  copy:
+    src: root/
+    dest: /root/
+    mode: 0644
+  become: true
+  tags:
+    - root
+
+- name: Import dconf settings
+  shell: dconf load / < "{{ item }}"
+  with_fileglob:
+    - "conf/Linux/shared.dconf"
+    - "conf/Linux/{{ ansible_distribution }}.dconf"
+  tags:
+    - gnome_settings

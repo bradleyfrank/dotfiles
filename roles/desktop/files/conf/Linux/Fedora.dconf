@@ -1,41 +1,6 @@
 [org/gnome/shell]
 enabled-extensions=['system-monitor@paradoxxx.zero.gmail.com', 'GPaste@gnome-shell-extensions.gnome.org', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'dash-to-dock@micxgx.gmail.com']
 
-[org/gnome/shell/extensions/system-monitor]
-battery-display=false
-battery-show-menu=true
-battery-show-text=false
-battery-style='digit'
-battery-time=true
-center-display=false
-compact-display=false
-cpu-graph-width=50
-cpu-individual-cores=false
-cpu-show-menu=true
-cpu-show-text=false
-disk-display=true
-disk-graph-width=50
-disk-show-text=false
-gpu-show-menu=true
-icon-display=false
-memory-graph-width=50
-memory-show-menu=false
-memory-show-text=false
-move-clock=false
-net-display=true
-net-graph-width=50
-net-show-text=false
-show-tooltip=true
-swap-display=false
-
-[org/gnome/shell/extensions/dynamic-panel-transparency]
-enable-background-color=true
-enable-opacity=true
-icon-shadow-position=(0, 2, 5)
-maximized-opacity=128
-text-shadow-position=(0, 3, 5)
-unmaximized-opacity=129
-
 [org/gnome/shell/extensions/dash-to-dock]
 animate-show-apps=false
 animation-time=1.0

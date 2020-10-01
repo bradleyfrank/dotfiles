@@ -1,8 +1,0 @@
----
-
-- name: Import dconf settings
-  shell: dconf load / < "{{ item }}"
-  with_fileglob:
-    - "assets/gnome/*.dconf"
-  tags:
-    - gnome_settings

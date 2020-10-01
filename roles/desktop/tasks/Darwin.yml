@@ -1,8 +1,17 @@
 ---
+# tasks file for desktop
 
 #
-# Miscellaneous application settings
+# Shell and Terminal settings
 #
+
+- name: Make zsh default for user
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: "/usr/local/bin/zsh"
+  become: true
+  tags:
+    - shell
 
 - name: Make additional shells available
   blockinfile:
@@ -12,6 +21,28 @@
       /usr/local/bin/fish
       /usr/local/bin/zsh
   become: true
+
+- name: Make bash default for root
+  user:
+    name: root
+    shell: "{{ usr_path }}/bin/bash"
+  become: true
+  tags:
+    - root
+    - shell
+
+- name: Install root dotfiles
+  copy:
+    src: root/
+    dest: "{{ rootdir }}/"
+    mode: 0644
+  become: true
+  tags:
+    - root
+
+#
+# Miscellaneous application settings
+#
 
 - name: Disable prompting to use new exteral drives as Time Machine volume
   osx_defaults:

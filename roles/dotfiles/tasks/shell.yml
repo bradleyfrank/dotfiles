@@ -7,7 +7,7 @@
     - dotfiles
 
 - name: Load distribution variables
-  include_vars: "shell/{{ ansible_distribution }}.yml"
+  include_vars: "shell/{{ ansible_system }}.yml"
   tags:
     - dotfiles
 

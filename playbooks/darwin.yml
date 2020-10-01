@@ -4,7 +4,6 @@
   hosts: localhost
   vars:
     desktop: "{{ ansible_distribution }}"
-    rootdir: '/var/root'
     usr_path: '/usr/local'
     vscode_config: "{{ homedir }}/Library/Application Support/Code"
   roles:
