@@ -10,13 +10,11 @@
     - packages
 
 - name: Install Gnome packages
-  vars:
-    desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
   package:
     name: "{{ gnome_packages }}"
     state: present
   become: true
-  when: 'gnome' in desktop
+  when: "'gnome' in {{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
   tags:
     - packages
 
