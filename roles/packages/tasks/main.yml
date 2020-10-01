@@ -2,7 +2,7 @@
 # tasks file for packages
 
 - name: Load OS packages lists
-  include_vars: "os/{{ ansible_distribution }}.yml"
+  include_vars: "{{ ansible_distribution }}.yml"
 
 - name: Install packages for OS
   include_tasks: "{{ ansible_distribution }}.yml"
