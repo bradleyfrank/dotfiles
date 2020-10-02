@@ -17,7 +17,7 @@
 - name: Extract Source Code Pro
   unarchive:
     src: /tmp/source-code-pro.zip
-    dest: /tmp/source-code-pro/
+    dest: /tmp/
     remote_src: true
   tags:
     - fonts
@@ -25,7 +25,7 @@
 
 - name: Install Source Code Pro
   copy:
-    src: /tmp/source-code-pro/
+    src: /tmp/source-code-pro-2.030R-ro-1.050R-it/OTF/
     dest: /usr/local/share/fonts/
     remote_src: true
   tags:
@@ -34,7 +34,7 @@
 
 - name: Cleanup temp files
   file:
-    path: /tmp/source-code-pro
+    path: /tmp/source-code-pro-2.030R-ro-1.050R-it
     state: absent
   tags:
     - fonts
