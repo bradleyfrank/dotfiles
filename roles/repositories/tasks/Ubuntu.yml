@@ -13,5 +13,6 @@
 - name: Install repositories
   apt_repository:
     repo: "{{ item.repo }}"
+    filename: "{{ item.name }}"
   loop: "{{ repos }}"
   become: true
