@@ -5,7 +5,7 @@
   vars:
     desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
     usr_path: '/usr'
-    vscode_config: "{{ homedir }}/.config/Code"
+    vscode_config: "{{ ansible_env.HOME }}/.config/Code"
   roles:
     - repositories
     - packages
