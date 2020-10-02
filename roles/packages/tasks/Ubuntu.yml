@@ -28,6 +28,7 @@
     src: /tmp/source-code-pro-2.030R-ro-1.050R-it/OTF/
     dest: /usr/local/share/fonts/
     remote_src: true
+  become: true
   tags:
     - fonts
     - packages
