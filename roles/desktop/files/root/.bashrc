@@ -19,6 +19,9 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 # enable color support of ls and also add handy aliases
 if [[ -x /usr/bin/dircolors ]]; then
   test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -51,4 +54,4 @@ fi
 bind "set mark-symlinked-directories on"
 bind "set visible-stats on"
 
-PS1="[\[\e[38;5;166m\]\h\[\e[0;0m\]:\[\e[38;5;33m\]\W\[\e[0;0m\] \[\e[38;5;160m\]\u\[\e[0;0m\]]# "
+PS1="[\[\e[38;5;166m\]\u\[\e[0;0m\]@\[\e[38;5;33m\]\h\[\e[0;0m\]:\[\e[38;5;160m\]\W\[\e[0;0m\]]# "
