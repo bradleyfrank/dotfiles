@@ -14,7 +14,7 @@ repos:
 
   - name: spotify
     repo: deb http://repository.spotify.com stable non-free
-    key: https://download.spotify.com/debian/pubkey.gpg
+    key: https://download.spotify.com/debian/pubkey_0D811D58.gpg
 
   - name: signal
     repo: deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main
