@@ -35,3 +35,15 @@
   when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
   tags:
     - gnome_settings
+
+- name: Secure OS settings
+  import_role:
+    name: dev-sec.os-hardening
+  tags:
+    - security
+
+- name: Secure SSH settings
+  import_role:
+    name: dev-sec.ssh-hardening
+  tags:
+    - security
