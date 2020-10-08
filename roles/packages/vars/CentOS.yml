@@ -31,7 +31,6 @@ base_packages:
   - reptyr
   - ruby
   - setools
-  - ShellCheck
   - stow
   - strace
   - tmux
