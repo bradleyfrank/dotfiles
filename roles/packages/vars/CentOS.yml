@@ -2,7 +2,6 @@
 # vars file for packages
 
 base_packages:
-  - abcde
   - bind-utils
   - borgbackup
   - cifs-utils
