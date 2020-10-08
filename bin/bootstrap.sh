@@ -4,6 +4,7 @@
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
 CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
+OS_RELEASE="$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 SUDOERS_D_TMP=""
 
@@ -62,7 +63,15 @@ bootstrap_macos() {
 }
 
 bootstrap_linux() {
-  case "$(sed -rn 's/^ID=([a-z]+)/\1/p' /etc/os-release)" in
+  case "$OS_RELEASE" in
+    centos)
+      sudo yum clean all
+      sudo yum makecache
+      sudo yum upgrade -y
+      sudo yum install -y centos-release-ansible-29
+      sudo yum install -y ansible git python38
+      sudo yum module enable python38
+      ;;
     fedora)
       sudo dnf clean all
       sudo dnf makecache
@@ -79,10 +88,21 @@ bootstrap_linux() {
   esac
 }
 
+bootstrap_ansible() {
+  git clone "$ANSIBLE_REPO" "$CHECKOUT"
+
+  case "$OS_RELEASE" in
+    centos)
+      ansible-galaxy install \
+        --role-file "$CHECKOUT"/requirements.yml \
+        --roles-path /etc/ansible/roles
+      ;;
+  esac
+}
+
 run_ansible() {
-  if ansible-pull \
-    --url "$ANSIBLE_REPO" \
-    --directory "$CHECKOUT" \
+  cd "$CHECKOUT" || return 1
+  if ansible-playbook \
     --skip-tags "$SKIP_TAGS" \
     playbooks/"$SYSTEM_TYPE".yml
   then
@@ -107,6 +127,7 @@ done
 create_tmp_sudoers
 create_vault_file
 bootstrap_os
+bootstrap_ansible
 run_ansible
 
 rc=$?
