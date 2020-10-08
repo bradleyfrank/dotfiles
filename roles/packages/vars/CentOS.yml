@@ -3,12 +3,11 @@
 
 base_packages:
   - abcde
-  - bat
   - bind-utils
   - borgbackup
   - cifs-utils
+  - chrony
   - device-mapper-persistent-data
-  - dictd
   - fail2ban
   - fdupes
   - figlet
@@ -18,23 +17,18 @@ base_packages:
   - iftop
   - keychain
   - libvirt-client
-  - libxcrypt-compat
   - lvm2
   - mdadm
-  - most
   - msmtp
   - mtr
   - ncdu
   - neofetch
   - nmap
-  - ntp
   - p7zip
   - p7zip-plugins
-  - par
   - pciutils
   - perf
   - podman
-  - policycoreutils-python
   - reptyr
   - ruby
   - setools
@@ -42,16 +36,12 @@ base_packages:
   - stow
   - strace
   - tmux
-  - toilet
-  - trash-cli
   - tree
   - unzip
   - vim
-  - vlc
   - wget
   - xz
   - youtube-dl
-  - yum-plugin-security
   - yum-utils
   - zsh
   - zsh-syntax-highlighting
