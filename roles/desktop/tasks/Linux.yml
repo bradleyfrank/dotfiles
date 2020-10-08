@@ -32,5 +32,6 @@
   with_fileglob:
     - "conf/Linux/shared.dconf"
     - "conf/Linux/{{ ansible_distribution }}.dconf"
+  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
   tags:
     - gnome_settings
