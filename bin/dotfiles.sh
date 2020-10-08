@@ -29,12 +29,13 @@ fi
 
 
 vaultfile="$HOME/.ansible_vault_password"
-[[ -e "$vaultfile" ]] && return 0
-read -r -s -p "Enter vault password: " vaultpw
-echo "$vaultpw" > "$vaultfile"
-chmod 0400 "$vaultfile"
-unset vaultpw
-echo
+if [[ ! -e "$vaultfile" ]]; then
+  read -r -s -p "Enter vault password: " vaultpw
+  echo "$vaultpw" > "$vaultfile"
+  chmod 0400 "$vaultfile"
+  unset vaultpw
+  echo
+fi
 
 
 ansible-pull \
