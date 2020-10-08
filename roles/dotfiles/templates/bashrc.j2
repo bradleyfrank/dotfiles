@@ -40,7 +40,7 @@ function bash_prompt() {
         red="\[\e[38;5;160m\]" \
         orange="\[\e[38;5;166m\]"
 
-  _CWD="${blue}\w${reset}"
+  _CWD="[${blue}\w${reset}]"
   _DATE="[${violet}$(date +%H:%M:%S)${reset}]"
   _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
 
