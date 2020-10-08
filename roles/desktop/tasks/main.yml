@@ -3,5 +3,3 @@
 
 - name: Apply desktop settings
   include_tasks: "{{ ansible_system }}.yml"
-  tags:
-    - always
