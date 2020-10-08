@@ -39,11 +39,13 @@
 - name: Secure OS settings
   import_role:
     name: dev-sec.os-hardening
+  become: true
   tags:
     - security
 
 - name: Secure SSH settings
   import_role:
     name: dev-sec.ssh-hardening
+  become: true
   tags:
     - security
