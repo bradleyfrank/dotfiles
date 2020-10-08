@@ -1,0 +1,57 @@
+---
+# vars file for packages
+
+base_packages:
+  - abcde
+  - bat
+  - bind-utils
+  - borgbackup
+  - cifs-utils
+  - device-mapper-persistent-data
+  - dictd
+  - fail2ban
+  - fdupes
+  - figlet
+  - git
+  - glances
+  - htop
+  - iftop
+  - keychain
+  - libvirt-client
+  - libxcrypt-compat
+  - lvm2
+  - mdadm
+  - most
+  - msmtp
+  - mtr
+  - ncdu
+  - neofetch
+  - nmap
+  - ntp
+  - p7zip
+  - p7zip-plugins
+  - par
+  - pciutils
+  - perf
+  - podman
+  - policycoreutils-python
+  - reptyr
+  - ruby
+  - setools
+  - ShellCheck
+  - stow
+  - strace
+  - tmux
+  - toilet
+  - trash-cli
+  - tree
+  - unzip
+  - vim
+  - vlc
+  - wget
+  - xz
+  - youtube-dl
+  - yum-plugin-security
+  - yum-utils
+  - zsh
+  - zsh-syntax-highlighting
