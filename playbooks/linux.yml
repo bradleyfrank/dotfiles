@@ -3,7 +3,7 @@
 - name: Linux Workstation
   hosts: localhost
   vars:
-    desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | lower }}"
+    desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | default('server') }}"
     usr_path: '/usr'
     vscode_config: "{{ ansible_env.HOME }}/.config/Code"
   roles:
