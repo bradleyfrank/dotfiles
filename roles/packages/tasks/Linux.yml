@@ -4,14 +4,14 @@
 - name: Install OS packages
   become: true
   package:
-    name: "{{ base_packages }}"
+    name: "{{ base_packages | default([]) }}"
     state: present
   tags:
     - packages
 
 - name: Install Gnome packages
   package:
-    name: "{{ gnome_packages }}"
+    name: "{{ gnome_packages | default([]) }}"
     state: present
   become: true
   when: "'gnome' in desktop | lower"
@@ -20,7 +20,7 @@
 
 - name: Install home-only OS packages
   package:
-    name: "{{ home_packages }}"
+    name: "{{ home_packages | default([]) }}"
     state: present
   become: true
   tags:
@@ -29,7 +29,7 @@
 
 - name: Install work-only OS packages
   package:
-    name: "{{ work_packages }}"
+    name: "{{ work_packages | default([]) }}"
     state: present
   become: true
   tags:
