@@ -11,20 +11,19 @@ while getopts ':wh' flag; do
 done
 
 
-if ! type ansible &> /dev/null; then
-  if type python3 &> /dev/null; then
-    python3 -m pip install --user ansible
-  elif type python &> /dev/null; then
-    python -m pip install --user ansible
-  else
-    echo "No Python available to install Ansible, aborting..." >&2
-    exit 1
-  fi
-fi
-
 if ! type git &> /dev/null; then
   echo "Git is not available, aborting..." >&2
   exit 1
+fi
+
+
+if ! type ansible &> /dev/null; then
+  if type python3 &> /dev/null; then py="python3"
+  elif type python &> /dev/null; then py="python"
+  else echo "No Python available to install Ansible, aborting..." >&2 ; exit 1
+  fi
+
+  "$py" -m pip install --user ansible
 fi
 
 

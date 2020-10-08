@@ -2,35 +2,45 @@
 
 Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfiles.
 
-***Currently supports macOS, Fedora, and Ubuntu.***
+## Bootstrap & Manage dotfiles
 
-## Bootstrapping Systems
+***Currently supports macOS, Fedora, and Ubuntu.***
 
 The `bootstrap.sh` script updates the OS and bootstraps Ansible itself before running the playbook.
 
 * For macOS ensure iCloud and the Mac App Store are logged in to the appropriate account
 * The script will prompt for the vault password and create `~/.ansible_vault_password`
 
+For personal systems:
+
 ```shell
-wget -qO- https://bradleyfrank.github.io/dotfiles/run.sh | bash -s -- -bh
+wget https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh -O bootstrap.sh && bash bootstrap.sh -h
 ```
 
-Use the following for non-personal systems:
+For non-personal systems:
 
 ```shell
-wget -qO- https://bradleyfrank.github.io/dotfiles/run.sh | bash -s -- -bw
+wget https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh -O bootstrap.sh && bash bootstrap.sh -w
 ```
 
-## Applying dotfiles
+## Manage dotfiles Only
+
+The `dotfiles.sh` script runs Ansible to manage dotfiles in the user's home directory only.
+
+* Git, Python, and relevant modules (e.g. selinux) are required
+* If Ansible is not installed, it will be installed via `pip`
+* The script will prompt for the vault password and create `~/.ansible_vault_password`
+
+For personal systems:
 
 ```shell
-wget -qO- https://bradleyfrank.github.io/dotfiles/run.sh | bash -s -- -dh
+wget https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh -O dotfiles.sh && bash dotfiles.sh -h
 ```
 
-Use the following for non-personal systems:
+For non-personal systems:
 
 ```shell
-wget -qO- https://bradleyfrank.github.io/dotfiles/run.sh | bash -s -- -dw
+wget https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh -O dotfiles.sh && bash dotfiles.sh -w
 ```
 
 Once applied, the `dotfiles` function provides a wrapper for applying dotfiles.
