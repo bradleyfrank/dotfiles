@@ -13,7 +13,7 @@
   command:
     cmd: "{{ usr_path }}/bin/code --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
-  when: "'server' not in ansible_env.XDG_CURRENT_DESKTOP | lower"
+  when: "'server' not in desktop | lower"
   tags:
     - packages
     - extensions

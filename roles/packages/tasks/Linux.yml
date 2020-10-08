@@ -14,7 +14,7 @@
     name: "{{ gnome_packages }}"
     state: present
   become: true
-  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
+  when: "'gnome' in desktop | lower"
   tags:
     - packages
 
