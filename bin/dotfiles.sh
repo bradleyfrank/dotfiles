@@ -2,40 +2,40 @@
 
 SKIP_TAGS="work_only"
 
-create_vault_file() {
-  local vaultpw vaultfile="$HOME/.ansible_vault_password"
-  [[ -e "$vaultfile" ]] && return 0
-  read -r -s -p "Enter vault password: " vaultpw
-  printf "%s" "$vaultpw" > "$vaultfile"
-  chmod 0400 "$vaultfile"
-  unset vaultpw
-  printf "\n\n" # insert newlines for readability
-}
-
-install_ansible() {
-  if type python3 > /dev/null; then
-    python3 -m pip install --user ansible
-  elif type python > /dev/null; then
-    python -m pip install --user ansible
-  else
-    printf "No Python available to install Ansible." >&2
-    exit 1
-  fi
-}
-
 while getopts ':wh' flag; do
   case "$flag" in
     w) SKIP_TAGS="home_only" ;;
     h) SKIP_TAGS="work_only" ;;
-    *) printf "%s\n" "Requires [-w|-h], aborting..." >&2 ; exit 1 ;;
+    *) echo "Requires [-w|-h], aborting..." >&2 ; exit 1 ;;
   esac
 done
 
-if ! type ansible > /dev/null; then
-  install_ansible
+
+if ! type ansible &> /dev/null; then
+  if type python3 &> /dev/null; then
+    python3 -m pip install --user ansible
+  elif type python &> /dev/null; then
+    python -m pip install --user ansible
+  else
+    echo "No Python available to install Ansible, aborting..." >&2
+    exit 1
+  fi
 fi
 
-create_vault_file
+if ! type git &> /dev/null; then
+  echo "Git is not available, aborting..." >&2
+  exit 1
+fi
+
+
+vaultfile="$HOME/.ansible_vault_password"
+[[ -e "$vaultfile" ]] && return 0
+read -r -s -p "Enter vault password: " vaultpw
+echo "$vaultpw" > "$vaultfile"
+chmod 0400 "$vaultfile"
+unset vaultpw
+echo
+
 
 ansible-pull \
   --url https://github.com/bradleyfrank/dotfiles.git \
