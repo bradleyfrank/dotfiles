@@ -54,6 +54,14 @@
   tags:
     - dotfiles
 
+- name: Add ssh key to authroized_keys
+  authorized_key:
+    user: "{{ ansible_env.USER }}"
+    state: present
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFStPMEL6J3I60LhF5HpzGdfv3eJymi3UKVDWPq7VOjP
+  tags:
+    - dotfiles
+
 - name: Set proper permissions on ~/.ssh/authorized_keys
   file:
     path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
