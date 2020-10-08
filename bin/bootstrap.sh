@@ -92,7 +92,11 @@ bootstrap_ansible() {
   git clone "$ANSIBLE_REPO" "$CHECKOUT"
 
   case "$OS_RELEASE" in
-    centos) ansible-galaxy install --role-file "$CHECKOUT"/requirements.yml ;;
+    centos)
+      sudo ansible-galaxy install \
+        --role-file "$CHECKOUT"/requirements.yml \
+        --roles-path /etc/ansible/roles
+      ;;
   esac
 }
 
