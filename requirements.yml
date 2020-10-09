@@ -5,3 +5,7 @@ roles:
     source: https://galaxy.ansible.com
   - name: dev-sec.ssh-hardening
     source: https://galaxy.ansible.com
+
+collection:
+  - name: oasis_roles.system
+    source: https://galaxy.ansible.com
