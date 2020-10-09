@@ -9,7 +9,6 @@
       - cockpit
       - ssh
   include_role: firewalld
-  become: true
   tags:
     - security
 
