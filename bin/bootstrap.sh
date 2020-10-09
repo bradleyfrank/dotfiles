@@ -88,18 +88,19 @@ bootstrap_linux() {
   esac
 }
 
-bootstrap_ansible() {
+pre_ansible_run() {
   git clone "$ANSIBLE_REPO" "$CHECKOUT"
 
-  case "$SYSTEM_TYPE" in
-    linux) sudo ansible-galaxy install \
-              --role-file "$CHECKOUT"/requirements.yml \
-              --roles-path /etc/ansible/roles
-      ;;
-  esac
+  sudo ansible-galaxy role install \
+    --role-file "$CHECKOUT"/requirements.yml \
+    --roles-path /etc/ansible/roles
+
+  sudo ansible-galaxy collection install \
+    --role-file "$CHECKOUT"/requirements.yml \
+    --roles-path /etc/ansible/roles
 }
 
-run_ansible() {
+ansible_run() {
   cd "$CHECKOUT" || return 1
   if ansible-playbook \
     --skip-tags "$SKIP_TAGS" \
@@ -126,8 +127,8 @@ done
 create_tmp_sudoers
 create_vault_file
 bootstrap_os
-bootstrap_ansible
-run_ansible
+pre_ansible_run
+ansible_run
 
 rc=$?
 cleanup
