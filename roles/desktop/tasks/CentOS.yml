@@ -8,7 +8,9 @@
     firewalld_services:
       - cockpit
       - ssh
-  include_role: firewalld
+  import_role:
+    name: firewalld
+  become: true
   tags:
     - security
 
