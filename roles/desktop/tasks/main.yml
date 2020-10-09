@@ -2,4 +2,4 @@
 # tasks file for desktop
 
 - name: Apply desktop settings
-  include_tasks: "{{ ansible_system }}.yml"
+  include_tasks: "{{ ansible_distribution }}.yml"

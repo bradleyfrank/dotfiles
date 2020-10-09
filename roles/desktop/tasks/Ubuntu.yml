@@ -1,0 +1,5 @@
+---
+# tasks file for desktop
+
+- name: Load shared Linux tasks
+  include_tasks: Linux.yml
