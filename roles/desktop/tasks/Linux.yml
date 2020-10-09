@@ -36,6 +36,12 @@
   tags:
     - gnome_settings
 
+- name: Generate host keys
+  shell:
+    cmd: ssh-keygen -A
+    creates: /etc/ssh/ssh_host_*_key
+  become: true
+
 - name: Secure OS settings
   import_role:
     name: dev-sec.os-hardening
