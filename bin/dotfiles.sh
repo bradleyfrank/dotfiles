@@ -18,21 +18,17 @@ fi
 
 
 if ! type ansible &> /dev/null; then
-  if type python3 &> /dev/null; then py="python3"
-  elif type python &> /dev/null; then py="python"
+  if type python3 &> /dev/null; then python3 -m pip install --user ansible
+  elif type python &> /dev/null; then python -m pip install --user ansible
   else echo "No Python available to install Ansible, aborting..." >&2 ; exit 1
   fi
-
-  "$py" -m pip install --user ansible
 fi
 
 
-vaultfile="$HOME/.ansible_vault_password"
-if [[ ! -e "$vaultfile" ]]; then
+if [[ ! -e "$HOME/.ansible_vault_password" ]]; then
   read -r -s -p "Enter vault password: " vaultpw
-  echo "$vaultpw" > "$vaultfile"
-  chmod 0400 "$vaultfile"
-  unset vaultpw
+  echo "$vaultpw" > "$HOME/.ansible_vault_password"
+  chmod 0400 "$HOME/.ansible_vault_password"
   echo
 fi
 
