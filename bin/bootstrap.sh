@@ -97,7 +97,7 @@ pre_ansible_run() {
 
   sudo ansible-galaxy collection install \
     --requirements-file "$CHECKOUT"/requirements.yml \
-    --collections-path /etc/ansible/roles
+    --collections-path /etc/ansible/collections
 }
 
 ansible_run() {
