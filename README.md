@@ -4,7 +4,8 @@ Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfile
 
 ## Bootstrap & Manage dotfiles
 
-***Currently supports macOS, Fedora, and Ubuntu.***
+* **Workstations supported:** *macOS, Fedora, Ubuntu*
+* **Servers supported:** *CentOS*
 
 The `bootstrap.sh` script updates the OS and bootstraps Ansible itself before running the playbook.
 
