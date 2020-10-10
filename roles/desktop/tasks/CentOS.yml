@@ -1,18 +1,5 @@
 ---
 # tasks file for desktop
 
-- name: Install firewalld rules
-  vars:
-    firewalld_zone: public
-    firewalld_become: true
-    firewalld_services:
-      - cockpit
-      - ssh
-  import_role:
-    name: firewalld
-  become: true
-  tags:
-    - security
-
 - name: Load shared Linux tasks
   include_tasks: Linux.yml
