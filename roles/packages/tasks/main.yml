@@ -5,13 +5,12 @@
   include_vars: "{{ ansible_distribution }}.yml"
 
 - name: Install packages for OS
-  include_tasks: "{{ ansible_distribution }}.yml"
+  include_tasks: "{{ ansible_system }}.yml"
   tags:
     - packages
 
 - name: Install VSCode extensions
-  command:
-    cmd: "{{ usr_path }}/bin/code --install-extension {{ item }}"
+  command: "{{ usr_path }}/bin/code --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
   when: "'server' not in desktop | lower"
   tags:

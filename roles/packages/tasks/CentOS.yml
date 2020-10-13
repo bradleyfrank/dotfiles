@@ -1,7 +1,0 @@
----
-# tasks file for packages
-
-- name: Load shared Linux tasks
-  include_tasks: Linux.yml
-  tags:
-    - packages

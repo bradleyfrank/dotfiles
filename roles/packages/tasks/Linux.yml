@@ -18,6 +18,7 @@
   tags:
     - packages
 
+
 - name: Install home-only OS packages
   package:
     name: "{{ home_packages | default([]) }}"
@@ -34,4 +35,23 @@
   become: true
   tags:
     - work_only
+    - packages
+
+
+- name: Install Source Code Pro
+  copy:
+    src: SourceCodePro/
+    dest: /usr/local/share/fonts/
+  when: "{{ ansible_distribution }} == 'Ubuntu'"
+  become: true
+  tags:
+    - fonts
+    - packages
+
+- name: Refresh font list
+  command: fc-cache -fv
+  when: "{{ ansible_distribution }} == 'Ubuntu'"
+  become: true
+  tags:
+    - fonts
     - packages
