@@ -1,5 +1,5 @@
 ---
-# tasks file for desktop
+# tasks file for system
 
 #
 # Shell and Terminal settings
@@ -34,7 +34,7 @@
 - name: Install root dotfiles
   copy:
     src: root/
-    dest: "{{ rootdir }}/"
+    dest: /var/root/
     mode: 0644
   become: true
   tags:
@@ -50,16 +50,6 @@
     key: DoNotOfferNewDisksForBackup
     type: bool
     value: 'true'
-
-- name: Enable advanced features in Disk Utility
-  osx_defaults:
-    domain: com.apple.DiskUtility
-    key: "{item}"
-    type: bool
-    value: 'true'
-  loop:
-    - DUDebugMenuEnabled
-    - advanced-image-options
 
 - name: Sort conversations in Mail by most recent on top
   osx_defaults:
