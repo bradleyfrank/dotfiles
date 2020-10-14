@@ -73,7 +73,6 @@ home_formulas:
 
 base_casks:
   - appcleaner
-  - bartender
   - balenaetcher
   - chromium
   - docker
@@ -89,8 +88,6 @@ base_casks:
   - keka
   - macdown
   - meld
-  - monitorcontrol
-  - sony-ps4-remote-play
   - transmission
   - visual-studio-code
   - vivaldi
@@ -101,12 +98,14 @@ base_casks:
 home_casks:
   - 1password
   - anylist
+  - bartender
   - calibre
   - fantastical
   - istat-menus
   - musicbrainz-picard
   - plexamp
   - signal
+  - sony-ps4-remote-play
   - spotify
   - stay
   - textmate
@@ -117,6 +116,7 @@ work_casks:
   - jumpcut
   - menumeters
   - rectangle
+  - sublime-text
 
 
 base_apps:
