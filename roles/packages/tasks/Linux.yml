@@ -40,7 +40,7 @@
 
 - name: Install Source Code Pro
   copy:
-    src: SourceCodePro/
+    src: fonts/
     dest: /usr/local/share/fonts/
   when: "ansible_distribution == 'Ubuntu'"
   become: true
