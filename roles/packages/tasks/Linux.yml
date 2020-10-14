@@ -42,7 +42,7 @@
   copy:
     src: SourceCodePro/
     dest: /usr/local/share/fonts/
-  when: "{{ ansible_distribution }} == 'Ubuntu'"
+  when: "ansible_distribution == 'Ubuntu'"
   become: true
   tags:
     - fonts
@@ -50,7 +50,7 @@
 
 - name: Refresh font list
   command: fc-cache -fv
-  when: "{{ ansible_distribution }} == 'Ubuntu'"
+  when: "ansible_distribution == 'Ubuntu'"
   become: true
   tags:
     - fonts
