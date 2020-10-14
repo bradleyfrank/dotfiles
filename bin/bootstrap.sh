@@ -106,8 +106,6 @@ ansible_run() {
     --skip-tags "$SKIP_TAGS" \
     playbooks/"$SYSTEM_TYPE".yml
   then
-    [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
-    mv "$CHECKOUT" "$HOME"/.dotfiles
     return 0
   else
     return 1
