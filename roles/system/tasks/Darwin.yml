@@ -1,6 +1,12 @@
 ---
 # tasks file for system
 
+- name: Copy manual import app settings
+  copy:
+    src: "conf/{{ ansible_system }}/"
+    dest: "{{ ansible_env.HOME }}"
+    mode: 0755
+
 #
 # Shell and Terminal settings
 #
