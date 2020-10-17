@@ -63,7 +63,6 @@ bootstrap_os() {
 bootstrap_macos() {
   homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install"
   softwareupdate --install --all
-  xcode-select --print-path >/dev/null 2>&1 || xcode-select --install
   [[ ! -x /usr/local/bin/brew ]] && /usr/bin/ruby -e "$(curl -fsSL "$homebrew_url")"
   [[ ! -x /usr/local/bin/ansible ]] && brew install ansible git
 }
