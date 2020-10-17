@@ -8,6 +8,12 @@ OS_RELEASE="$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 SUDOERS_D_TMP=""
 
+# Set sudoers location based on OS type
+case "$SYSTEM_TYPE" in
+  darwin) SUDOERS_D_TMP="/private/etc/sudoers.d" ;;
+   linux) SUDOERS_D_TMP="/etc/sudoers.d"         ;;
+esac
+
 
 # Perform cleanup on Control-c
 trap cleanup SIGINT
@@ -22,7 +28,7 @@ cleanup() {
 create_tmp_sudoers() {
   local tmp_sudoers sudopw
   tmp_sudoers="$(mktemp)"
-  SUDOERS_D_TMP="/etc/sudoers.d/$(basename "$tmp_sudoers")"
+  SUDOERS_D_TMP="${SUDOERS_D_TMP}/$(basename "$tmp_sudoers")"
   read -r -s -p "Enter sudo password: " sudopw
   printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_D_TMP"
