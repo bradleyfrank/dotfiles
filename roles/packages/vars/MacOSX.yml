@@ -101,6 +101,7 @@ home_casks:
   - bartender
   - calibre
   - fantastical
+  - google-cloud-sdk
   - istat-menus
   - musicbrainz-picard
   - plexamp
@@ -113,6 +114,7 @@ home_casks:
 
 work_casks:
   - dozer
+  - google-cloud-sdk
   - jumpcut
   - menumeters
   - rectangle
