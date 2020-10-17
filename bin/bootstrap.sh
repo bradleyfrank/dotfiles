@@ -4,7 +4,6 @@
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
 CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
-OS_RELEASE="$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 SUDOERS_D_TMP=""
 
@@ -68,7 +67,7 @@ bootstrap_macos() {
 }
 
 bootstrap_linux() {
-  case "$OS_RELEASE" in
+  case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
     centos)
       sudo yum clean all
       sudo yum makecache
