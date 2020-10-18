@@ -9,20 +9,22 @@ Ansible playbook for bootstrapping macOS/Linux workstations and managing dotfile
 
 The `bootstrap.sh` script updates the OS and bootstraps Ansible itself before running the playbook.
 
-* For macOS ensure iCloud and the Mac App Store are logged in to the appropriate account
+* For macOS ensure iCloud and the Mac App Store are authenticated to the appropriate account
 * The script will prompt for the vault password and create `~/.ansible_vault_password`
 
-For personal systems:
+To use with `curl` (i.e. **MacOS**):
 
 ```shell
-wget https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh -O bootstrap.sh && bash bootstrap.sh -h
+curl -O https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh && bash bootstrap.sh [-h|-w]
 ```
 
-For non-personal systems:
+To use with `wget` (i.e. **Linux**):
 
 ```shell
-wget https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh -O bootstrap.sh && bash bootstrap.sh -w
+wget https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh -O bootstrap.sh && bash bootstrap.sh [-h|-w]
 ```
+
+*Use `-h` for home systems, and `-w` for work systems.*
 
 ## Manage dotfiles Only
 
@@ -32,16 +34,18 @@ The `dotfiles.sh` script runs Ansible to manage dotfiles in the user's home dire
 * If Ansible is not installed, it will be installed via `pip`
 * The script will prompt for the vault password and create `~/.ansible_vault_password`
 
-For personal systems:
+To use with `curl` (i.e. **MacOS**):
 
 ```shell
-wget https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh -O dotfiles.sh && bash dotfiles.sh -h
+curl -O https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh && bash dotfiles.sh [-h|-w]
 ```
 
-For non-personal systems:
+To use with `wget` (i.e. **Linux**):
 
 ```shell
-wget https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh -O dotfiles.sh && bash dotfiles.sh -w
+wget https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh -O dotfiles.sh && bash dotfiles.sh [-h|-w]
 ```
+
+*Use `-h` for home systems, and `-w` for work systems.*
 
 Once applied, the `dotfiles` function provides a wrapper for applying dotfiles.
