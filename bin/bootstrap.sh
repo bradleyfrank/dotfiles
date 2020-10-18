@@ -9,8 +9,8 @@ SUDOERS_D_TMP=""
 
 # Set sudoers location based on OS type
 case "$SYSTEM_TYPE" in
-  darwin) SUDOERS_D_TMP="/private/etc/sudoers.d" ;;
-   linux) SUDOERS_D_TMP="/etc/sudoers.d"         ;;
+  darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
+   linux) SUDOERS_D="/etc/sudoers.d"         ;;
 esac
 
 
@@ -22,12 +22,13 @@ cleanup() {
   # cleanup temp files
   [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -rf "$SUDOERS_D_TMP"
   [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
+  [[ "$SYSTEM_TYPE" == "darwin" ]] && kill "$(pgrep caffeinate)" &> /dev/null
 }
 
 create_tmp_sudoers() {
   local tmp_sudoers sudopw
   tmp_sudoers="$(mktemp)"
-  SUDOERS_D_TMP="${SUDOERS_D_TMP}/$(basename "$tmp_sudoers")"
+  SUDOERS_D_TMP="${SUDOERS_D}/$(basename "$tmp_sudoers")"
   read -r -s -p "Enter sudo password: " sudopw
   printf "%s ALL = (ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_D_TMP"
@@ -60,9 +61,10 @@ bootstrap_os() {
 }
 
 bootstrap_macos() {
+  (caffeinate -d -i -m -u &)
   homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install"
   softwareupdate --install --all
-  [[ ! -x /usr/local/bin/brew ]] && /usr/bin/ruby -e "$(curl -fsSL "$homebrew_url")"
+  [[ ! -x /usr/local/bin/brew ]] && CI=1 /usr/bin/ruby -e "$(curl -fsSL "$homebrew_url")"
   [[ ! -x /usr/local/bin/ansible ]] && brew install ansible git
 }
 
