@@ -30,7 +30,7 @@ create_tmp_sudoers() {
   tmp_sudoers="$(mktemp)"
   SUDOERS_D_TMP="${SUDOERS_D}/$(basename "$tmp_sudoers")"
   read -r -s -p "Enter sudo password: " sudopw
-  printf "%s ALL = (ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
+  printf "%s ALL=(ALL) NOPASSWD: ALL" "$(id -un)" > "$tmp_sudoers"
   printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_D_TMP"
   rm -f "$tmp_sudoers"
   unset sudopw
