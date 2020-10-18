@@ -25,14 +25,12 @@
 - name: Install base Homebrew casks
   homebrew_cask:
     name: "{{ base_casks }}"
-    accept_external_apps: true
   tags:
     - packages
 
 - name: Install home-only Homebrew casks
   homebrew_cask:
     name: "{{ home_casks }}"
-    accept_external_apps: true
   tags:
     - packages
     - home_only
@@ -40,7 +38,6 @@
 - name: Install work-only Homebrew casks
   homebrew_cask:
     name: "{{ work_casks }}"
-    accept_external_apps: true
   tags:
     - packages
     - work_only
