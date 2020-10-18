@@ -62,9 +62,9 @@ bootstrap_os() {
 
 bootstrap_macos() {
   (caffeinate -d -i -m -u &)
-  homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install"
+  homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
   softwareupdate --install --all
-  [[ ! -x /usr/local/bin/brew ]] && CI=1 /usr/bin/ruby -e "$(curl -fsSL "$homebrew_url")"
+  [[ ! -x /usr/local/bin/brew ]] && CI=1 /bin/bash -c "$(curl -fsSL "$homebrew_url")"
   [[ ! -x /usr/local/bin/ansible ]] && brew install ansible git
 }
 
