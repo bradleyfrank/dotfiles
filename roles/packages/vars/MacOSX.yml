@@ -9,7 +9,7 @@ taps:
   - homebrew/core
 
 
-base_formulas:
+base_packages:
   - awscli
   - bash
   - bash-completion@2
@@ -63,13 +63,13 @@ base_formulas:
   - watch
   - wget
   - yamllint
-  - youtube-dl
   - zsh
   - zsh-syntax-highlighting
 
-home_formulas:
+home_packages:
   - eye-d3
   - ffsend
+  - youtube-dl
 
 
 base_casks:
@@ -83,7 +83,6 @@ base_casks:
   - font-source-code-pro
   - google-chrome
   - iina
-  - logitech-options
   - keepassx
   - keepingyouawake
   - keka
@@ -94,7 +93,6 @@ base_casks:
   - vivaldi
   - vlc
   - xquartz
-  - zoomus
 
 home_casks:
   - 1password
@@ -104,6 +102,7 @@ home_casks:
   - fantastical
   - google-cloud-sdk
   - istat-menus
+  - logitech-options
   - musicbrainz-picard
   - plexamp
   - signal
@@ -112,6 +111,7 @@ home_casks:
   - stay
   - textmate
   - transmit
+  - zoomus
 
 work_casks:
   - dozer
@@ -122,14 +122,12 @@ work_casks:
   - sublime-text
 
 
-base_apps:
+home_apps:
+  - 407963104  # Pixelmator
   - 409183694  # Keynote
   - 409201541  # Pages
   - 409203825  # Numbers
   - 425424353  # The Unarchiver
-
-home_apps:
-  - 407963104  # Pixelmator
   - 441258766  # Magnet
   - 568494494  # Pocket
   - 924726344  # Deliveries

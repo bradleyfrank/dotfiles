@@ -10,13 +10,13 @@
 
 - name: Install base Homebrew packages
   homebrew:
-    name: "{{ base_formulas }}"
+    name: "{{ base_packages }}"
   tags:
     - packages
 
 - name: Install home-only Homebrew packages
   homebrew:
-    name: "{{ home_formulas }}"
+    name: "{{ home_packages }}"
   tags:
     - packages
     - home_only
@@ -46,16 +46,10 @@
     - work_only
 
 
-- name: Install base Mac App Store applications
-  command:
-    cmd: "/usr/local/bin/mas install {{ item }}"
-  loop: "{{ base_apps }}"
-  tags:
-    - packages
-
 - name: Install home-only Mac App Store applications
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
   loop: "{{ home_apps }}"
   tags:
     - packages
+    - home_only
