@@ -11,14 +11,6 @@
 # Shell and Terminal settings
 #
 
-- name: Make zsh default for user
-  user:
-    name: "{{ ansible_env.USER }}"
-    shell: "/usr/local/bin/zsh"
-  become: true
-  tags:
-    - shell
-
 - name: Make additional shells available
   blockinfile:
     path: /etc/shells
@@ -27,6 +19,21 @@
       /usr/local/bin/fish
       /usr/local/bin/zsh
   become: true
+
+- name: Make zsh default for user
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell: "/usr/local/bin/zsh"
+  become: true
+  tags:
+    - shell
+
+- name: Fix directory ownership for zsh
+  shell: compaudit | xargs chmod go-w
+  args:
+    executable: /usr/local/bin/zsh
+  tags:
+    - shell
 
 - name: Make bash default for root
   user:
