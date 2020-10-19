@@ -26,6 +26,7 @@
   homebrew_cask:
     name: "{{ base_casks }}"
     sudo_password: "{{ ansible_become_pass }}"
+    accept_external_apps: true
   tags:
     - packages
 
@@ -33,6 +34,7 @@
   homebrew_cask:
     name: "{{ home_casks }}"
     sudo_password: "{{ ansible_become_pass }}"
+    accept_external_apps: true
   tags:
     - packages
     - home_only
@@ -41,6 +43,7 @@
   homebrew_cask:
     name: "{{ work_casks }}"
     sudo_password: "{{ ansible_become_pass }}"
+    accept_external_apps: true
   tags:
     - packages
     - work_only
