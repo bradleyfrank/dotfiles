@@ -17,6 +17,13 @@ cleanup() {
   [[ "$SYSTEM_TYPE" == "darwin" ]] && kill "$(pgrep caffeinate)" &> /dev/null
 }
 
+create_tmp_sudoers() {
+  SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
+  sudo --validate # reset sudo timer for following command
+  printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
+  printf "\n\n" # insert newlines for readability
+}
+
 create_vault_file() {
   local vaultpw vaultfile="$HOME/.ansible_vault_password"
   [[ -e "$vaultfile" ]] && return 0
@@ -54,7 +61,6 @@ bootstrap_linux() {
       sudo yum clean all
       sudo yum makecache
       sudo yum upgrade -y
-      sudo --validate
       sudo yum install -y centos-release-ansible-29
       sudo yum install -y ansible git python38
       sudo yum module enable python38
@@ -63,14 +69,12 @@ bootstrap_linux() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
-      sudo --validate
       sudo dnf install -y ansible git
       ;;
     ubuntu)
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
-      sudo --validate
       sudo apt-get install -y ansible git
       ;;
     *) not_supported ;;
@@ -109,7 +113,7 @@ while getopts ':wh' flag; do
   esac
 done
 
-sudo --validate
+create_tmp_sudoers
 create_vault_file
 bootstrap_os
 pre_ansible_run
