@@ -26,7 +26,7 @@ cleanup() {
 
 create_tmp_sudoers() {
   SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
-  sudo -S -v # authenticate and reset sudo timer
+  sudo -v -p "Enter sudo password: " # authenticate and reset sudo timer
   printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
   printf "\n\n" # insert newlines for readability
 }
