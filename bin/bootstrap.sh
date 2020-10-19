@@ -1,34 +1,20 @@
 #!/usr/bin/env bash
 
-# Set global variables
+# ----- global variables ----- #
+
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
 CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
-SUDOERS_D_TMP=""
-
-# Set sudoers location based on OS type
-case "$SYSTEM_TYPE" in
-  darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
-   linux) SUDOERS_D="/etc/sudoers.d"         ;;
-esac
 
 
-# Perform cleanup on Control-c
+# ----- functions ----- #
+
 trap cleanup SIGINT
 
-
 cleanup() {
-  [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -rf "$SUDOERS_D_TMP"
   [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
   [[ "$SYSTEM_TYPE" == "darwin" ]] && kill "$(pgrep caffeinate)" &> /dev/null
-}
-
-create_tmp_sudoers() {
-  SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
-  sudo -v -p "Enter sudo password: " # authenticate and reset sudo timer
-  printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
-  printf "\n\n" # insert newlines for readability
 }
 
 create_vault_file() {
@@ -55,8 +41,8 @@ bootstrap_os() {
 }
 
 bootstrap_macos() {
+  local homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
   (caffeinate -d -i -m -u &)
-  homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
   softwareupdate --install --all
   [[ ! -x /usr/local/bin/brew ]] && CI=1 /bin/bash -c "$(curl -fsSL "$homebrew_url")"
   [[ ! -x /usr/local/bin/ansible ]] && brew install ansible git
@@ -68,6 +54,7 @@ bootstrap_linux() {
       sudo yum clean all
       sudo yum makecache
       sudo yum upgrade -y
+      sudo --validate
       sudo yum install -y centos-release-ansible-29
       sudo yum install -y ansible git python38
       sudo yum module enable python38
@@ -76,12 +63,14 @@ bootstrap_linux() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
+      sudo --validate
       sudo dnf install -y ansible git
       ;;
     ubuntu)
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
+      sudo --validate
       sudo apt-get install -y ansible git
       ;;
     *) not_supported ;;
@@ -90,20 +79,15 @@ bootstrap_linux() {
 
 pre_ansible_run() {
   git clone "$ANSIBLE_REPO" "$CHECKOUT"
-
-  sudo ansible-galaxy role install \
-    --role-file "$CHECKOUT"/requirements.yml \
-    --roles-path /etc/ansible/roles
-
-  sudo ansible-galaxy collection install \
-    --requirements-file "$CHECKOUT"/requirements.yml \
-    --collections-path /etc/ansible/collections
+  ansible-galaxy role install --role-file "$CHECKOUT"/requirements.yml
+  ansible-galaxy collection install --requirements-file "$CHECKOUT"/requirements.yml
 }
 
 ansible_run() {
   cd "$CHECKOUT" || return 1
   if ansible-playbook \
     --skip-tags "$SKIP_TAGS" \
+    --ask-become-pass \
     playbooks/"$SYSTEM_TYPE".yml
   then
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
@@ -113,6 +97,7 @@ ansible_run() {
     return 1
   fi
 }
+
 
 # ----- begin ----- #
 
@@ -124,7 +109,7 @@ while getopts ':wh' flag; do
   esac
 done
 
-create_tmp_sudoers
+sudo --validate
 create_vault_file
 bootstrap_os
 pre_ansible_run
