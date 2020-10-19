@@ -19,22 +19,15 @@ trap cleanup SIGINT
 
 
 cleanup() {
-  # cleanup temp files
   [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -rf "$SUDOERS_D_TMP"
   [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
   [[ "$SYSTEM_TYPE" == "darwin" ]] && kill "$(pgrep caffeinate)" &> /dev/null
 }
 
 create_tmp_sudoers() {
-  local tmp_sudoers sudopw
-  tmp_sudoers="$(mktemp)"
-  SUDOERS_D_TMP="${SUDOERS_D}/$(basename "$tmp_sudoers")"
-  read -r -s -p "Enter sudo password: " sudopw
-  printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" > "$tmp_sudoers"
-  chmod 0440 "$tmp_sudoers"
-  printf "%s" "$sudopw" | sudo -S cp -f "$tmp_sudoers" "$SUDOERS_D_TMP"
-  rm -f "$tmp_sudoers"
-  unset sudopw
+  SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
+  sudo -S -v # authenticate and reset sudo timer
+  printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
   printf "\n\n" # insert newlines for readability
 }
 
