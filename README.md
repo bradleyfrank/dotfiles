@@ -12,7 +12,7 @@ The `bootstrap.sh` script updates the OS and bootstraps Ansible itself before ru
 * For macOS ensure iCloud and the Mac App Store are authenticated to the appropriate account
 * The script will prompt for the vault password and create `~/.ansible_vault_password`
 
-To use with `curl` (i.e. **MacOS**):
+To use with `curl` (i.e. **macOS**):
 
 ```shell
 curl -O https://bradleyfrank.github.io/dotfiles/bin/bootstrap.sh && bash bootstrap.sh [-h|-w]
@@ -34,7 +34,7 @@ The `dotfiles.sh` script runs Ansible to manage dotfiles in the user's home dire
 * If Ansible is not installed, it will be installed via `pip`
 * The script will prompt for the vault password and create `~/.ansible_vault_password`
 
-To use with `curl` (i.e. **MacOS**):
+To use with `curl` (i.e. **macOS**):
 
 ```shell
 curl -O https://bradleyfrank.github.io/dotfiles/bin/dotfiles.sh && bash dotfiles.sh [-h|-w]
