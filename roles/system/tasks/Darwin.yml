@@ -343,11 +343,6 @@
     type: int
     value: '1'
 
-- name: Enable FileVault
-  command:
-    cmd: "fdesetup enable -user {{ ansible_env.USER }} -keychain"
-  become: true
-
 - name: Enable firewall
   command:
     cmd: '/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on'
