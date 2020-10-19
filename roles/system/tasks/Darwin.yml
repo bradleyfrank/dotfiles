@@ -120,7 +120,7 @@
 - name: Hide icons on the desktop
   osx_defaults:
     domain: com.apple.finder
-    key: "{item}"
+    key: "{{ item }}"
     type: bool
     value: 'false'
   loop:
@@ -133,7 +133,7 @@
 - name: Enable status bar and breadcrumbs in Finder
   osx_defaults:
     domain: com.apple.finder
-    key: "{item}"
+    key: "{{ item }}"
     type: bool
     value: 'true'
   loop:
@@ -143,7 +143,7 @@
 - name: Disable Finder warnings
   osx_defaults:
     domain: com.apple.finder
-    key: "{item}"
+    key: "{{ item }}"
     type: bool
     value: 'false'
   loop:
@@ -343,18 +343,10 @@
     type: int
     value: '1'
 
-- name: Check FileVault status
-  command:
-    cmd: fdesetup isactive
-  become: true
-  register: fv_isactive
-  ignore_errors: true
-
 - name: Enable FileVault
   command:
-    cmd: "fdesetup enable -user {ansible_env.USER} -keychain"
+    cmd: "fdesetup enable -user {{ ansible_env.USER }} -keychain"
   become: true
-  when: fv_isactive.stdout != "true"
 
 - name: Enable firewall
   command:
@@ -401,7 +393,7 @@
 - name: Expand save and print panel by default
   osx_defaults:
     domain: NSGlobalDomain
-    key: "{item}"
+    key: "{{ item }}"
     type: bool
     value: 'true'
   loop:
