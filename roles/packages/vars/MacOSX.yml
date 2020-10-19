@@ -74,6 +74,7 @@ home_packages:
 
 base_casks:
   - appcleaner
+  - balenaetcher
   - chromium
   - docker
   - fedora-media-writer
@@ -84,7 +85,6 @@ base_casks:
   - iina
   - keepassx
   - keepingyouawake
-  - keka
   - macdown
   - meld
   - transmission
@@ -96,7 +96,6 @@ base_casks:
 home_casks:
   - 1password
   - anylist
-  - balenaetcher
   - bartender
   - calibre
   - fantastical
