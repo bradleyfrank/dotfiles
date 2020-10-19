@@ -95,7 +95,7 @@
   file:
     src: /usr/local/bin/par
     dest: "{{ ansible_env.HOME }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
-    owner: "{ansible_env.USER}"
+    owner: "{{ ansible_env.USER }}"
     group: admin
     state: link
 
