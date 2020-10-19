@@ -61,6 +61,7 @@
     key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFStPMEL6J3I60LhF5HpzGdfv3eJymi3UKVDWPq7VOjP
   tags:
     - dotfiles
+    - home_only
 
 - name: Set proper permissions on ~/.ssh/authorized_keys
   file:
