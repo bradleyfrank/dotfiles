@@ -7,6 +7,12 @@ CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
+# Set sudoers location based on OS type
+case "$SYSTEM_TYPE" in
+  darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
+   linux) SUDOERS_D="/etc/sudoers.d"         ;;
+esac
+
 
 # ----- functions ----- #
 
@@ -18,8 +24,9 @@ cleanup() {
 }
 
 create_tmp_sudoers() {
+  [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -rf "$SUDOERS_D_TMP"
   SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
-  sudo --validate # reset sudo timer for following command
+  sudo --validate --prompt "Enter sudo password: " # reset sudo timer for following command
   printf "%s ALL=(ALL) NOPASSWD: ALL\n" "$(id -un)" | sudo VISUAL="tee" visudo -f "$SUDOERS_D_TMP"
   printf "\n\n" # insert newlines for readability
 }
