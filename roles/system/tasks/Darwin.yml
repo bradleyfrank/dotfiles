@@ -160,9 +160,9 @@
 - name: Set default Finder location to ~/Downloads
   osx_defaults:
     domain: com.apple.finder
-    key: "{item.key}"
+    key: "{{ item.key }}"
     type: string
-    value: "{item.value}"
+    value: "{{ item.value }}"
   loop:
     - key: 'NewWindowTarget'
       value: "PfLo"
@@ -191,11 +191,13 @@
     value: '43'
 
 - name: Reset persistent apps in Dock
+  vars:
+    persistent_apps: []
   osx_defaults:
     domain: com.apple.dock
     key: persistent-apps
     type: array
-    value: ''
+    value: "{{ persistent_apps }}"
 
 - name: Save screenshots to ~/Downloads
   osx_defaults:
@@ -206,9 +208,9 @@
 - name: Set expose hot corners
   osx_defaults:
     domain: com.apple.dock
-    key: "{item.key}"
+    key: "{{ item.key }}"
     type: int
-    value: "{item.value}"
+    value: "{{ item.value }}"
   loop:
     # bottom-left: application windows
     - key: 'wvous-bl-corner'
@@ -241,9 +243,9 @@
 - name: Set screensaver timeouts
   osx_defaults:
     domain: com.apple.screensaver
-    key: "{item.key}"
+    key: "{{ item.key }}"
     type: int
-    value: "{item.value}"
+    value: "{{ item.value }}"
   loop:
     - key: 'askForPassword'
       value: '1'
@@ -259,9 +261,9 @@
 - name: Configure bluetooth Apple trackpad
   osx_defaults:
     domain: com.apple.driver.AppleBluetoothMultitouch.trackpad
-    key: "{item.key}"
+    key: "{{ item.key }}"
     type: int
-    value: "{item.value}"
+    value: "{{ item.value }}"
   loop:
     - key: 'Clicking'
       value: '1'  # tap-to-click
@@ -283,9 +285,9 @@
 - name: Configure builtin Apple trackpad
   osx_defaults:
     domain: com.apple.AppleMultitouchtrackpad
-    key: "{item.key}"
+    key: "{{ item.key }}"
     type: int
-    value: "{item.value}"
+    value: "{{ item.value }}"
   loop:
     - key: 'Clicking'
       value: '1'  # tap-to-click
@@ -321,9 +323,9 @@
 - name: Set very low key repeat rates
   osx_defaults:
     domain: NSGlobalDomain
-    key: "{item.key}"
+    key: "{{ item.key }}"
     type: int
-    value: "{item.value}"
+    value: "{{ item.value }}"
   loop:
     - key: 'InitialKeyRepeat'
       value: "25"
