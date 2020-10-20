@@ -7,7 +7,6 @@ CHECKOUT="$(mktemp -d)"
 SKIP_TAGS="work_only"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
-# Set sudoers location based on OS type
 case "$SYSTEM_TYPE" in
   darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
    linux) SUDOERS_D="/etc/sudoers.d"         ;;
@@ -19,6 +18,7 @@ esac
 trap cleanup SIGINT
 
 cleanup() {
+  [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -f "$SUDOERS_D_TMP"
   [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
   [[ "$SYSTEM_TYPE" == "darwin" ]] && kill "$(pgrep caffeinate)" &> /dev/null
 }
@@ -33,11 +33,10 @@ create_tmp_sudoers() {
 
 create_vault_file() {
   local vaultpw vaultfile="$HOME/.ansible_vault_password"
-  [[ -e "$vaultfile" ]] && return 0
+  [[ -e "$vaultfile" || $SKIP_TAGS == "home_only" ]] && return 0
   read -r -s -p "Enter vault password: " vaultpw
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
-  unset vaultpw
   printf "\n\n" # insert newlines for readability
 }
 
@@ -59,7 +58,7 @@ bootstrap_macos() {
   (caffeinate -d -i -m -u &)
   softwareupdate --install --all
   [[ ! -x /usr/local/bin/brew ]] && CI=1 /bin/bash -c "$(curl -fsSL "$homebrew_url")"
-  [[ ! -x /usr/local/bin/ansible ]] && brew install ansible git
+  brew install ansible git
 }
 
 bootstrap_linux() {
