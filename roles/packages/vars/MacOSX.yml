@@ -73,6 +73,8 @@ home_packages:
 
 
 base_casks:
+  - 1password
+  - anylist
   - appcleaner
   - balenaetcher
   - chromium
@@ -82,9 +84,11 @@ base_casks:
   - font-clear-sans
   - font-source-code-pro
   - google-chrome
+  - google-cloud-sdk
   - iina
-  - keepassx
+  - keepassxc
   - keepingyouawake
+  - logitech-options
   - macdown
   - meld
   - transmission
@@ -92,16 +96,13 @@ base_casks:
   - vivaldi
   - vlc
   - xquartz
+  - zoomus
 
 home_casks:
-  - 1password
-  - anylist
   - bartender
   - calibre
   - fantastical
-  - google-cloud-sdk
   - istat-menus
-  - logitech-options
   - musicbrainz-picard
   - plexamp
   - signal
@@ -110,11 +111,9 @@ home_casks:
   - stay
   - textmate
   - transmit
-  - zoomus
 
 work_casks:
   - dozer
-  - google-cloud-sdk
   - jumpcut
   - menumeters
   - rectangle
