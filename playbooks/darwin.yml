@@ -6,6 +6,7 @@
     desktop: "{{ ansible_distribution }}"
     usr_path: /usr/local
     vscode_config: "{{ ansible_env.HOME }}/Library/Application Support/Code"
+    sublime_config: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text 3"
   roles:
     - packages
     - dotfiles
