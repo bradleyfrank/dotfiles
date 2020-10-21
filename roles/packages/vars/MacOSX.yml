@@ -23,6 +23,7 @@ base_packages:
   - fdupes
   - flac
   - gawk
+  - gh
   - ghostscript
   - git
   - glances
