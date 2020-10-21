@@ -10,11 +10,6 @@
 export {{ item }}
 {% endfor %}
 
-if [[ -n "$SSH_CONNECTION" ]]; then
-  if ! tmux has -t main &> /dev/null
-  then tmux new -s main
-  else tmux attach -t main
-  fi
-fi
+if [[ -z "$TMUX" ]]; then tmux attach -t default || tmux new -s default; fi
 
 source ~/.bashrc

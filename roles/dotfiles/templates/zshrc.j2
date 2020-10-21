@@ -77,13 +77,8 @@ function precmd() {
   __git_ps1 "${_PREFIX_1}${_HOST}${_CWD}${_PREFIX_2}${_DATE}${_PYENV}" "${_PROMPT}" "─[%s]"
 }
 
-if [[ -n "$SSH_CONNECTION" ]]; then
-  if ! tmux has -t main &> /dev/null
-  then tmux new -s main
-  else tmux attach -t main
-  fi
-fi
-
 {% for item in sources %}
 source {{ item }}
 {% endfor %}
+
+if [[ -z "$TMUX" ]]; then tmux attach -t default || tmux new -s default; fi
