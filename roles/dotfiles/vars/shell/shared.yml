@@ -76,3 +76,10 @@ shared_functions:
     --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
     --merge-output-format mp4 \
     -o "%(title)s.%(ext)s" "$1"
+
+shared_zsh_sources:
+  - ~/.local/share/git/git-prompt.sh
+  - "{{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+shared_bash_sources:
+  - ~/.local/share/git/git-prompt.sh

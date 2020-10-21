@@ -122,3 +122,4 @@
     file: shell.yml
   tags:
     - dotfiles
+    - shellrc

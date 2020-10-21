@@ -22,6 +22,7 @@
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
+    sources: "{{ shared_zsh_sources + distribution_zsh_sources }}"
   tags:
     - dotfiles
 
@@ -45,5 +46,6 @@
   vars:
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
+    sources: "{{ shared_bash_sources + distribution_bash_sources }}"
   tags:
     - dotfiles

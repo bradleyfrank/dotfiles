@@ -25,8 +25,6 @@ SAVEHIST=5000
 {{ keychain }}
 eval $(dircolors ~/.dir_colors)
 
-source ~/.local/share/git/git-prompt.sh
-
 FPATH=/usr/local/share/zsh-completions:"$FPATH"
 zstyle ':completion:*' list-suffixes expand prefix suffix
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
@@ -86,4 +84,6 @@ if [[ -n "$SSH_CONNECTION" ]]; then
   fi
 fi
 
-source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{% for item in sources %}
+source {{ item }}
+{% endfor %}

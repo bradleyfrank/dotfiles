@@ -37,3 +37,9 @@ distribution_functions:
   ytdl-music: |-
     youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
       --postprocessor-args "-strict experimental" "$1"
+
+distribution_zsh_sources:
+  - /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+
+distribution_bash_sources:
+  - /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc

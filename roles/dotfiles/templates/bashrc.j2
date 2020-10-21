@@ -16,8 +16,6 @@ shopt -s no_empty_cmd_completion
 {{ keychain }}
 eval $(dircolors ~/.dir_colors)
 
-source ~/.local/share/git/git-prompt.sh
-
 {% for key, value in aliases.items() %}
 alias {{ key }}='{{ value }}'
 {% endfor %}
@@ -63,5 +61,9 @@ function bash_prompt() {
 
   __git_ps1 "${_PREFIX_1}${_HOST}${_CWD}${_PREFIX_2}${_DATE}${_PYENV}" "${_PROMPT}" "─[%s]"
 }
+
+{% for item in sources %}
+source {{ item }}
+{% endfor %}
 
 PROMPT_COMMAND='bash_prompt; history -a'
