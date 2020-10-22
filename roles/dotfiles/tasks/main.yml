@@ -93,7 +93,7 @@
 
 - name: Create vim extensions directory path
   file:
-    path: "{{ vim_extensions_path }}"
+    path: "{{ vim_extensions_dest }}"
     state: directory
     mode: '0755'
   tags:
