@@ -10,6 +10,9 @@
 export {{ item }}
 {% endfor %}
 
-if [[ -z "$TMUX" ]]; then tmux attach -t default || tmux new -s default; fi
+if [[ -z "$TMUX" ]]; then
+  tmux_session_name="$(keepassxc-cli diceware --words 2 | tr ' ' '-')"
+  tmux attach -t "$tmux_session_name" &> /dev/null || tmux new -s "$tmux_session_name"
+fi
 
 source ~/.bashrc
