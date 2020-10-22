@@ -1,5 +1,13 @@
 ---
 # vars file for dotfiles
 
-vim_extensions_path: "{{ ansible_env.HOME }}/.vim/pack/default/start"
-vim_airline_version: 'v0.11'
+vim_extensions_dest: "{{ ansible_env.HOME }}/.vim/pack/default/start"
+
+vim_extensions:
+  - name: vim-airline
+    repo: https://github.com/vim-airline/vim-airline.git
+    version: v0.11
+  - name: vim-airline-themes
+    repo: https://github.com/vim-airline/vim-airline-themes.git
+  - name: vim-gitgutter
+    repo: https://github.com/airblade/vim-gitgutter.git

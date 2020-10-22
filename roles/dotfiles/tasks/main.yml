@@ -90,6 +90,7 @@
   tags:
     - dotfiles
 
+
 - name: Create vim extensions directory path
   file:
     path: "{{ vim_extensions_path }}"
@@ -98,24 +99,17 @@
   tags:
     - dotfiles
 
-- name: Install vim-airline
+- name: Install vim extensions
   git:
-    repo: https://github.com/vim-airline/vim-airline.git
-    dest: "{{ vim_extensions_path }}/vim-airline"
-    depth: '1'
-    version: "{{ vim_airline_version }}"
+    repo: "{{ item.repo }}"
+    dest: "{{ vim_extensions_dest }}/{{ item.name }}"
+    depth: 1
+    version: "{{ item.version | default(omit) }}"
+  loop: "{{ vim_extensions }}"
   tags:
     - dotfiles
     - packages
-
-- name: Install vim-airline-themes
-  git:
-    repo: https://github.com/vim-airline/vim-airline-themes.git
-    dest: "{{ vim_extensions_path }}/vim-airline-themes"
-    depth: '1'
-  tags:
-    - dotfiles
-    - packages
+    - vim
 
 - name: Build shell rc files
   import_tasks:
@@ -123,3 +117,4 @@
   tags:
     - dotfiles
     - shellrc
+

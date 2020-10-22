@@ -1,5 +1,8 @@
 let g:airline_theme='sol'
 let g:airline_skip_empty_sections = 1
+set signcolumn=no
+let g:gitgutter_signs = 0
+let g:gitgutter_highlight_lines = 1
 
 syntax on
 
@@ -12,6 +15,7 @@ set backspace=indent,eol,start
 set ttimeoutlen=10
 set laststatus=2
 set scrolloff=4
+set updatetime=100
 
 set term=screen-256color
 set background=light
