@@ -39,7 +39,6 @@ shared_aliases:
   pipi: 'python3 -m pip install --user'
   pipu: 'pip_upgrade_outdated -3 --user --verbose'
   pubip: 'dig myip.opendns.com @resolver1.opendns.com'
-  tmuxl: 'tmux -f ~/.tmux.min.conf'
 
 shared_functions:
   blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
