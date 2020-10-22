@@ -32,6 +32,7 @@ base_packages:
   - gnu-which
   - grep
   - gzip
+  - helm
   - hexyl
   - hh
   - iftop
@@ -57,6 +58,7 @@ base_packages:
   - shellharden
   - shfmt
   - ssh-copy-id
+  - stern
   - stow
   - tmux
   - tree
@@ -86,6 +88,7 @@ base_casks:
   - font-source-code-pro
   - google-chrome
   - google-cloud-sdk
+  - google-drive-file-stream
   - iina
   - keepassxc
   - keepingyouawake
