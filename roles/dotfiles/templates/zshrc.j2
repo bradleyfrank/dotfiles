@@ -23,7 +23,7 @@ HISTSIZE=2000
 SAVEHIST=5000
 
 {{ keychain }}
-eval $(dircolors ~/.dir_colors)
+eval "$(dircolors ~/.dir_colors)"
 
 FPATH=/usr/local/share/zsh-completions:"$FPATH"
 zstyle ':completion:*' list-suffixes expand prefix suffix

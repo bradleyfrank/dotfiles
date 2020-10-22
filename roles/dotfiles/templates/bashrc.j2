@@ -14,7 +14,7 @@ shopt -s dotglob
 shopt -s no_empty_cmd_completion
 
 {{ keychain }}
-eval $(dircolors ~/.dir_colors)
+eval "$(dircolors ~/.dir_colors)"
 
 {% for key, value in aliases.items() %}
 alias {{ key }}='{{ value }}'
