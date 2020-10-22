@@ -118,3 +118,11 @@
     - dotfiles
     - shellrc
 
+- name: Upload dotfiles to GitHub gists
+  shell:
+    cmd: VISUAL='tee' gh gist edit "{{ item.id }}" < "{{ item.file }}"
+  loop: "{{ gists }}"
+  tags:
+    - dotfiles
+    - shellrc
+    - gists
