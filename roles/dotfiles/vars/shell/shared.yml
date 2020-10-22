@@ -25,6 +25,7 @@ shared_manpaths:
 shared_aliases:
   bw: 'bitwise --no-color'
   condense: 'grep -Erv "(^#|^$)"'
+  dc: 'docker-compose'
   e: 'extract'
   glances: 'glances --theme-white'
   groot: 'cd $(git rev-parse --show-toplevel)'
