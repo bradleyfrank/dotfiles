@@ -66,3 +66,4 @@ EOF
 Other tasks:
 
 * MacOS disk encryption
+* Customize Slack: `#FDF6E3,#EEE8D5,#B58900,#FDF6E3,#EEE8D5,#002B36,#B58900,#DC322F,#EEE8D5,#073642`
