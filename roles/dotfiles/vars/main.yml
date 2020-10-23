@@ -11,11 +11,3 @@ vim_extensions:
     repo: https://github.com/vim-airline/vim-airline-themes.git
   - name: vim-gitgutter
     repo: https://github.com/airblade/vim-gitgutter.git
-
-gists:
-  - name: zshrc
-    file: "{{ ansible_env.HOME }}/.zshrc"
-    id: 5cbc46ffa9c930cf1214f7738761d55e
-  - name: tmux
-    file: "{{ ansible_env.HOME }}/.tmux.conf"
-    id: 1e8da9260d3d24f2b6c237ceea116ccc
