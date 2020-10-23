@@ -6,9 +6,11 @@ agnostic=( 1e8da9260d3d24f2b6c237ceea116ccc "$HOME"/.tmux.conf )
 typeset -A macos
 macos=( 5cbc46ffa9c930cf1214f7738761d55e "$HOME"/.zshrc )
 
+function push() { VISUAL='tee' gh gist edit "$1" < "$2" }
+
 case "$(uname -s | tr '[:upper:]' '[:lower:]')" in
-  darwin) for gist file in ${(kv)macos}; do VISUAL='tee' gh gist edit "$gist" < "$file"; done ;;
-  linux ) for gist file in ${(kv)linux}; do VISUAL='tee' gh gist edit "$gist" < "$file"; done ;;
+  darwin) for gist file in ${(kv)macos}; do push "$gist" "$file"; done ;;
+  linux ) for gist file in ${(kv)linux}; do push "$gist" "$file"; done ;;
 esac
 
-for gist file in ${(kv)agnostic}; do echo "VISUAL='tee' gh gist edit $gist < $file"; done
+for gist file in ${(kv)agnostic}; do push "$gist" "$file"; done
