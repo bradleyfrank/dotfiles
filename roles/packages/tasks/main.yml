@@ -15,7 +15,7 @@
   when: "'server' not in desktop | lower"
   tags:
     - packages
-    - extensions
+    - vscode
 
 - name: Install Python packages
   pip:
@@ -23,4 +23,4 @@
     extra_args: --user
   tags:
     - packages
-    - modules
+    - python
