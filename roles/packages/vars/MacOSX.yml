@@ -27,6 +27,7 @@ base_packages:
   - ghostscript
   - git
   - glances
+  - glow
   - gnu-sed
   - gnu-tar
   - gnu-which
