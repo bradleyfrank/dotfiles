@@ -1,7 +1,40 @@
 {
+    "editor.cursorBlinking": "phase",
+    "editor.fontFamily": "Source Code Pro",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 13,
+    "editor.occurrencesHighlight": false,
+    "editor.renderWhitespace": "none",
+    "editor.rulers": [100],
+    "editor.selectionHighlight": false,
+    "editor.tabSize": 2,
+    "editor.tokenColorCustomizations": {
+        "[Solarized Light]": {
+            "comments": "#6c71c4"
+        }
+    },
+    "editor.wordWrap": "on",
+    "editor.wordWrapColumn": 100,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.openEditors.visible": 0,
+    "extensions.ignoreRecommendations": true,
+    "git.ignoreMissingGitWarning": true,
+    "git.confirmSync": false,
+    "git.useEditorToCommit": true,
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs": ["--ignore=E501"],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": ["--line-length", "100"],
+    "shellcheck.customArgs": [
+        "-x"
+    ],
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.fontFamily": "Source Code Pro",
+    "update.mode": "none",
+    "window.openFilesInNewWindow": "on",
     "window.restoreWindows": "all",
-    "workbench.list.openMode": "doubleClick",
-    "workbench.colorTheme": "Solarized Light",
+    "workbench.activityBar.visible": true,
     "workbench.colorCustomizations": {
         "editorRuler.foreground": "#747474",
         "editorIndentGuide.background": "#00000000",
@@ -10,45 +43,9 @@
             "editor.findMatchBackground": "#93a1a166"
         }
     },
+    "workbench.colorTheme": "Solarized Light",
+    "workbench.list.openMode": "doubleClick",
     "workbench.startupEditor": "none",
-    "workbench.activityBar.visible": true,
     "workbench.statusBar.visible": true,
     "workbench.tree.renderIndentGuides": "onHover",
-    "editor.wordWrap": "on",
-    "editor.cursorBlinking": "phase",
-    "editor.occurrencesHighlight": false,
-    "editor.selectionHighlight": false,
-    "editor.fontFamily": "Source Code Pro",
-    "editor.fontLigatures": true,
-    "editor.fontSize": 13,
-    "editor.rulers": [100],
-    "editor.renderWhitespace": "none",
-    "editor.tokenColorCustomizations": {
-      "[Solarized Light]": {
-          "comments": "#6c71c4"
-      }
-    },
-    "explorer.openEditors.visible": 0,
-    "extensions.ignoreRecommendations": true,
-    "git.confirmSync": false,
-    "git.useEditorToCommit": true,
-    "terminal.integrated.fontSize": 13,
-    "terminal.integrated.fontFamily": "Source Code Pro",
-    "[python]": {
-        "editor.wordWrap": "wordWrapColumn"
-    },
-    "window.openFilesInNewWindow": "on",
-    "update.mode": "none",
-    "shellcheck.customArgs": [
-        "-x"
-    ],
-    "editor.wordWrapColumn": 100,
-    "editor.tabSize": 2,
-    "git.ignoreMissingGitWarning": true,
-    "python.linting.pylintArgs": [
-        "--load-plugins",
-        "pylint_flask"
-    ],
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false
 }
