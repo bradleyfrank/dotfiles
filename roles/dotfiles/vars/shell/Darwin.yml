@@ -40,6 +40,8 @@ distribution_functions:
 
 distribution_zsh_sources:
   - /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+  - /usr/local/bin/google-cloud-sdk/completion.zsh.inc
 
 distribution_bash_sources:
   - /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc
+  - /usr/local/bin/google-cloud-sdk/completion.bash.inc
