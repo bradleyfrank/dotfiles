@@ -10,7 +10,6 @@ taps:
 
 
 base_packages:
-  - awscli
   - bash
   - bash-completion@2
   - bat
@@ -33,7 +32,6 @@ base_packages:
   - gnu-which
   - grep
   - gzip
-  - helm
   - hexyl
   - hh
   - iftop
@@ -59,7 +57,6 @@ base_packages:
   - shellharden
   - shfmt
   - ssh-copy-id
-  - stern
   - stow
   - tmux
   - tree
@@ -71,13 +68,15 @@ base_packages:
   - zsh-syntax-highlighting
 
 home_packages:
+  - awscli
   - eye-d3
   - ffsend
+  - jq
+  - stern
   - youtube-dl
 
 
 base_casks:
-  - 1password
   - anylist
   - appcleaner
   - balenaetcher
@@ -88,7 +87,6 @@ base_casks:
   - font-clear-sans
   - font-source-code-pro
   - google-chrome
-  - google-cloud-sdk
   - google-drive-file-stream
   - iina
   - keepassxc
@@ -101,12 +99,13 @@ base_casks:
   - vivaldi
   - vlc
   - xquartz
-  - zoomus
 
 home_casks:
+  - 1password
   - bartender
   - calibre
   - fantastical
+  - google-cloud-sdk
   - istat-menus
   - musicbrainz-picard
   - plexamp
@@ -116,6 +115,7 @@ home_casks:
   - stay
   - textmate
   - transmit
+  - zoomus
 
 work_casks:
   - dozer
