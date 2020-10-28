@@ -1,5 +1,6 @@
 let g:airline_theme='sol'
 let g:airline_skip_empty_sections = 1
+
 set signcolumn=no
 let g:gitgutter_signs = 0
 let g:gitgutter_highlight_lines = 1
@@ -16,6 +17,7 @@ set ttimeoutlen=10
 set laststatus=2
 set scrolloff=4
 set updatetime=100
+set cursorline
 
 set term=screen-256color
 set background=light
@@ -24,7 +26,7 @@ set hlsearch incsearch
 hi Search ctermbg=DarkBlue ctermfg=White
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-set colorcolumn=80,100
+set colorcolumn=100
 hi colorcolumn ctermbg=lightgrey guibg=lightgrey
 
 " use hybrid line numbering by default with automatic toggling
