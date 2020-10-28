@@ -1,16 +1,19 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-typeset -A agnostic
-agnostic=( 1e8da9260d3d24f2b6c237ceea116ccc "$HOME"/.tmux.conf )
+function find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1-$(basename "$2").*/\1/p" ; }
+function push() { VISUAL='tee' gh gist edit "$1" < "$2" ; }
+function create() { gh gist create --public --desc "$1-$(basename "$2")" "$2" ; }
 
-typeset -A macos
-macos=( 5cbc46ffa9c930cf1214f7738761d55e "$HOME"/.zshrc )
+function main_update_gists() {
+  system="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  dotfiles=( "$HOME/.zshrc" "$HOME/.tmux.conf" "$HOME/.vimrc" "$HOME/.bashrc")
 
-function push() { VISUAL='tee' gh gist edit "$1" < "$2" }
+  for d in "${dotfiles[@]}"; do
+    gist_id="$(find_gist "$system" "$d")"
+    if [[ -n "$gist_id" ]]; then push "$gist_id" "$d"
+    else create "$system" "$d"
+    fi
+  done
+}
 
-case "$(uname -s | tr '[:upper:]' '[:lower:]')" in
-  darwin) for gist file in ${(kv)macos}; do push "$gist" "$file"; done ;;
-  linux ) for gist file in ${(kv)linux}; do push "$gist" "$file"; done ;;
-esac
-
-for gist file in ${(kv)agnostic}; do push "$gist" "$file"; done
+main_update_gists
