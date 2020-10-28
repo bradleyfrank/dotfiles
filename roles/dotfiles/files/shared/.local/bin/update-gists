@@ -1,21 +1,39 @@
 #!/usr/bin/env bash
 
-function find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1-$2.*/\1/p" ; }
+function find_gist() { gh gist list | sed -rn "s/^([0-9a-fA-F]+)\s+$1.*/\1/p" ; }
 function push() { VISUAL='tee' gh gist edit "$1" < "$2" ; }
-function create() { gh gist create --public --desc "$1-$2" "$2" ; }
+function create() { gh gist create --public --desc "$1" "$2" ; }
 
-function main_update_gists() {
-  local system dotfiles
+function push_or_create() {
+  local description="$1" filename="$2"
+  gist_id="$(find_gist "$description")"
+  if [[ -n "$gist_id" ]]; then push "$gist_id" "$filename"
+  else create "$description" "$filename"
+  fi
+}
+
+function gist_dotfiles() {
+  local system dotfiles filename description
   system="$(uname -s | tr '[:upper:]' '[:lower:]')"
   dotfiles=( "$HOME/.zshrc" "$HOME/.tmux.conf" "$HOME/.vimrc" "$HOME/.bashrc" )
 
-  for d in "${dotfiles[@]}"; do
-    filename="$(basename "$d")"
-    gist_id="$(find_gist "$system" "$filename")"
-    if [[ -n "$gist_id" ]]; then push "$gist_id" "$d"
-    else create "$system" "$filename"
-    fi
+  for filename in "${dotfiles[@]}"; do
+    description="$system-$(basename "$filename")"
+    push_or_create "$description" "$filename"
   done
 }
 
-main_update_gists
+function gist_misc() {
+  local tmpdir description
+  tmpdir="$(mktemp -d)"
+
+  pushd "$tmpdir" > /dev/null || return
+  brew bundle dump > /dev/null
+  popd > /dev/null || return
+
+  description="$(uname -n | cut -d. -f1)-Brewfile"
+  push_or_create "$description" "$tmpdir/Brewfile"
+}
+
+gist_dotfiles
+gist_misc
