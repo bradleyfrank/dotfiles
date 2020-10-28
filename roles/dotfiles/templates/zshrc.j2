@@ -1,9 +1,11 @@
+PATH=""
 {% for item in paths %}
-{{ item }}
+PATH={{ item }}:"$PATH"
 {% endfor %}
 
+MANPATH=""
 {% for item in manpaths %}
-{{ item }}
+MANPATH={{ item }}:"$MANPATH"
 {% endfor %}
 
 {% for item in exports %}
@@ -22,8 +24,9 @@ HISTFILE=~/.zsh_history
 HISTSIZE=2000
 SAVEHIST=5000
 
-{{ keychain }}
-eval "$(dircolors ~/.dir_colors)"
+{% for item in evals %}
+eval "{{ item }}"
+{% endfor %}
 
 FPATH=/usr/local/share/zsh-completions:"$FPATH"
 zstyle ':completion:*' list-suffixes expand prefix suffix
@@ -78,10 +81,10 @@ function precmd() {
 }
 
 {% for item in sources %}
-source {{ item }}
+[[ -f {{ item }} ]] && source {{ item }}
 {% endfor %}
+source "{{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 if [[ -z "$TMUX" ]]; then
-  tmux_session_name="$(keepassxc-cli diceware --words 2 | tr ' ' '-')"
-  tmux attach -t "$tmux_session_name" &> /dev/null || tmux new -s "$tmux_session_name"
+  tmux new -s "$(keepassxc-cli diceware --words 2 | tr ' ' '-')"
 fi

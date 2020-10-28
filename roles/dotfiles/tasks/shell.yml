@@ -1,6 +1,12 @@
 ---
 # tasks file for dotfiles
 
+- name: Register gcloud install location
+  shell: gcloud info | sed -rn 's/^Installation Root:\s\[(.*)\]/\1/p'
+  register: gcloud_base_dir
+  tags:
+    - dotfiles
+
 - name: Load shared variables
   include_vars: shell/shared.yml
   tags:
@@ -17,12 +23,14 @@
     dest: "{{ ansible_env.HOME }}/.zshrc"
     backup: true
   vars:
+    shell_name: zsh
+    evals: "{{ shared_evals + distribution_evals | default([]) }}"
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
     paths: "{{ shared_paths + distribution_paths | default([]) }}"
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
-    sources: "{{ shared_zsh_sources + distribution_zsh_sources }}"
+    sources: "{{ shared_sources + distribution_sources | default([]) }}"
   tags:
     - dotfiles
 
@@ -32,6 +40,7 @@
     dest: "{{ ansible_env.HOME }}/.bash_profile"
     backup: true
   vars:
+    shell_name: bash
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
     paths: "{{ shared_paths + distribution_paths | default([]) }}"
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
@@ -44,8 +53,10 @@
     dest: "{{ ansible_env.HOME }}/.bashrc"
     backup: true
   vars:
+    shell_name: bash
+    evals: "{{ shared_evals + distribution_evals | default([]) }}"
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
-    sources: "{{ shared_bash_sources + distribution_bash_sources }}"
+    sources: "{{ shared_sources + distribution_sources | default([]) }}"
   tags:
     - dotfiles

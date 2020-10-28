@@ -1,9 +1,11 @@
+PATH=""
 {% for item in paths %}
-{{ item }}
+PATH={{ item }}:"$PATH"
 {% endfor %}
 
+MANPATH=""
 {% for item in manpaths %}
-{{ item }}
+MANPATH={{ item }}:"$MANPATH"
 {% endfor %}
 
 {% for item in exports %}
@@ -11,8 +13,7 @@ export {{ item }}
 {% endfor %}
 
 if [[ -z "$TMUX" ]]; then
-  tmux_session_name="$(keepassxc-cli diceware --words 2 | tr ' ' '-')"
-  tmux attach -t "$tmux_session_name" &> /dev/null || tmux new -s "$tmux_session_name"
+  tmux new -s "$(keepassxc-cli diceware --words 2 | tr ' ' '-')"
 fi
 
 source ~/.bashrc

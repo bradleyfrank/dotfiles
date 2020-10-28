@@ -1,6 +1,9 @@
 ---
 # vars file for dotfiles
 
+shared_evals:
+  - "$(dircolors ~/.dir_colors)"
+
 shared_exports:
   - PATH
   - MANPATH
@@ -14,13 +17,13 @@ shared_exports:
   - GIT_PS1_SHOWUPSTREAM="verbose name"
 
 shared_paths:
-  - PATH=~/.local/bin:~/bin
-  - PATH="$PATH":/usr/local/bin:/usr/local/sbin
-  - PATH="$PATH":/usr/bin:/usr/sbin:/bin:/sbin
+  - /usr/bin:/usr/sbin:/bin:/sbin
+  - /usr/local/bin:/usr/local/sbin
+  - ~/.local/bin:~/bin
 
 shared_manpaths:
-  - MANPATH=~/.local/share/man
-  - MANPATH=/usr/local/share/man:/usr/share/man:"$MANPATH"
+  - /usr/local/share/man:/usr/share/man
+  - ~/.local/share/man
 
 shared_aliases:
   bw: 'bitwise --no-color'
@@ -77,9 +80,7 @@ shared_functions:
     --merge-output-format mp4 \
     -o "%(title)s.%(ext)s" "$1"
 
-shared_zsh_sources:
+shared_sources:
   - ~/.local/share/git/git-prompt.sh
-  - "{{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
-shared_bash_sources:
-  - ~/.local/share/git/git-prompt.sh
+  - "{{ gcloud_base_dir.stdout }}/completion.{{ shell_name }}.inc"
+  - ~/.infractl/secrets

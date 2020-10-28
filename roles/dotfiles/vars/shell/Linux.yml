@@ -1,7 +1,8 @@
 ---
 # vars file for dotfiles
 
-keychain: eval "$(keychain --eval --ignore-missing --quiet id_rsa id_develop id_home)"
+distribution_evals:
+  - "$(keychain --eval --ignore-missing --quiet id_rsa id_develop id_home)"
 
 distribution_aliases:
   ipa: 'ip -c a'

@@ -1,7 +1,8 @@
 ---
 # vars file for dotfiles
 
-keychain: eval "$(keychain --eval --ignore-missing --quiet --inherit any id_rsa id_develop id_home)"
+distribution_evals:
+  - "$(keychain --eval --ignore-missing --quiet --inherit any id_rsa id_develop id_home)"
 
 distribution_exports:
   - CLICOLOR=1
@@ -11,24 +12,24 @@ distribution_exports:
   - INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
 
 distribution_paths:
-  - PATH="$PATH":~/Library/Python/3.8/bin
-  - PATH="$PATH":/opt/X11/bin
-  - PATH=/usr/local/opt/coreutils/libexec/gnubin:"$PATH"
-  - PATH=/usr/local/opt/gnu-tar/libexec/gnubin:"$PATH"
-  - PATH=/usr/local/opt/ed/libexec/gnubin:"$PATH"
-  - PATH=/usr/local/opt/grep/libexec/gnubin:"$PATH"
-  - PATH=/usr/local/opt/gnu-sed/libexec/gnubin:"$PATH"
-  - PATH=/usr/local/opt/gawk/libexec/gnubin:"$PATH"
-  - PATH=/usr/local/opt/findutils/libexec/gnubin:"$PATH"
+  - ~/Library/Python/3.8/bin
+  - /opt/X11/bin
+  - /usr/local/opt/coreutils/libexec/gnubin
+  - /usr/local/opt/gnu-tar/libexec/gnubin
+  - /usr/local/opt/ed/libexec/gnubin
+  - /usr/local/opt/grep/libexec/gnubin
+  - /usr/local/opt/gnu-sed/libexec/gnubin
+  - /usr/local/opt/gawk/libexec/gnubin
+  - /usr/local/opt/findutils/libexec/gnubin
 
 distribution_manpaths:
-  - MANPATH=/usr/local/opt/coreutils/libexec/gnuman:"$MANPATH"
-  - MANPATH=/usr/local/opt/gnu-tar/libexec/gnuman:"$MANPATH"
-  - MANPATH=/usr/local/opt/ed/libexec/gnuman:"$MANPATH"
-  - MANPATH=/usr/local/opt/grep/libexec/gnuman:"$MANPATH"
-  - MANPATH=/usr/local/opt/gnu-sed/libexec/gnuman:"$MANPATH"
-  - MANPATH=/usr/local/opt/gawk/libexec/gnuman:"$MANPATH"
-  - MANPATH=/usr/local/opt/findutils/libexec/gnuman:"$MANPATH"
+  - /usr/local/opt/coreutils/libexec/gnuman
+  - /usr/local/opt/gnu-tar/libexec/gnuman
+  - /usr/local/opt/ed/libexec/gnuman
+  - /usr/local/opt/grep/libexec/gnuman
+  - /usr/local/opt/gnu-sed/libexec/gnuman
+  - /usr/local/opt/gawk/libexec/gnuman
+  - /usr/local/opt/findutils/libexec/gnuman
 
 distribution_aliases:
   steep: 'brew update ; brew upgrade ; brew cleanup ; brew doctor'
@@ -37,11 +38,3 @@ distribution_functions:
   ytdl-music: |-
     youtube-dl --format bestaudio --extract-audio --audio-format mp3 \
       --postprocessor-args "-strict experimental" "$1"
-
-distribution_zsh_sources:
-  - /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-  - /usr/local/bin/google-cloud-sdk/completion.zsh.inc
-
-distribution_bash_sources:
-  - /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc
-  - /usr/local/bin/google-cloud-sdk/completion.bash.inc

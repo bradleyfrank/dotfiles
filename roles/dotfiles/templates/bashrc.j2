@@ -13,8 +13,9 @@ shopt -s cdspell
 shopt -s dotglob
 shopt -s no_empty_cmd_completion
 
-{{ keychain }}
-eval "$(dircolors ~/.dir_colors)"
+{% for item in evals %}
+eval "{{ item }}"
+{% endfor %}
 
 {% for key, value in aliases.items() %}
 alias {{ key }}='{{ value }}'
@@ -63,7 +64,7 @@ function bash_prompt() {
 }
 
 {% for item in sources %}
-source {{ item }}
+[[ -f {{ item }} ]] && source {{ item }}
 {% endfor %}
 
 PROMPT_COMMAND='bash_prompt; history -a'
