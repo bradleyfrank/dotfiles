@@ -15,6 +15,7 @@ python_packages:
   - tuir
 
 vscode_extensions:
+  - 4ops.terraform
   - bitzl.vscode-puppet
   - bungcip.better-toml
   - DavidAnson.vscode-markdownlint
