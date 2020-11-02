@@ -64,6 +64,7 @@ base_packages:
   - watch
   - wget
   - yamllint
+  - yq
   - zsh
   - zsh-syntax-highlighting
 
