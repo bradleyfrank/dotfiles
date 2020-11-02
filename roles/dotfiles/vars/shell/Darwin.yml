@@ -32,6 +32,7 @@ distribution_manpaths:
   - /usr/local/opt/findutils/libexec/gnuman
 
 distribution_aliases:
+  rme: 'macdown README*'
   steep: 'brew update ; brew upgrade ; brew cleanup ; brew doctor'
 
 distribution_functions:
