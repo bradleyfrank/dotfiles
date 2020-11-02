@@ -37,6 +37,7 @@ base_packages:
   - iftop
   - kpcli
   - keychain
+  - kubectx
   - lame
   - less
   - markdown
