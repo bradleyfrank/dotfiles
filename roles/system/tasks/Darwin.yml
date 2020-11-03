@@ -29,7 +29,7 @@
     - shell
 
 - name: Fix directory ownership for zsh
-  shell: compaudit | xargs chmod go-w
+  shell: set -o pipefail && compaudit | xargs chmod go-w
   args:
     executable: /usr/local/bin/zsh
   tags:
