@@ -11,6 +11,7 @@
   co = checkout
   cm = commit
   cmm = commit -m
+  aa = add -A
   ap = add -p
   unstage = 'reset HEAD --'
   history = 'log --full-history --'
