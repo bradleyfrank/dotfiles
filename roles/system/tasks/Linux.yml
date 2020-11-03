@@ -37,7 +37,7 @@
     - gnome_settings
 
 - name: Generate host keys
-  shell:
+  command:
     cmd: ssh-keygen -A
     creates: /etc/ssh/ssh_host_*_key
   become: true
