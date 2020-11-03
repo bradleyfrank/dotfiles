@@ -19,12 +19,12 @@ base_packages:
   - fontconfig-enhanced-defaults
   - fontconfig-font-replacements
   - fwupd
+  - fzf
   - ghostscript
   - ghostwriter
   - glances
   - google-chrome-stable
   - google-noto-emoji-color-fonts
-  - hstr
   - htop
   - iftop
   - keepassxc

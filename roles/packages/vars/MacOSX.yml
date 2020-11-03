@@ -21,6 +21,7 @@ base_packages:
   - findutils
   - fdupes
   - flac
+  - fzf
   - gawk
   - gh
   - ghostscript
@@ -33,7 +34,6 @@ base_packages:
   - grep
   - gzip
   - hexyl
-  - hh
   - iftop
   - kpcli
   - keychain

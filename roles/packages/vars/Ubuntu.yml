@@ -14,11 +14,11 @@ base_packages:
   - foliate
   - fonts-noto-color-emoji
   - fwupd
+  - fzf
   - ghostscript
   - ghostwriter
   - glances
   - google-chrome-stable
-  - hstr
   - htop
   - iftop
   - keepassxc
