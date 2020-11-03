@@ -83,9 +83,9 @@ shared_functions:
     -o "%(title)s.%(ext)s" "$1"
 
 shared_sources:
-  - ~/.infractl/secrets
-  - ~/.local/share/git/git-prompt.sh
-  - ~/.local/share/k8s/fubectl
+  - $HOME/.infractl/secrets
+  - $HOME/.local/share/git/git-prompt.sh
+  - $HOME/.local/share/k8s/fubectl
   - "{{ gcloud_base_dir.stdout }}/completion.{{ shell_name }}.inc"
   - /usr/local/opt/fzf/shell/completion.{{ shell_name }}
   - /usr/local/opt/fzf/shell/key-bindings.{{ shell_name }}
