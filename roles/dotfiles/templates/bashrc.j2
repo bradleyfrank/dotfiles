@@ -63,7 +63,7 @@ function bash_prompt() {
 }
 
 {% for item in sources %}
-[[ -f {{ item }} ]] && source {{ item }}
+[[ -f {{ item }} ]] && source "{{ item }}"
 {% endfor %}
 
 PROMPT_COMMAND='bash_prompt; history -a'
