@@ -43,7 +43,7 @@ function bash_prompt() {
   _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
 
   if [[ -n "$TMUX" ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 1 ]] && PROMPT_DIRTRIM=1
+    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && PROMPT_DIRTRIM=1
   fi
 
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}\h${reset}]─"

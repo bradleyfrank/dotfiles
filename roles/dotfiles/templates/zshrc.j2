@@ -58,7 +58,7 @@ function precmd() {
   _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
 
   if [[ -n "$TMUX" ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 1 ]] && _CWD="[${blue}%1~${reset}]"
+    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD="[${blue}%1~${reset}]"
   fi
 
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}%m${reset}]─"
