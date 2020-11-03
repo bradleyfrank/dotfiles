@@ -26,24 +26,25 @@ shared_manpaths:
   - ~/.local/share/man
 
 shared_aliases:
-  bw: 'bitwise --no-color'
-  condense: 'grep -Erv "(^#|^$)"'
-  dc: 'docker-compose'
-  e: 'extract'
-  glances: 'glances --theme-white'
-  groot: 'cd "$(git rev-parse --show-toplevel)"'
-  isodate: 'date --iso-8601=seconds'
-  l1: 'ls -1 --color --classify --human-readable'
-  la: 'ls -la --color --classify --human-readable'
-  lg: 'ls -Gg --color --classify --human-readable'
-  ll: 'ls -l --color --classify --human-readable'
-  lt: 'ls -1AS --color --classify --human-readable --group-directories-first --size'
-  lsmnt: 'mount | column -t'
-  pipi: 'python3 -m pip install --user'
-  pipu: 'pip_upgrade_outdated -3 --user --verbose'
-  pubip: 'dig myip.opendns.com @resolver1.opendns.com'
-  rcp: 'rsync --info=progress2'
-  venv: 'source "$(git rev-parse --show-toplevel)/ve/bin/activate"'
+  bw: bitwise --no-color
+  condense: grep -Erv "(^#|^$)"
+  dc: docker-compose
+  e: extract
+  glances: glances --theme-white
+  groot: cd "$(git rev-parse --show-toplevel)"
+  isodate: date --iso-8601=seconds
+  l1: ls -1 --color --classify --human-readable
+  la: ls -la --color --classify --human-readable
+  lg: ls -Gg --color --classify --human-readable
+  ll: ls -l --color --classify --human-readable
+  lt: ls -1AS --color --classify --human-readable --group-directories-first --size
+  lsmnt: mount | column -t
+  mux: tmux new -s "$(diceware 2)"
+  pipi: python3 -m pip install --user
+  pipu: pip_upgrade_outdated -3 --user --verbose
+  pubip: dig myip.opendns.com @resolver1.opendns.com
+  rcp: rsync --info=progress2
+  venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
 
 shared_functions:
   blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy

@@ -13,7 +13,9 @@ export {{ item }}
 {% endfor %}
 
 if [[ -z "$TMUX" ]]; then
-  tmux new -s "$(keepassxc-cli diceware --words 2 | tr ' ' '-')"
+  if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
+  else tmux new -s main
+  fi
 fi
 
 source ~/.bashrc
