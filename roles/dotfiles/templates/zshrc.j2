@@ -12,9 +12,6 @@ MANPATH={{ item }}:"$MANPATH"
 export {{ item }}
 {% endfor %}
 
-bindkey -e
-bindkey -s "\C-r" "\C-a hstr -- \C-j"
-
 unsetopt BEEP
 setopt AUTO_CD EXTENDED_GLOB NOMATCH NO_CASE_GLOB NOTIFY CORRECT CORRECT_ALL GLOB_DOTS
 setopt SHARE_HISTORY APPEND_HISTORY HIST_VERIFY EXTENDED_HISTORY

@@ -9,7 +9,7 @@ shared_exports:
   - MANPATH
   - VISUAL=vim
   - EDITOR=vim
-  - HSTR_CONFIG=monochromatic
+  - FZF_DEFAULT_OPTS="--reverse --height=50% --color=light"
   - GIT_PS1_SHOWDIRTYSTATE=true
   - GIT_PS1_SHOWSTASHSTATE=true
   - GIT_PS1_SHOWUNTRACKEDFILES=true
@@ -85,4 +85,5 @@ shared_functions:
 shared_sources:
   - ~/.local/share/git/git-prompt.sh
   - "{{ gcloud_base_dir.stdout }}/completion.{{ shell_name }}.inc"
-  - ~/.infractl/secrets
+  - /usr/local/opt/fzf/shell/completion.{{ shell_name }}
+  - /usr/local/opt/fzf/shell/key-bindings.{{ shell_name }}
