@@ -28,8 +28,10 @@ shared_manpaths:
 shared_aliases:
   bw: bitwise --no-color
   condense: grep -Erv "(^#|^$)"
+  d: docker
   dc: docker-compose
   e: extract
+  g: git
   glances: glances --theme-white
   groot: cd "$(git rev-parse --show-toplevel)"
   isodate: date --iso-8601=seconds
