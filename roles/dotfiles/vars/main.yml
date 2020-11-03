@@ -11,3 +11,5 @@ vim_extensions:
     repo: https://github.com/vim-airline/vim-airline-themes.git
   - name: vim-gitgutter
     repo: https://github.com/airblade/vim-gitgutter.git
+  - name: nerdtree
+    repo: https://github.com/preservim/nerdtree.git
