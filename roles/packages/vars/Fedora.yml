@@ -8,7 +8,6 @@ base_packages:
   - borgbackup
   - code
   - dictd
-  - diff-so-fancy
   - dnf-plugin-system-upgrade
   - dnf-utils
   - fail2ban

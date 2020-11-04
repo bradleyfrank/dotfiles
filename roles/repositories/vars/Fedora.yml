@@ -14,11 +14,6 @@ repos:
     baseurl: "{{ copr_repo_url }}/dawid/better_fonts/fedora-$releasever-$basearch/"
     gpgkey: "{{ copr_repo_url }}/dawid/better_fonts/pubkey.gpg"
 
-  - name: diff-so-fancy
-    description: diff-so-fancy
-    baseurl: "{{ copr_repo_url }}/apuimedo/diff-so-fancy/fedora-$releasever-$basearch/"
-    gpgkey: "{{ copr_repo_url }}/apuimedo/diff-so-fancy/pubkey.gpg"
-
   - name: google-chrome
     description: Google Chrome
     baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
