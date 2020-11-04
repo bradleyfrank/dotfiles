@@ -39,3 +39,8 @@ repos:
     description: 1Password
     baseurl: https://onepassword.s3.amazonaws.com/linux/rpm
     gpgkey: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+
+  - name: gh-cli
+    description: packages for the GitHub CLI
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0

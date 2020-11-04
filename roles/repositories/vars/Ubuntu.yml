@@ -43,3 +43,8 @@ repos:
     repo: ppa:heyarje/makemkv-beta
     keyserver: keyserver.ubuntu.com
     id: 94B56C64CA7278ECFC34E8808540356019F7E55B
+
+  - name: gh-cli
+    repo: https://cli.github.com/packages
+    keyserver: keyserver.ubuntu.com
+    id: C99B11DEB97541F0

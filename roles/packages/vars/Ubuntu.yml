@@ -15,6 +15,7 @@ base_packages:
   - fonts-noto-color-emoji
   - fwupd
   - fzf
+  - gh
   - ghostscript
   - ghostwriter
   - glances
