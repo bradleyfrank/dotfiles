@@ -10,6 +10,7 @@ base_packages:
   - fail2ban
   - fdupes
   - figlet
+  - gh
   - git
   - glances
   - htop
