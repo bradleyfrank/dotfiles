@@ -3,11 +3,12 @@
     "editor.fontFamily": "Source Code Pro",
     "editor.fontLigatures": true,
     "editor.fontSize": 13,
+    "editor.insertSpaces": true,
     "editor.occurrencesHighlight": false,
     "editor.renderWhitespace": "none",
     "editor.rulers": [100],
     "editor.selectionHighlight": false,
-    "editor.tabSize": 2,
+    "editor.tabSize": 4,
     "editor.tokenColorCustomizations": {
         "[Solarized Light]": {
             "comments": "#6c71c4"
