@@ -247,6 +247,13 @@
     type: bool
     value: 'false'
 
+- name: Enable grouping windows by application
+  osx_defaults:
+    domain: com.apple.dock
+    key: expose-group-apps
+    type: bool
+    value: 'true'
+
 - name: Set screensaver timeouts
   osx_defaults:
     domain: com.apple.screensaver
