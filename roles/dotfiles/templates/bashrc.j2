@@ -39,8 +39,7 @@ function bash_prompt() {
         orange="\[\e[38;5;166m\]"
 
   _CWD="[${blue}\w${reset}]"
-  _DATE="[${violet}$(date +%H:%M:%S)${reset}]"
-  _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
+  _GCLOUD="" _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
 
   if [[ -n "$TMUX" ]]; then
     [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && PROMPT_DIRTRIM=1
@@ -49,6 +48,7 @@ function bash_prompt() {
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}\h${reset}]─"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="─[${cyan}$(basename "$VIRTUAL_ENV")${reset}]"
   [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV="─[${cyan}${CONDA_DEFAULT_ENV}${reset}]"
+  [[ -n "$CLOUDSDK_CORE_PROJECT" ]] && _GCLOUD="[${violet}${CLOUDSDK_CORE_PROJECT}${reset}]"
 
   case "$ret" in
     0) _PROMPT="${bold}${green} $ ${reset}"   ;;
@@ -56,10 +56,9 @@ function bash_prompt() {
     *) _PROMPT="${bold}${magenta} $ ${reset}" ;;
   esac
 
-  _PREFIX_1="${_NL}┌─"
-  _PREFIX_2="${_NL}└─"
-
-  __git_ps1 "${_PREFIX_1}${_HOST}${_CWD}${_PREFIX_2}${_DATE}${_PYENV}" "${_PROMPT}" "─[%s]"
+  _LINE_1="${_NL}┌─${_HOST}${_CWD}"
+  _LINE_2="${_NL}└─${_GCLOUD}${_PYENV}"
+  __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "[%s]"
 }
 
 {% for item in sources %}

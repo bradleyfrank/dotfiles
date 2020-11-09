@@ -56,16 +56,16 @@ function precmd() {
         base03="%F{234}"
 
   _CWD="[${blue}%~${reset}]"
-  _DATE="[${violet}$(date +%H:%M:%S)${reset}]"
-  _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
+  _GCLOUD="" _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
 
   if [[ -n "$TMUX" ]]; then
     [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD="[${blue}%1~${reset}]"
   fi
 
-  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}%m${reset}]─"
+  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}%m${reset}]"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="─[${cyan}$(basename "$VIRTUAL_ENV")${reset}]"
   [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV="─[${cyan}${CONDA_DEFAULT_ENV}${reset}]"
+  [[ -n "$CLOUDSDK_CORE_PROJECT" ]] && _GCLOUD="[GCP:${magenta}${CLOUDSDK_CORE_PROJECT}${reset}]"
 
   case "$ret" in
     0) _PROMPT="%B${green} %# ${reset}%b"   ;;
@@ -73,10 +73,9 @@ function precmd() {
     *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
   esac
 
-  _PREFIX_1="${_NL}┌─"
-  _PREFIX_2="${_NL}└─"
-
-  __git_ps1 "${_PREFIX_1}${_HOST}${_CWD}${_PREFIX_2}${_DATE}${_PYENV}" "${_PROMPT}" "─[%s]"
+  _LINE_1="${_NL}┌─${_HOST}${_CWD}"
+  _LINE_2="${_NL}└─${_DATE}${_PYENV}"
+  __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "[%s]"
 }
 
 {% for item in sources %}
