@@ -78,8 +78,12 @@ function precmd() {
   __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "[%s]"
 }
 
+{% if 'home_only' in ansible_skip_tags -%}
+[[ -e "$HOME/.zshrc.d/work.zshrc" ]] && source "$HOME/.zshrc.d/work.zshrc"
+{% endif %}
+
 {% for item in sources %}
-[[ -f {{ item }} ]] && source "{{ item }}"
+source "{{ item }}"
 {% endfor %}
 source "{{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 

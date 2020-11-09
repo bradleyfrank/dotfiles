@@ -20,3 +20,7 @@ distribution_functions:
   gedit: nohup /usr/bin/gedit "$@" &> /dev/null &
   ytdl-music: |-
     youtube-dl --format bestaudio --extract-audio --audio-format mp3 "$1"
+
+distribution_sources:
+  - /usr/share/fzf/shell/completion.{{ shell_name }}
+  - /usr/share/fzf/shell/key-bindings.{{ shell_name }}

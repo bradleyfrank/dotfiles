@@ -61,8 +61,12 @@ function bash_prompt() {
   __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "[%s]"
 }
 
+{% if 'home_only' in ansible_skip_tags -%}
+[[ -e "$HOME/.bashrc.d/work.bashrc" ]] && source "$HOME/.bashrc.d/work.bashrc"
+{% endif %}
+
 {% for item in sources %}
-[[ -f {{ item }} ]] && source "{{ item }}"
+source "{{ item }}"
 {% endfor %}
 
 PROMPT_COMMAND='bash_prompt; history -a'
