@@ -65,7 +65,7 @@ function precmd() {
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}%m${reset}]"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="─[${cyan}$(basename "$VIRTUAL_ENV")${reset}]"
   [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV="─[${cyan}${CONDA_DEFAULT_ENV}${reset}]"
-  [[ -n "$CLOUDSDK_CORE_PROJECT" ]] && _GCLOUD="[GCP:${magenta}${CLOUDSDK_CORE_PROJECT}${reset}]"
+  [[ -n "$CLOUDSDK_CORE_PROJECT" ]] && _GCLOUD="[${violet}${CLOUDSDK_CORE_PROJECT}${reset}]"
 
   case "$ret" in
     0) _PROMPT="%B${green} %# ${reset}%b"   ;;
