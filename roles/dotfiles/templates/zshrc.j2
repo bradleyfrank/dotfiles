@@ -74,7 +74,7 @@ function precmd() {
   esac
 
   _LINE_1="${_NL}┌─${_HOST}${_CWD}"
-  _LINE_2="${_NL}└─${_DATE}${_PYENV}"
+  _LINE_2="${_NL}└─${_GCLOUD}${_PYENV}"
   __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "[%s]"
 }
 
