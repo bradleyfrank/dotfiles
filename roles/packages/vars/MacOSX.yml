@@ -17,7 +17,6 @@ base_packages:
   - cabextract
   - coreutils
   - dict
-  - diff-so-fancy
   - findutils
   - fdupes
   - flac
@@ -120,11 +119,11 @@ home_casks:
   - zoomus
 
 work_casks:
+  - bbedit
   - dozer
   - jumpcut
   - menumeters
   - rectangle
-  - sublime-text
 
 
 home_apps:
