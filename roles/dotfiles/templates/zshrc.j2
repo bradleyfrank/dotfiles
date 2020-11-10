@@ -43,45 +43,12 @@ function {{ key }}() {
 
 {% endfor -%}
 
-function precmd() {
-  local ret=$?
-  local reset="%f"
-  local blue="%F{33}" \
-        cyan="%F{37}" \
-        violet="%F{61}" \
-        green="%F{64}" \
-        magenta="%F{125}" \
-        red="%F{160}" \
-        orange="%F{166}" \
-        base03="%F{234}"
-
-  _CWD="[${blue}%~${reset}]"
-  _GCLOUD="" _HOST="" _PYENV="" _PROMPT="" _NL=$'\n' _PREFIX_1="" _PREFIX_2=""
-
-  if [[ -n "$TMUX" ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD="[${blue}%1~${reset}]"
-  fi
-
-  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="[${orange}%m${reset}]"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="─[${cyan}$(basename "$VIRTUAL_ENV")${reset}]"
-  [[ -n "$CONDA_DEFAULT_ENV" ]] && _PYENV="─[${cyan}${CONDA_DEFAULT_ENV}${reset}]"
-  [[ -n "$CLOUDSDK_CORE_PROJECT" ]] && _GCLOUD="[${violet}${CLOUDSDK_CORE_PROJECT}${reset}]"
-
-  case "$ret" in
-    0) _PROMPT="%B${green} %# ${reset}%b"   ;;
-    1) _PROMPT="%B${red} %# ${reset}%b"     ;;
-    *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
-  esac
-
-  _LINE_1="${_NL}┌─${_HOST}${_CWD}"
-  _LINE_2="${_NL}└─${_GCLOUD}${_PYENV}"
-  __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "[%s]"
-}
-
 {% if 'home_only' in ansible_skip_tags -%}
 [[ -e "$HOME/.zshrc.d/work.zshrc" ]] && source "$HOME/.zshrc.d/work.zshrc"
 {% endif %}
 
+source "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme"
+source "$HOME/.config/p10k.zsh"
 {% for item in sources %}
 source "{{ item }}"
 {% endfor %}
