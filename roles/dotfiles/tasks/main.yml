@@ -56,14 +56,6 @@
   tags:
     - dotfiles
 
-- name: Install Sublime Text 3 configs
-  copy:
-    src: individual/sublime-text-3/
-    dest: "{{ sublime_config }}"
-    mode: '0755'
-  tags:
-    - dotfiles
-
 
 - name: Add ssh key to authroized_keys
   authorized_key:
