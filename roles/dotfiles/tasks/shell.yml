@@ -4,13 +4,9 @@
 - name: Register gcloud install location
   shell: gcloud info | sed -rn 's/^Installation Root:\s\[(.*)\]/\1/p'
   register: gcloud_base_dir
-  tags:
-    - dotfiles
 
 - name: Load shared variables
   include_vars: shell/shared.yml
-  tags:
-    - dotfiles
 
 - name: Load distribution variables
   include_vars: "shell/{{ ansible_system }}.yml"
@@ -31,8 +27,6 @@
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
     sources: "{{ shared_sources + distribution_sources | default([]) }}"
-  tags:
-    - dotfiles
 
 - name: Build bash_profile
   template:
@@ -44,8 +38,6 @@
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
     paths: "{{ shared_paths + distribution_paths | default([]) }}"
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
-  tags:
-    - dotfiles
 
 - name: Build bashrc
   template:
@@ -58,5 +50,3 @@
     aliases: "{{ shared_aliases | combine(distribution_aliases) }}"
     functions: "{{ shared_functions | combine(distribution_functions) }}"
     sources: "{{ shared_sources + distribution_sources | default([]) }}"
-  tags:
-    - dotfiles
