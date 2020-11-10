@@ -31,7 +31,6 @@ shared_aliases:
   d: docker
   dc: docker-compose
   e: extract
-  g: gcloud
   gcl: gcloud container clusters list
   glances: glances --theme-white
   gpl: gcloud projects list --format="value(projectId)"
@@ -48,7 +47,6 @@ shared_aliases:
   pipu: pip_upgrade_outdated -3 --user --verbose
   pubip: dig myip.opendns.com @resolver1.opendns.com
   rcp: rsync --info=progress2
-  shell-rm-backups: find "$HOME" -maxdepth 1 -type f -name '.*shrc.*' -delete
   venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
 
 shared_functions:
