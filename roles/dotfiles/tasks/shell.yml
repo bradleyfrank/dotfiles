@@ -23,7 +23,7 @@
 - name: Install powerlevel10k
   git:
     repo: https://github.com/romkatv/powerlevel10k.git
-    dest: "{{ ansible_env.HOME }}/.local/share"
+    dest: "{{ ansible_env.HOME }}/.local/share/powerlevel10k"
     depth: '1'
     version: v1.13.0
 
