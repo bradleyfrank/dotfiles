@@ -88,5 +88,5 @@ shared_functions:
 
 shared_sources:
   - "{{ ansible_env.HOME }}/.local/share/k8s/fubectl"
-  - "<(kubectl completion {{ shell_name }})"
+  - "{{ ansible_env.HOME }}/.local/share/k8s/kubectl.{{ shell_name }}"
   - "{{ gcloud_base_dir.stdout }}/completion.{{ shell_name }}.inc"

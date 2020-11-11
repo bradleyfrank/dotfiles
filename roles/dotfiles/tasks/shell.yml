@@ -11,6 +11,7 @@
 - name: Load distribution variables
   include_vars: "shell/{{ ansible_system }}.yml"
 
+
 - name: Create shellrc.d folders
   file:
     path: "{{ ansible_env.HOME }}/.{{ item }}"
@@ -20,12 +21,24 @@
     - bashrc.d
     - zshrc.d
 
+
+- name: Generate kubectl completions
+  vars:
+    kubectl_completion_path: "{{ ansible_env.HOME }}/.local/share/k8s/kubectl"
+  shell:
+    cmd: "{{ kubectl }} completion {{ item }} > {{ kubectl_completion_path }}.{{ item }}"
+  loop:
+    - zsh
+    - bash
+
+
 - name: Install powerlevel10k
   git:
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: "{{ ansible_env.HOME }}/.local/share/powerlevel10k"
     depth: '1'
     version: v1.13.0
+
 
 - name: Build zshrc
   template:
