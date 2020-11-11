@@ -10,11 +10,6 @@ shared_exports:
   - VISUAL=vim
   - EDITOR=vim
   - FZF_DEFAULT_OPTS="--reverse --height=50% --color=light --multi"
-  - GIT_PS1_SHOWDIRTYSTATE=true
-  - GIT_PS1_SHOWSTASHSTATE=true
-  - GIT_PS1_SHOWUNTRACKEDFILES=true
-  - GIT_PS1_SHOWCOLORHINTS=true
-  - GIT_PS1_SHOWUPSTREAM="verbose name"
 
 shared_paths:
   - /usr/bin:/usr/sbin:/bin:/sbin
