@@ -8,10 +8,6 @@ MANPATH=""
 MANPATH={{ item }}:"$MANPATH"
 {% endfor %}
 
-{% for item in exports %}
-export {{ item }}
-{% endfor %}
-
 unsetopt BEEP
 setopt AUTO_CD EXTENDED_GLOB NOMATCH NO_CASE_GLOB NOTIFY CORRECT CORRECT_ALL GLOB_DOTS
 setopt SHARE_HISTORY APPEND_HISTORY HIST_VERIFY EXTENDED_HISTORY
@@ -27,6 +23,10 @@ FPATH=/usr/local/share/zsh-completions:"$FPATH"
 zstyle ':completion:*' list-suffixes expand prefix suffix
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 autoload -Uz compinit && compinit
+
+{% for item in exports %}
+export {{ item }}
+{% endfor %}
 
 {% for item in evals %}
 eval "{{ item }}"
@@ -44,15 +44,17 @@ function {{ key }}() {
 {% endfor -%}
 
 {% if 'home_only' in ansible_skip_tags -%}
-[[ -e "$HOME/.zshrc.d/work.zshrc" ]] && source "$HOME/.zshrc.d/work.zshrc"
+[[ -e {{ ansible_env.HOME }}/.zshrc.d/work.zshrc ]] && source {{ ansible_env.HOME }}/.zshrc.d/work.zshrc
 {% endif %}
 
-source "$HOME/.local/share/powerlevel10k/powerlevel10k.zsh-theme"
-source "$HOME/.config/p10k.zsh"
+source {{ ansible_env.HOME }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
+source {{ ansible_env.HOME }}/.config/p10k.zsh
 {% for item in sources %}
-source "{{ item }}"
+source {{ item }}
 {% endfor %}
-source "{{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+complete -F __start_kubectl k
 
 if [[ -z "$TMUX" ]]; then
   if tmux has-session -t main &> /dev/null; then tmux attach-session -t main

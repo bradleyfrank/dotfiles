@@ -30,11 +30,11 @@ function {{ key }}() {
 PS1="[\[\e[38;5;166m\]\u\[\e[0;0m\]@\[\e[38;5;33m\]\h\[\e[0;0m\]:\[\e[38;5;160m\]\W\[\e[0;0m\]]\$ "
 
 {% if 'home_only' in ansible_skip_tags -%}
-[[ -e "$HOME/.bashrc.d/work.bashrc" ]] && source "$HOME/.bashrc.d/work.bashrc"
+[[ -e {{ ansible_env.HOME }}/.bashrc.d/work.bashrc ]] && source {{ ansible_env.HOME }}/.bashrc.d/work.bashrc
 {% endif %}
 
 {% for item in sources %}
-source "{{ item }}"
+source {{ item }}
 {% endfor %}
 
-PROMPT_COMMAND='bash_prompt; history -a'
+complete -F __start_kubectl k
