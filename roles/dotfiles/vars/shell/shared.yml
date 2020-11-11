@@ -28,6 +28,7 @@ shared_aliases:
   e: extract
   gcl: gcloud container clusters list
   glances: glances --theme-white
+  glow: glow -s light
   gpl: gcloud projects list --format="value(projectId)"
   groot: cd "$(git rev-parse --show-toplevel)"
   isodate: date --iso-8601=seconds
@@ -42,6 +43,7 @@ shared_aliases:
   pipu: pip_upgrade_outdated -3 --user --verbose
   pubip: dig myip.opendns.com @resolver1.opendns.com
   rcp: rsync --info=progress2
+  http: curl -s -L -D -
   venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
 
 shared_functions:
