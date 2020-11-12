@@ -38,12 +38,11 @@
     - packages
 
 
-- name: Install Source Code Pro
+- name: Install fonts
   copy:
     src: fonts/
     dest: /usr/local/share/fonts/
     mode: 0644
-  when: "ansible_distribution == 'Ubuntu'"
   become: true
   tags:
     - fonts
@@ -51,7 +50,6 @@
 
 - name: Refresh font list
   command: fc-cache -fv
-  when: "ansible_distribution == 'Ubuntu'"
   become: true
   tags:
     - fonts

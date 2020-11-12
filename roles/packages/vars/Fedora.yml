@@ -3,7 +3,6 @@
 
 base_packages:
   - abcde
-  - adobe-source-*-pro-fonts
   - bat
   - borgbackup
   - code
