@@ -22,11 +22,9 @@ set -g status-left ""
 
 # ----- Status bar: right
 set -g status-right \
-	"#[fg=colour125] {{ ansible_distribution }} {{ ansible_distribution_version }} \
-        #[fg=colour234]| \
-		#[fg=colour166]#h \
-        #[fg=colour234]| \
-		#[fg=colour61]#{session_name}"
+  "#[fg=colour125] {{ ansible_distribution }} {{ ansible_distribution_version }} #[fg=colour234]| \
+	#[fg=colour166]#h #[fg=colour234]| \
+	#[fg=colour61]#{session_name}"
 set -g status-right-length 250
 
 
