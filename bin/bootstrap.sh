@@ -89,7 +89,6 @@ bootstrap_linux() {
 
 pre_ansible_run() {
   git clone "$ANSIBLE_REPO" "$CHECKOUT"
-  ansible-galaxy role install --role-file "$CHECKOUT"/requirements.yml
   ansible-galaxy collection install --requirements-file "$CHECKOUT"/requirements.yml
 }
 
