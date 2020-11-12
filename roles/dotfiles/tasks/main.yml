@@ -103,6 +103,16 @@
     - packages
     - vim
 
+- name: Install tmux config
+  template:
+    src: tmux.conf.j2
+    dest: "{{ ansible_env.HOME }}/.tmux.conf"
+    backup: true
+  tags:
+    - dotfiles
+    - tmux
+
+
 - name: Build shell rc files
   import_tasks:
     file: shell.yml

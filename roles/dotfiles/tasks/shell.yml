@@ -42,7 +42,7 @@
 
 - name: Build zshrc
   template:
-    src: "zshrc.j2"
+    src: zshrc.j2
     dest: "{{ ansible_env.HOME }}/.zshrc"
     backup: true
   vars:
@@ -57,7 +57,7 @@
 
 - name: Build bash_profile
   template:
-    src: 'bash_profile.j2'
+    src: bash_profile.j2
     dest: "{{ ansible_env.HOME }}/.bash_profile"
     backup: true
   vars:
@@ -68,7 +68,7 @@
 
 - name: Build bashrc
   template:
-    src: 'bashrc.j2'
+    src: bashrc.j2
     dest: "{{ ansible_env.HOME }}/.bashrc"
     backup: true
   vars:

@@ -21,16 +21,13 @@ set -g status-justify left
 set -g status-left ""
 
 # ----- Status bar: right
-TMUX_OS="#[fg=colour125] #(~/.local/bin/os-release)"
-TMUX_HOSTNAME="#[fg=colour166]#h"
-TMUX_SESSION="#[fg=colour61]#{session_name}"
-TMUX_DIV="#[fg=colour234]|"
-
-if-shell '[[ -n "$SSH_CONNECTION" ]]' TMUX_HOST_INFO="$TMUX_OS $TMUX_DIV $TMUX_HOSTNAME $TMUX_DIV"
-if-shell '[[ -z "$SSH_CONNECTION" ]]' TMUX_HOST_INFO=""
-
-set -g status-right "$TMUX_HOST_INFO $TMUX_SESSION "
-set -g status-right-length 150
+set -g status-right \
+	"#[fg=colour125] {{ ansible_distribution }} {{ ansible_distribution_version }} \
+        #[fg=colour234]| \
+		#[fg=colour166]#h \
+        #[fg=colour234]| \
+		#[fg=colour61]#{session_name}"
+set -g status-right-length 250
 
 
 # ===== Window options
@@ -60,4 +57,7 @@ bind 'y' set synchronize-panes
 bind 'u' source-file "~/.tmux.conf"
 bind 'h' select-layout even-vertical
 bind 'v' select-layout even-horizontal
-bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel
+{%- if 'Darwin' in ansible_system %} "pbcopy"
+{% else %} "xsel -i -p && xsel -o -p | xsel -i -b"
+{% endif -%}
