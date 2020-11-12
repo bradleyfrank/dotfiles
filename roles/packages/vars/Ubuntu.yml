@@ -3,6 +3,7 @@
 
 base_packages:
   - abcde
+  - apt-transport-https  # kubernetes
   - bat
   - borgbackup
   - code
@@ -19,6 +20,7 @@ base_packages:
   - ghostscript
   - ghostwriter
   - glances
+  - gnupg2  # kubernetes
   - google-chrome-stable
   - htop
   - iftop

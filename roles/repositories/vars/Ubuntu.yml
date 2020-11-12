@@ -48,3 +48,7 @@ repos:
     repo: https://cli.github.com/packages
     keyserver: keyserver.ubuntu.com
     id: C99B11DEB97541F0
+
+  - name: kubernetes
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    key: https://packages.cloud.google.com/apt/doc/apt-key.gpg

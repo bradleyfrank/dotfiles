@@ -16,3 +16,8 @@ repos:
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm
     gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+
+  - name: kubernetes
+    description: Kubernetes
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg

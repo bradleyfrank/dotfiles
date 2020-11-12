@@ -16,6 +16,7 @@ base_packages:
   - htop
   - iftop
   - keychain
+  - kubectl
   - libvirt-client
   - lvm2
   - mdadm
