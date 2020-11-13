@@ -1,14 +1,15 @@
 ---
 # tasks file for dotfiles
 
+# Register gcloud first because it's used by vars/shell/shared.yml to source completion scripts.
 - name: Register gcloud install location
   shell: gcloud info | sed -rn 's/^Installation Root:\s\[(.*)\]/\1/p'
   register: gcloud_base_dir
 
-- name: Load shared variables
+- name: Load shared shell variables
   include_vars: shell/shared.yml
 
-- name: Load distribution variables
+- name: Load distribution shell variables
   include_vars: "shell/{{ ansible_system }}.yml"
 
 
@@ -31,7 +32,7 @@
     - zsh
     - bash
 
-
+# p10k is not available as a Linux package so clone a release on all systems for consistency.
 - name: Install powerlevel10k
   git:
     repo: https://github.com/romkatv/powerlevel10k.git
