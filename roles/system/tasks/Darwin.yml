@@ -28,6 +28,17 @@
   tags:
     - shell
 
+- name: Fix permissions for zsh
+  file:
+    path: "{{ item }}"
+    mode: 0755
+  loop:
+    - /usr/local/share
+    - /usr/local/share/zsh
+    - /usr/local/share/zsh/site-functions
+  tags:
+    - shell
+
 - name: Make bash default for root
   user:
     name: root
