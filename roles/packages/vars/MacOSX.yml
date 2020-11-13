@@ -32,7 +32,6 @@ base_packages:
   - gnu-which
   - grep
   - gzip
-  - hexyl
   - iftop
   - kpcli
   - keychain
@@ -42,7 +41,6 @@ base_packages:
   - markdown
   - mas
   - mtr
-  - most
   - ncdu
   - neofetch
   - nmap
@@ -94,7 +92,6 @@ base_casks:
   - keepingyouawake
   - logitech-options
   - macdown
-  - meld
   - transmission
   - visual-studio-code
   - vivaldi
@@ -103,10 +100,8 @@ base_casks:
 
 home_casks:
   - 1password
-  - bartender
   - calibre
   - fantastical
-  - google-cloud-sdk
   - istat-menus
   - musicbrainz-picard
   - plexamp
@@ -123,7 +118,6 @@ work_casks:
   - dozer
   - jumpcut
   - menumeters
-  - rectangle
 
 
 home_apps:
@@ -132,11 +126,9 @@ home_apps:
   - 409201541  # Pages
   - 409203825  # Numbers
   - 425424353  # The Unarchiver
-  - 441258766  # Magnet
   - 568494494  # Pocket
   - 924726344  # Deliveries
-  - 1176895641  # Spark Mail
   - 1179623856  # Pastebot
   - 1289378661  # Twitterific
   - 1320666476  # Wipr
-  - 1449412482  # Reeder 4
+  - 1529448980  # Reeder 5
