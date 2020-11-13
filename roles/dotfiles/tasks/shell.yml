@@ -4,7 +4,7 @@
 # Register gcloud first because it's used by vars/shell/shared.yml to source completion scripts.
 - name: Register gcloud install location
   shell: gcloud info | sed -rn 's/^Installation Root:\s\[(.*)\]/\1/p'
-  register: gcloud_base_dir
+  register: gcloud_basedir
 
 - name: Load shared shell variables
   include_vars: shell/shared.yml
