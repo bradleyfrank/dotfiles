@@ -36,7 +36,6 @@
   template:
     src: zshrc.j2
     dest: "{{ ansible_env.HOME }}/.zshrc"
-    backup: true
   vars:
     shell_name: zsh
     evals: "{{ shared_evals + distribution_evals | default([]) }}"
@@ -51,7 +50,6 @@
   template:
     src: bash_profile.j2
     dest: "{{ ansible_env.HOME }}/.bash_profile"
-    backup: true
   vars:
     shell_name: bash
     exports: "{{ shared_exports + distribution_exports | default([]) }}"
@@ -62,7 +60,6 @@
   template:
     src: bashrc.j2
     dest: "{{ ansible_env.HOME }}/.bashrc"
-    backup: true
   vars:
     shell_name: bash
     evals: "{{ shared_evals + distribution_evals | default([]) }}"
