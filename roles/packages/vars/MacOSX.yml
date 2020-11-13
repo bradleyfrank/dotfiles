@@ -70,6 +70,7 @@ home_packages:
   - awscli
   - eye-d3
   - ffsend
+  - google-cloud-sdk
   - jq
   - stern
   - youtube-dl
