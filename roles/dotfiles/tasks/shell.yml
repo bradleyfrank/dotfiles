@@ -13,16 +13,7 @@
   include_vars: "shell/{{ ansible_system }}.yml"
 
 
-- name: Create shellrc.d folders
-  file:
-    path: "{{ ansible_env.HOME }}/.{{ item }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - bashrc.d
-    - zshrc.d
-
-
+# The generated file is sourced by zsh and Bash.
 - name: Generate kubectl completions
   vars:
     kubectl_completion_path: "{{ ansible_env.HOME }}/.local/share/k8s/kubectl"

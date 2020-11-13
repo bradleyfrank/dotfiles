@@ -44,7 +44,9 @@ function {{ key }}() {
 {% endfor -%}
 
 {% if 'home_only' in ansible_skip_tags -%}
-[[ -e {{ ansible_env.HOME }}/.zshrc.d/work.zshrc ]] && source {{ ansible_env.HOME }}/.zshrc.d/work.zshrc
+# -- begin work-only config -- #
+source {{ ansible_env.HOME }}/.infractl/secrets
+# -- end work-only config -- #
 {% endif %}
 
 source {{ ansible_env.HOME }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme

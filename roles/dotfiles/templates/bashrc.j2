@@ -30,7 +30,9 @@ function {{ key }}() {
 PS1="[\[\e[38;5;166m\]\u\[\e[0;0m\]@\[\e[38;5;33m\]\h\[\e[0;0m\]:\[\e[38;5;160m\]\W\[\e[0;0m\]]\$ "
 
 {% if 'home_only' in ansible_skip_tags -%}
-[[ -e {{ ansible_env.HOME }}/.bashrc.d/work.bashrc ]] && source {{ ansible_env.HOME }}/.bashrc.d/work.bashrc
+# -- begin work-only config -- #
+source {{ ansible_env.HOME }}/.infractl/secrets
+# -- end work-only config -- #
 {% endif %}
 
 {% for item in sources %}
