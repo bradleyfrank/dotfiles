@@ -21,6 +21,7 @@ vscode_extensions:
   - bungcip.better-toml
   - DavidAnson.vscode-markdownlint
   - donjayamanne.githistory
+  - eamodio.gitlens
   - haaaad.ansible
   - mhutchie.git-graph
   - mikestead.dotenv
