@@ -52,17 +52,6 @@ Once applied, the `dotfiles` function provides a wrapper for applying dotfiles.
 
 ## Post-Ansible Instructions
 
-After applying `bootstrap` or `dotfiles`, setup Git authorship with an appropriate email address:
-
-```shell
-email="email@address.tld"
-cat << EOF > ~/.gitconfig.local
-[user]
-  name = Brad Frank
-  email = $email
-EOF
-```
-
 Other tasks:
 
 * MacOS disk encryption
