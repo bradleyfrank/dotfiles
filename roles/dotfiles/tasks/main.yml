@@ -48,6 +48,14 @@
     - home_only
 
 
+- name: Apply global gitconfig
+  template:
+    src: gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+  tags:
+    - dotfiles
+
+
 - name: Install VSCode configs
   copy:
     src: individual/vscode/
@@ -102,6 +110,7 @@
     - dotfiles
     - packages
     - vim
+
 
 - name: Install tmux config
   template:
