@@ -46,6 +46,7 @@ function {{ key }}() {
 {% if 'home_only' in ansible_skip_tags -%}
 # -- begin work-only config -- #
 source {{ ansible_env.HOME }}/.infractl/secrets
+source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
 # -- end work-only config -- #
 {% endif %}
 

@@ -32,6 +32,7 @@ PS1="[\[\e[38;5;166m\]\u\[\e[0;0m\]@\[\e[38;5;33m\]\h\[\e[0;0m\]:\[\e[38;5;160m\
 {% if 'home_only' in ansible_skip_tags -%}
 # -- begin work-only config -- #
 source {{ ansible_env.HOME }}/.infractl/secrets
+source /usr/local/bin/google-cloud-sdk/completion.bash.inc
 # -- end work-only config -- #
 {% endif %}
 
