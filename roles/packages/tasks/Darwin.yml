@@ -6,6 +6,7 @@
     name: "{{ taps }}"
   tags:
     - packages
+    - taps
 
 
 - name: Install base Homebrew packages
@@ -13,12 +14,14 @@
     name: "{{ base_packages }}"
   tags:
     - packages
+    - formulas
 
 - name: Install home-only Homebrew packages
   homebrew:
     name: "{{ home_packages }}"
   tags:
     - packages
+    - formulas
     - home_only
 
 
@@ -28,6 +31,7 @@
     accept_external_apps: true
   tags:
     - packages
+    - casks
 
 - name: Install home-only Homebrew casks
   homebrew_cask:
@@ -35,6 +39,7 @@
     accept_external_apps: true
   tags:
     - packages
+    - casks
     - home_only
 
 - name: Install work-only Homebrew casks
@@ -43,6 +48,7 @@
     accept_external_apps: true
   tags:
     - packages
+    - casks
     - work_only
 
 
@@ -52,4 +58,5 @@
   loop: "{{ home_apps }}"
   tags:
     - packages
+    - mas
     - home_only
