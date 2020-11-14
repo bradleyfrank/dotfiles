@@ -3,6 +3,8 @@
 
 - name: Load OS packages lists
   include_vars: "{{ ansible_distribution }}.yml"
+  tags:
+    - packages
 
 - name: Install packages for OS
   include_tasks: "{{ ansible_system }}.yml"
