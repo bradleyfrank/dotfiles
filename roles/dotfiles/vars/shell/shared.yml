@@ -26,7 +26,8 @@ shared_aliases:
   d: docker
   dc: docker-compose
   e: extract
-  gcl: gcloud container clusters list
+  gc: gcloud
+  gcs: gclcoud config set
   glances: glances --theme-white
   glow: glow -s light
   gpl: gcloud projects list --format="value(projectId)"
@@ -60,7 +61,6 @@ shared_functions:
       playbooks/{{ ansible_system | lower }}.yml
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
-  gps: export CLOUDSDK_CORE_PROJECT="$1"
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
   mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
   pylinter: |-
