@@ -33,6 +33,7 @@ shared_aliases:
   glow: glow -s light
   gpl: gcloud projects list --format="value(projectId)"
   groot: cd "$(git rev-parse --show-toplevel)"
+  http: curl -s -L -D -
   isodate: date --iso-8601=seconds
   l1: ls -1 --color --classify --human-readable
   la: ls -la --color --classify --human-readable
@@ -45,7 +46,7 @@ shared_aliases:
   pipu: pip_upgrade_outdated -3 --user --verbose
   pubip: dig myip.opendns.com @resolver1.opendns.com
   rcp: rsync --info=progress2
-  http: curl -s -L -D -
+  tf: terraform
   venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
 
 shared_functions:
