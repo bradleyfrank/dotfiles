@@ -2,7 +2,7 @@
 # vars file for dotfiles
 
 distribution_evals:
-  - "$(keychain --eval --ignore-missing --quiet id_rsa id_develop id_home)"
+  - "$(keychain --eval --ignore-missing --quiet {{ ssh_keys | join(' ') }})"
 
 distribution_aliases:
   ipa: 'ip -c a'

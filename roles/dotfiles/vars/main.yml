@@ -1,6 +1,12 @@
 ---
 # vars file for dotfiles
 
+ssh_keys:
+  - id_rsa
+  - id_home
+  - id_develop
+  - google_compute_engine
+
 vim_extensions_dest: "{{ ansible_env.HOME }}/.vim/pack/default/start"
 
 vim_extensions:

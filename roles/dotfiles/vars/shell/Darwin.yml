@@ -2,7 +2,7 @@
 # vars file for dotfiles
 
 distribution_evals:
-  - "$(keychain --eval --ignore-missing --quiet --inherit any id_rsa id_develop id_home)"
+  - "$(keychain --eval --ignore-missing --quiet --inherit any {{ ssh_keys | join(' ') }})"
 
 distribution_exports:
   - CLICOLOR=1
