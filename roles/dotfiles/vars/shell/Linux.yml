@@ -11,7 +11,7 @@ distribution_aliases:
   iowatch: 'watch -n 1 iostat -xy --human 1 1'
 
 distribution_functions:
-  fproc: |-
+  findproc: |-
     local pid
     if [[ "$1" =~ ^[0-9]+$ ]]; then pid="$(ps -o sid= -p "$1")"
     else pid="$(pgrep "$1")"
