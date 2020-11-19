@@ -20,7 +20,6 @@ trap cleanup SIGINT
 cleanup() {
   [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -f "$SUDOERS_D_TMP"
   [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
-  [[ "$SYSTEM_TYPE" == "darwin" ]] && kill "$(pgrep caffeinate)" &> /dev/null
 }
 
 create_tmp_sudoers() {
@@ -40,6 +39,19 @@ create_vault_file() {
   printf "\n\n" # insert newlines for readability
 }
 
+keep_awake() {
+  case "$SYSTEM_TYPE" in
+    darwin)
+      kill "$(pgrep caffeinate)" &> /dev/null
+      (caffeinate -d -i -m -u &)
+      ;;
+    linux)
+      dconf write /org/gnome/desktop/session/idle-delay 'uint32 0'
+      dconf write /org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout "'nothing'"
+      ;;
+  esac
+}
+
 not_supported() {
   printf "%s\n" "Unsupported OS, aborting..." >&2
   exit 1
@@ -48,14 +60,14 @@ not_supported() {
 bootstrap_os() {
   case "$SYSTEM_TYPE" in
     darwin) bootstrap_macos ;;
-     linux) bootstrap_linux ;;
-         *) not_supported   ;;
+    linux)  bootstrap_linux ;;
+    *)      not_supported   ;;
   esac
 }
 
 bootstrap_macos() {
   local homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
-  (caffeinate -d -i -m -u &)
+  keep_awake
   softwareupdate --install --all
   [[ ! -x /usr/local/bin/brew ]] && CI=1 /bin/bash -c "$(curl -fsSL "$homebrew_url")"
   brew install ansible git
@@ -72,12 +84,14 @@ bootstrap_linux() {
       sudo yum module enable python38
       ;;
     fedora)
+      keep_awake
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
       sudo dnf install -y ansible git
       ;;
     ubuntu)
+      keep_awake
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
