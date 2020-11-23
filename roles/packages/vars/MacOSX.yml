@@ -10,6 +10,7 @@ taps:
 
 
 base_packages:
+  - ansible-lint
   - bash
   - bash-completion@2
   - bat
@@ -20,6 +21,7 @@ base_packages:
   - findutils
   - fdupes
   - flac
+  - ffmpeg
   - fzf
   - gawk
   - gh
