@@ -381,6 +381,15 @@
     cmd: 'spctl --master-disable'
   become: true
 
+- name: Use Touch ID for sudo
+  lineinfile:
+    path: /etc/pam.d/sudo
+    insertafter: '^# sudo:'
+    firstmatch: true
+    line: auth       sufficient     pam_tid.so
+    state: present
+  become: true
+
 #
 # Files and Folders settings
 #
