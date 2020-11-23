@@ -69,14 +69,6 @@ shared_functions:
     blackdiff "$@"
     pylint "$@"
     pycodestyle "$@"
-  sshgen: |-
-    local comment password keyfile
-    comment="$(id -un)@$(uname -n) on $(date --iso-8601=minute)"
-    password="$(keepassxc-cli diceware --words 5 | tr ' ' '-')"
-    keyfile="$HOME"/.ssh/id_"${1:-rsa}"
-    [[ -e "$keyfile" ]] && keyfile="$HOME"/.ssh/id_"$(date +%s)"
-    ssh-keygen -q -t rsa -b 4096 -N "$password" -C "$comment" -f "$keyfile"
-    echo "$keyfile : $password"
   tardir: tar -czf "${1%/}".tar.gz "$1"
   cheat: curl -s "cheat.sh/$1?style=vs"
   ytdl-video: |-

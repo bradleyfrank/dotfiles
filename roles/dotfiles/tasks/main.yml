@@ -7,124 +7,66 @@
     state: directory
     mode: '0755'
   with_items: ['Projects', 'Build', 'Scratch']
-
-- name: Create and ensure proper permissions on ~/.ssh
-  file:
-    path: "{{ ansible_env.HOME }}/.ssh"
-    state: directory
-    mode: '0700'
   tags:
     - dotfiles
 
-
-- name: Create shared dotfile directories
+- name: Create ~/.local folder structure
   file:
-    path: "{{ ansible_env.HOME }}/{{ item.path }}"
+    path: "{{ ansible_env.HOME }}/.local/{{ item }}"
     state: directory
     mode: '0755'
-  with_filetree: shared/
-  when: item.state == 'directory'
+  loop:
+    - bin
+    - etc
+    - include
+    - lib
+    - opt
+    - share
+    - var
   tags:
     - dotfiles
 
-- name: Apply shared dotfiles
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ ansible_env.HOME }}/{{ item.path }}"
-    mode: '0755'
-  with_filetree: shared/
-  when: item.state == 'file'
-  tags:
-    - dotfiles
-
-- name: Apply home-only dotfiles
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ ansible_env.HOME }}/{{ item.path }}"
-  with_filetree: home_only/
-  when: item.state == 'file'
-  tags:
-    - dotfiles
-    - home_only
-
-
-- name: Apply global gitconfig
-  template:
-    src: gitconfig.j2
-    dest: "{{ ansible_env.HOME }}/.gitconfig"
-  tags:
-    - dotfiles
-
-
-- name: Install VSCode configs
-  copy:
-    src: individual/vscode/
-    dest: "{{ vscode_config }}"
-    mode: '0755'
-  tags:
-    - dotfiles
-
-
-- name: Add ssh key to authroized_keys
-  authorized_key:
-    user: "{{ ansible_env.USER }}"
-    state: present
-    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFStPMEL6J3I60LhF5HpzGdfv3eJymi3UKVDWPq7VOjP
-  tags:
-    - dotfiles
-    - home_only
-
-- name: Set proper permissions on ~/.ssh/authorized_keys
+- name: Create ~/.config directory
   file:
-    path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
-    state: touch
-    mode: '0600'
-  tags:
-    - dotfiles
-
-- name: Set proper permissions on ~/.ssh/config
-  file:
-    path: "{{ ansible_env.HOME }}/.ssh/config"
-    state: touch
-    mode: '0644'
-  tags:
-    - dotfiles
-
-
-- name: Create vim extensions directory path
-  file:
-    path: "{{ vim_extensions_dest }}"
+    path: "{{ ansible_env.HOME }}/.config"
     state: directory
     mode: '0755'
   tags:
     - dotfiles
 
-- name: Install vim extensions
-  git:
-    repo: "{{ item.repo }}"
-    dest: "{{ vim_extensions_dest }}/{{ item.name }}"
-    depth: '1'
-    version: "{{ item.version | default(omit) }}"
-  loop: "{{ vim_extensions }}"
+- name: Install app dotfiles
+  import_tasks:
+    file: apps.yml
   tags:
     - dotfiles
-    - packages
+    - apps
+
+- name: Install scripts
+  copy:
+    src: scripts/
+    dest: "{{ ansible_env.HOME }}/.local/bin/"
+    mode: '0755'
+  tags:
+    - dotfiles
+    - scripts
+
+- name: Setup ssh
+  import_tasks:
+    file: ssh.yml
+  tags:
+    - dotfiles
+    - ssh
+
+- name: Setup vim
+  import_tasks:
+    file: vim.yml
+  tags:
+    - dotfiles
     - vim
 
-
-- name: Install tmux config
-  template:
-    src: tmux.conf.j2
-    dest: "{{ ansible_env.HOME }}/.tmux.conf"
-    backup: true
-  tags:
-    - dotfiles
-    - tmux
-
-
-- name: Build shell rc files
+- name: Configure Bash and Zsh
   import_tasks:
     file: shell.yml
   tags:
     - dotfiles
-    - shellrc
+    - shell

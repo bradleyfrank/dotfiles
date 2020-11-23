@@ -18,6 +18,7 @@
     - zsh
     - bash
 
+
 # p10k is not available as a Linux package so clone a release on all systems for consistency.
 - name: Install powerlevel10k
   git:
