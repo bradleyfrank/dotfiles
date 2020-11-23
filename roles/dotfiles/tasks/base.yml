@@ -6,19 +6,13 @@
     src: "{{ item.src }}"
     dest: "{{ ansible_env.HOME }}/{{ item.path }}"
     mode: '0644'
-  with_filetree: apps/
+  with_filetree: base/
   when: item.state == 'file'
 
 - name: Install gitconfig
   template:
     src: gitconfig.j2
     dest: "{{ ansible_env.HOME }}/.gitconfig"
-    mode: '0755'
-
-- name: Copy vscode config
-  copy:
-    src: vscode/
-    dest: "{{ vscode_config }}"
     mode: '0755'
 
 - name: Install tmux config
