@@ -96,20 +96,6 @@
     type: bool
     value: 'true'
 
-- name: Create TextMate Bundle support bin directory
-  file:
-    path: "{{ ansible_env.HOME }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin"
-    state: directory
-    mode: 0755
-
-- name: Create a symlink to the patched version of `par` for TextMate
-  file:
-    src: /usr/local/bin/par
-    dest: "{{ ansible_env.HOME }}/Library/Application Support/TextMate/Managed/Bundles/Bundle Support.tmbundle/Support/shared/bin/par"
-    owner: "{{ ansible_env.USER }}"
-    group: admin
-    state: link
-
 #
 # Finder and Desktop settings
 #
