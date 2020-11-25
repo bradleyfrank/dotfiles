@@ -1,15 +1,18 @@
 ---
 # vars file for repositories
 
+fedora_https: https://mirrors.fedoraproject.org
+fedora_meta: $releasever&arch=$basearch&infra=$infra&content=$contentdir
+
 repos:
   - name: epel
     description: Extra Packages for Enterprise Linux
-    metalink: https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+    metalink: "{{ fedora_https }}/metalink?repo=epel-{{ fedora_meta }}"
     gpgkey: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
 
   - name: epel-modular
     description: Extra Packages for Enterprise Linux Modular
-    metalink: https://mirrors.fedoraproject.org/metalink?repo=epel-modular-$releasever&arch=$basearch&infra=$infra&content=$contentdir
+    metalink: "{{ fedora_https }}/metalink?repo=epel-modular-{{ fedora_meta }}"
     gpgkey: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
 
   - name: gh-cli
@@ -20,4 +23,5 @@ repos:
   - name: kubernetes
     description: Kubernetes
     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg
+      https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg

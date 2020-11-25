@@ -44,37 +44,32 @@
     - dotfiles
     - scripts
 
-
-- name: Install base dotfiles
-  import_tasks:
-    file: base.yml
-  tags:
-    - dotfiles
-    - apps
-
-- name: Setup ssh
-  import_tasks:
-    file: ssh.yml
-  tags:
-    - dotfiles
-    - ssh
-
-- name: Setup Vim
-  import_tasks:
-    file: vim.yml
-  tags:
-    - dotfiles
-    - vim
-
 - name: Setup VSCode
   copy:
     src: vscode/
     dest: "{{ vscode_config }}"
     mode: '0755'
 
+- name: Install base dotfiles
+  import_tasks: tasks/base.yml
+  tags:
+    - dotfiles
+    - apps
+
+- name: Setup ssh
+  import_tasks: tasks/ssh.yml
+  tags:
+    - dotfiles
+    - ssh
+
+- name: Setup Vim
+  import_tasks: tasks/vim.yml
+  tags:
+    - dotfiles
+    - vim
+
 - name: Configure Bash and Zsh
-  import_tasks:
-    file: shell.yml
+  import_tasks: tasks/shell.yml
   tags:
     - dotfiles
     - shell

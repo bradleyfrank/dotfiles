@@ -3,14 +3,14 @@
 
 - name: Install "rpmfusion-free" repo
   yum:
-    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    name: "{{ rpmfusion_https }}/free/fedora/{{ rpmfusion_free_release }}.noarch.rpm"
     disable_gpg_check: true
     state: present
   become: true
 
 - name: Install "rpmfusion-nonfree" repo
   yum:
-    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    name: "{{ rpmfusion_https }}/nonfree/fedora/{{ rpmfusion_nonfree_release }}.noarch.rpm"
     disable_gpg_check: true
     state: present
   become: true
