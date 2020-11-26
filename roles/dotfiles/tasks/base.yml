@@ -1,7 +1,15 @@
 ---
 # tasks file for dotfiles
 
-- name: Install shared dotfiles
+- name: Create base dotfile directory structure
+  file:
+    path: "{{ ansible_env.HOME }}/{{ item.path }}"
+    state: directory
+    mode: '0755'
+  with_filetree: base/
+  when: item.state == 'directory'
+
+- name: Install base dotfiles
   copy:
     src: "{{ item.src }}"
     dest: "{{ ansible_env.HOME }}/{{ item.path }}"
@@ -20,3 +28,12 @@
     src: tmux.conf.j2
     dest: "{{ ansible_env.HOME }}/.tmux.conf"
     mode: '0755'
+
+- name: Generate kubectl completions
+  vars:
+    kubectl_completion_path: "{{ ansible_env.HOME }}/.local/share/k8s/kubectl"
+  shell:
+    cmd: "{{ kubectl }} completion {{ item }} > {{ kubectl_completion_path }}.{{ item }}"
+  loop:
+    - zsh
+    - bash

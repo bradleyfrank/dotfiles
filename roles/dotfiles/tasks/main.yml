@@ -15,14 +15,7 @@
     path: "{{ ansible_env.HOME }}/.local/{{ item }}"
     state: directory
     mode: '0755'
-  loop:
-    - bin
-    - etc
-    - include
-    - lib
-    - opt
-    - share
-    - var
+  loop: ['bin', 'etc', 'include', 'lib', 'opt', 'share', 'var']
   tags:
     - dotfiles
 
@@ -34,7 +27,6 @@
   tags:
     - dotfiles
 
-
 - name: Install scripts
   copy:
     src: scripts/
@@ -44,7 +36,7 @@
     - dotfiles
     - scripts
 
-- name: Setup VSCode
+- name: Install VSCode configs
   copy:
     src: vscode/
     dest: "{{ vscode_config }}"

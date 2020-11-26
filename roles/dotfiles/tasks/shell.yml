@@ -8,17 +8,6 @@
   include_vars: "shell/{{ ansible_system }}.yml"
 
 
-# The generated file is sourced by zsh and Bash.
-- name: Generate kubectl completions
-  vars:
-    kubectl_completion_path: "{{ ansible_env.HOME }}/.local/share/k8s/kubectl"
-  shell:
-    cmd: "{{ kubectl }} completion {{ item }} > {{ kubectl_completion_path }}.{{ item }}"
-  loop:
-    - zsh
-    - bash
-
-
 # p10k is not available as a Linux package so clone a release on all systems for consistency.
 - name: Install powerlevel10k
   git:
