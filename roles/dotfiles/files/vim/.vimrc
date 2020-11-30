@@ -5,6 +5,11 @@ set signcolumn=no
 let g:gitgutter_signs = 0
 let g:gitgutter_highlight_lines = 1
 
+map <C-n> :NERDTreeToggle<CR>
+" open a NERDTree automatically when vim starts up if no files were specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
 syntax on
 
 set tabstop=2 shiftwidth=2 expandtab smarttab autoindent
@@ -18,6 +23,7 @@ set laststatus=2
 set scrolloff=4
 set updatetime=100
 set cursorline
+set paste
 
 set term=screen-256color
 set background=light
