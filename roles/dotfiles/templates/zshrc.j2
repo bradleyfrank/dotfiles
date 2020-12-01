@@ -1,4 +1,7 @@
 PATH=""
+{% if 'Darwin' in ansible_system %}
+PATH={{ python3_user_base.stdout }}/bin
+{% endif %}
 {% for item in paths %}
 PATH={{ item }}:"$PATH"
 {% endfor %}

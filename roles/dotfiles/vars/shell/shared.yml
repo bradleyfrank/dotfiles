@@ -14,11 +14,11 @@ shared_exports:
 shared_paths:
   - /usr/bin:/usr/sbin:/bin:/sbin
   - /usr/local/bin:/usr/local/sbin
-  - ~/.local/bin:~/bin
+  - "{{ ansible_env.HOME }}/.local/bin:~/bin"
 
 shared_manpaths:
   - /usr/local/share/man:/usr/share/man
-  - ~/.local/share/man
+  - "{{ ansible_env.HOME }}/.local/share/man"
 
 shared_aliases:
   bw: bitwise --no-color

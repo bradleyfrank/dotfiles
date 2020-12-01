@@ -12,7 +12,6 @@ distribution_exports:
   - INFOPATH=/usr/local/share/info:"${INFOPATH:-}"
 
 distribution_paths:
-  - ~/Library/Python/3.8/bin
   - /opt/X11/bin
   - /usr/local/opt/coreutils/libexec/gnubin
   - /usr/local/opt/gnu-tar/libexec/gnubin

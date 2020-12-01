@@ -17,6 +17,12 @@
     version: v1.13.0
 
 
+# Used to add user's bin location to PATH on macOS.
+- name: Register Python3 user base location
+  shell: python3 -m site --user-base
+  register: python3_user_base
+
+
 - name: Build zshrc
   template:
     src: zshrc.j2
