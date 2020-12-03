@@ -4,7 +4,9 @@
 [push]
   default = current
 [pull]
-	rebase = false
+	rebase = true
+[rebase]
+  autoStash = true
 [core]
   excludesfile = {{ ansible_env.HOME }}/.gitignore
   editor = vim
