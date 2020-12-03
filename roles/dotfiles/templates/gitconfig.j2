@@ -18,10 +18,10 @@
   ll = log --oneline
   s = switch
   sb = status -sb
-  search - !git rev-list --all | xargs git grep -F
+  search = !git rev-list --all | xargs git grep -F
   unstage = reset HEAD --
 [help]
-	autocorrect = 20
+  autocorrect = 20
 [pager]
   diff = diff-so-fancy | less --tabs=1,5 -RFX
   show = diff-so-fancy | less --tabs=1,5 -RFX
