@@ -28,7 +28,6 @@ shared_aliases:
   e: extract
   gc: gcloud
   gcs: gclcoud config set
-  gfind: git rev-list --all | xargs git grep -F
   glances: glances --theme-white
   glow: glow -s light
   gpl: gcloud projects list --format="value(projectId)"
