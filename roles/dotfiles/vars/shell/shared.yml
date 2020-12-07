@@ -45,6 +45,7 @@ shared_aliases:
   pipu: pip_upgrade_outdated -3 --user --verbose
   pubip: dig myip.opendns.com @resolver1.opendns.com
   rcp: rsync --info=progress2
+  shortnames: kubectl api-resources
   tf: terraform
   venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
 
