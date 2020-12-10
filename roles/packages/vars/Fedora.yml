@@ -92,6 +92,7 @@ gnome_packages:
   - libgnome-keyring
   - meld
   - mpv
+  - newsflash
   - nextcloud-client-nautilus
   - transmission-gtk
   - yaru-icon-theme
