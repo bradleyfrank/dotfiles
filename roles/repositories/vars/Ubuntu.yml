@@ -19,7 +19,7 @@ repos:
     key: https://download.spotify.com/debian/pubkey_0D811D58.gpg
 
   - name: signal
-    repo: deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main
+    repo: deb [arch=amd64] https://updates.signal.org/desktop/apt {{ ansible_distribution_release }} main
     key: https://updates.signal.org/desktop/apt/keys.asc
 
   - name: chrome
@@ -47,9 +47,8 @@ repos:
     id: 94B56C64CA7278ECFC34E8808540356019F7E55B
 
   - name: gh-cli
-    repo: https://cli.github.com/packages
-    keyserver: keyserver.ubuntu.com
-    id: C99B11DEB97541F0
+    repo: deb https://cli.github.com/packages {{ ansible_distribution_release }} main
+    key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
 
   - name: kubernetes
     repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
