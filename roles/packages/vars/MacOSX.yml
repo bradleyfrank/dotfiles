@@ -96,6 +96,7 @@ base_casks:
   - keepingyouawake
   - logitech-options
   - macdown
+  - multipass
   - transmission
   - visual-studio-code
   - vivaldi
@@ -139,4 +140,5 @@ home_apps:
   - 1179623856  # Pastebot
   - 1289378661  # Twitterific
   - 1320666476  # Wipr
+  - 1516894961  # Codye
   - 1529448980  # Reeder 5
