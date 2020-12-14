@@ -2,7 +2,7 @@
 # tasks file for dotfiles
 
 - name: Load per-OS variables
-  include_vars: "{{ ansible_distribution }}.yml"
+  include_vars: "{{ ansible_system }}.yml"
   tags:
     - dotfiles
 
