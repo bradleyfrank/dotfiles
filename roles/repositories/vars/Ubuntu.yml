@@ -22,7 +22,7 @@ repos:
     repo: deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main
     key: https://updates.signal.org/desktop/apt/keys.asc
 
-  - name: chrome
+  - name: google-chrome
     repo: deb http://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
 

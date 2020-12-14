@@ -4,6 +4,7 @@
 base_packages:
   - 1password
   - abcde
+  - apt-file
   - apt-transport-https  # kubernetes
   - bat
   - borgbackup
@@ -58,6 +59,7 @@ base_packages:
   - signal-desktop
   - solaar
   - spotify-client
+  - ssh
   - stow
   - strace
   - system-config-printer
