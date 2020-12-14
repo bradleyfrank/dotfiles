@@ -40,7 +40,7 @@ shared_aliases:
   ll: ls -l --color --classify --human-readable
   lsmnt: mount | column -t
   lt: ls -1AS --color --classify --human-readable --group-directories-first --size
-  mux: tmux new -s "$(diceware 2)"
+  muxd: tmux new -s "$(diceware 2)"
   pipi: python3 -m pip install --user
   pipu: pip_upgrade_outdated -3 --user --verbose
   pubip: dig myip.opendns.com @resolver1.opendns.com
@@ -59,12 +59,17 @@ shared_functions:
       --url https://github.com/bradleyfrank/dotfiles.git \
       --directory "$HOME"/.dotfiles \
       --tags dotfiles \
-      --skip-tags {{ ansible_skip_tags | join(', ') }} \
       playbooks/{{ ansible_system | lower }}.yml
   decrypt: openssl enc -d -aes-256-cbc -in "$1" -out "$1.decrypted"
   encrypt: openssl enc -aes-256-cbc -salt -in "$1" -out "$1.encrypted"
   httptrace: curl -s -L -D - "$1" -o /dev/null -w "%{url_effective}\n"
   mkpasswd: keepassxc-cli generate -L "${1:-16}" -lUn --exclude-similar
+  mux: |-
+    if [[ -z "$TMUX" ]]; then
+      if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
+      else tmux new -s main
+      fi
+    fi
   pylinter: |-
     blackdiff "$@"
     pylint "$@"

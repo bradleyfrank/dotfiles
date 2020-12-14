@@ -42,7 +42,7 @@
 - name: Make bash default for root
   user:
     name: root
-    shell: "{{ usr_path }}/bin/bash"
+    shell: "/usr/local/bin/bash"
   become: true
   tags:
     - root

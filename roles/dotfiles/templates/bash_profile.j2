@@ -15,10 +15,4 @@ MANPATH={{ item }}:"$MANPATH"
 export {{ item }}
 {% endfor %}
 
-if [[ -z "$TMUX" ]]; then
-  if tmux has-session -t main &> /dev/null; then tmux attach-session -t main
-  else tmux new -s main
-  fi
-fi
-
 source "$HOME/.bashrc"

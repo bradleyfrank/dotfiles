@@ -5,8 +5,6 @@
   vars:
     desktop: "{{ ansible_env.XDG_CURRENT_DESKTOP | default('server') }}"
     usr_path: /usr
-    vscode_config: "{{ ansible_env.HOME }}/.config/Code"
-    kubectl: /usr/bin/kubectl
   roles:
     - repositories
     - packages

@@ -12,8 +12,7 @@
     src: ssh/.ssh/config
     dest: "{{ ansible_env.HOME }}/.ssh/"
     mode: '0755'
-  tags:
-    - home_only
+  when: manage_ssh_config
 
 - name: Set proper permissions on ~/.ssh/authorized_keys
   file:

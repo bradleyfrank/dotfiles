@@ -1,20 +1,20 @@
 ---
 # tasks file for dotfiles
 
-- name: Create base dotfile directory structure
+- name: Create directory structure
   file:
     path: "{{ ansible_env.HOME }}/{{ item.path }}"
     state: directory
     mode: '0755'
-  with_filetree: base/
+  with_filetree: utils/
   when: item.state == 'directory'
 
-- name: Install base dotfiles
+- name: Install dotfiles
   copy:
     src: "{{ item.src }}"
     dest: "{{ ansible_env.HOME }}/{{ item.path }}"
     mode: '0644'
-  with_filetree: base/
+  with_filetree: utils/
   when: item.state == 'file'
 
 - name: Install gitconfig

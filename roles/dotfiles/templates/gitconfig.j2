@@ -30,4 +30,4 @@
   autoStash = true
 [user]
   name = {{ ansible_user_gecos }}
-  email = {{ 'bradfrank@fastmail.com' if 'work_only' in ansible_skip_tags else 'bfrank@oreilly.com' }}
+  email = {{ email_address }}

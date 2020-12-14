@@ -2,9 +2,11 @@
 # vars file for packages
 
 base_packages:
+  - 1password
   - abcde
   - bat
   - borgbackup
+  - calibre
   - code
   - dictd
   - dnf-plugin-system-upgrade
@@ -33,17 +35,22 @@ base_packages:
   - libreoffice
   - libvirt-client
   - libxcrypt-compat
+  - makemkv
   - mediawriter
+  - mkvtoolnix
   - most
   - msmtp
   - mtr
   - ncdu
   - neofetch
+  - nextcloud-client
   - nmap
+  - openconnect
   - p7zip
   - p7zip-plugins
   - par
   - perf
+  - picard
   - pidgin
   - podman
   - python3
@@ -53,7 +60,9 @@ base_packages:
   - ruby
   - seahorse
   - ShellCheck
+  - signal-desktop
   - solaar
+  - spotify-client
   - stow
   - strace
   - system-config-printer
@@ -62,6 +71,7 @@ base_packages:
   - tlp
   - tmux
   - toilet
+  - torbrowser-launcher
   - trash-cli
   - tree
   - vim
@@ -96,17 +106,3 @@ gnome_packages:
   - nextcloud-client-nautilus
   - transmission-gtk
   - yaru-icon-theme
-
-home_packages:
-  - 1password
-  - calibre
-  - makemkv
-  - mkvtoolnix
-  - nextcloud-client
-  - picard
-  - signal-desktop
-  - spotify-client
-  - torbrowser-launcher
-
-work_packages:
-  - openconnect

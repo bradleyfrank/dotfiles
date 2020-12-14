@@ -1,12 +1,17 @@
 ---
 # tasks file for packages
 
+- name: Install Linux repositories
+  import_role:
+    name: repositories
+  when: "'linux' in ansible_system | lower"
+
 - name: Load OS packages lists
   include_vars: "{{ ansible_distribution }}.yml"
   tags:
     - packages
 
-- name: Install packages for OS
+- name: "Include {{ ansible_system }} package installs"
   include_tasks: "{{ ansible_system }}.yml"
   tags:
     - packages
@@ -14,7 +19,7 @@
 - name: Install VSCode extensions
   command: "{{ usr_path }}/bin/code --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
-  when: "'server' not in desktop | lower"
+  when: ansible_env.XDG_CURRENT_DESKTOP is defined
   tags:
     - packages
     - vscode

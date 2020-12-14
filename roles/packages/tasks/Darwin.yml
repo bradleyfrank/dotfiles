@@ -7,9 +7,8 @@
     dest: "{{ ansible_env.HOME }}/Library/Fonts/"
     mode: 0644
   tags:
-    - fonts
     - packages
-
+    - fonts
 
 - name: Install Homebrew taps
   homebrew_tap:
@@ -18,55 +17,34 @@
     - packages
     - taps
 
-
-- name: Install base Homebrew packages
+- name: Install Homebrew packages
   homebrew:
-    name: "{{ base_packages }}"
+    name: "{{ packages }}"
   tags:
     - packages
     - formulas
 
-- name: Install home-only Homebrew packages
-  homebrew:
-    name: "{{ home_packages }}"
-  tags:
-    - packages
-    - formulas
-    - home_only
-
-
-- name: Install base Homebrew casks
+- name: Install Homebrew casks
   homebrew_cask:
-    name: "{{ base_casks }}"
+    name: "{{ casks }}"
     accept_external_apps: true
   tags:
     - packages
     - casks
 
-- name: Install home-only Homebrew casks
-  homebrew_cask:
-    name: "{{ home_casks }}"
-    accept_external_apps: true
+- name: Check Mac App Store authentication status
+  shell:
+    cmd: mas account
+  register: mas_authenticated
   tags:
     - packages
-    - casks
-    - home_only
+    - apps
 
-- name: Install work-only Homebrew casks
-  homebrew_cask:
-    name: "{{ work_casks }}"
-    accept_external_apps: true
-  tags:
-    - packages
-    - casks
-    - work_only
-
-
-- name: Install home-only Mac App Store applications
+- name: Install Mac App Store apps
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
-  loop: "{{ home_apps }}"
+  loop: "{{ apps }}"
+  when: mas_authenticated.stdout == 'bradley.frank@icloud.com'
   tags:
     - packages
-    - mas
-    - home_only
+    - apps

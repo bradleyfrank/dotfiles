@@ -1,0 +1,6 @@
+---
+# vars file for dotfiles
+
+usr_path: /usr/local
+vscode_config: "{{ ansible_env.HOME }}/Library/Application Support/Code"
+kubectl: /Applications/Docker.app/Contents/Resources/bin/kubectl
