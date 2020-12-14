@@ -28,6 +28,7 @@ base_packages:
   - iftop
   - keepassxc
   - keychain
+  - kubectl
   - libmp4-info-perl
   - libreoffice
   - libvirt-clients
