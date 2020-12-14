@@ -1,22 +1,6 @@
 ---
 # tasks file for packages
 
-- name: Install fonts
-  copy:
-    src: fonts/
-    dest: "{{ ansible_env.HOME }}/Library/Fonts/"
-    mode: 0644
-  tags:
-    - packages
-    - fonts
-
-- name: Install VSCode extensions
-  command: "/usr/local/bin/code --install-extension {{ item }}"
-  loop: "{{ vscode_extensions }}"
-  tags:
-    - packages
-    - vscode
-
 - name: Install Homebrew taps
   homebrew_tap:
     name: "{{ taps }}"
@@ -42,7 +26,7 @@
 - name: Check Mac App Store authentication status
   shell:
     cmd: mas account
-  register: mas_authenticated
+  register: mas_account
   tags:
     - packages
     - apps
@@ -51,7 +35,23 @@
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
   loop: "{{ apps }}"
-  when: mas_authenticated.stdout == 'bradley.frank@icloud.com'
+  when: mas_account.stdout == icloud_address
   tags:
     - packages
     - apps
+
+- name: Install fonts
+  copy:
+    src: fonts/
+    dest: "{{ ansible_env.HOME }}/Library/Fonts/"
+    mode: 0644
+  tags:
+    - packages
+    - fonts
+
+- name: Install VSCode extensions
+  command: "/usr/local/bin/code --install-extension {{ item }}"
+  loop: "{{ vscode_extensions }}"
+  tags:
+    - packages
+    - vscode
