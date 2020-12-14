@@ -21,7 +21,7 @@
     - packages
 
 - name: Install VSCode extensions
-  command: "{{ usr_path }}/bin/code --install-extension {{ item }}"
+  command: "/usr/bin/code --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
   when: desktop != 'none'
   tags:

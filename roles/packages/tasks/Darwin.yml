@@ -11,7 +11,7 @@
     - fonts
 
 - name: Install VSCode extensions
-  command: /usr/local/bin/code --install-extension {{ item }}"
+  command: "/usr/local/bin/code --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
   tags:
     - packages
