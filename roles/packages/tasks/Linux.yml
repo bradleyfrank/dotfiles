@@ -1,23 +1,6 @@
 ---
 # tasks file for packages
 
-- name: Install OS packages
-  package:
-    name: "{{ base_packages | default([]) }}"
-    state: present
-  become: true
-  tags:
-    - packages
-
-- name: Install Gnome packages
-  package:
-    name: "{{ gnome_packages | default([]) }}"
-    state: present
-  become: true
-  when: "'gnome' in desktop | lower"
-  tags:
-    - packages
-
 - name: Install fonts
   copy:
     src: fonts/
@@ -35,4 +18,29 @@
   become: true
   tags:
     - fonts
+    - packages
+
+- name: Install VSCode extensions
+  command: "{{ usr_path }}/bin/code --install-extension {{ item }}"
+  loop: "{{ vscode_extensions }}"
+  when: desktop != 'none'
+  tags:
+    - packages
+    - vscode
+
+- name: Install OS packages
+  package:
+    name: "{{ base_packages | default([]) }}"
+    state: present
+  become: true
+  tags:
+    - packages
+
+- name: Install Gnome packages
+  package:
+    name: "{{ gnome_packages | default([]) }}"
+    state: present
+  become: true
+  when: "'gnome' in desktop | lower"
+  tags:
     - packages

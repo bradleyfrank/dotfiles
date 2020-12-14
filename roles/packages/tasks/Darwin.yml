@@ -10,6 +10,13 @@
     - packages
     - fonts
 
+- name: Install VSCode extensions
+  command: /usr/local/bin/code --install-extension {{ item }}"
+  loop: "{{ vscode_extensions }}"
+  tags:
+    - packages
+    - vscode
+
 - name: Install Homebrew taps
   homebrew_tap:
     name: "{{ taps }}"

@@ -16,14 +16,6 @@
   tags:
     - packages
 
-- name: Install VSCode extensions
-  command: "{{ usr_path }}/bin/code --install-extension {{ item }}"
-  loop: "{{ vscode_extensions }}"
-  when: ansible_env.XDG_CURRENT_DESKTOP is defined
-  tags:
-    - packages
-    - vscode
-
 - name: Install Python packages
   pip:
     name: "{{ python_packages }}"
