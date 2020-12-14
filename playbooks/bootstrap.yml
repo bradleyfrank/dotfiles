@@ -2,8 +2,6 @@
 
 - name: Bootstrap
   hosts: localhost
-  vars:
-    manage_ssh_config: true
   roles:
     - packages
     - dotfiles
