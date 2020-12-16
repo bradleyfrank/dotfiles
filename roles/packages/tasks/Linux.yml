@@ -4,6 +4,7 @@
 - name: Update apt cache
   apt:
     update_cache: true
+  become: true
   when: "'Ubuntu' in ansible_distribution"
 
 - name: Install OS packages
