@@ -2,4 +2,4 @@
 
 icloud_address: bradley.frank@icloud.com
 email_address: bradfrank@fastmail.com
-manage_ssh_config: true
+manage_ssh_config: false

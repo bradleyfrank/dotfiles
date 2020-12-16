@@ -3,14 +3,17 @@
 # ----- global variables ----- #
 
 ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
-CHECKOUT="$(mktemp -d)"
-SKIP_TAGS="work_only"
+CHECKOUT_DIR="$(mktemp -d)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
+LOCALHOST_YML="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
+PLAYBOOK="dotfiles"
 
 case "$SYSTEM_TYPE" in
   darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
    linux) SUDOERS_D="/etc/sudoers.d"         ;;
 esac
+
+declare -A HOST_VARS
 
 
 # ----- functions ----- #
@@ -19,7 +22,20 @@ trap cleanup SIGINT
 
 cleanup() {
   [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -f "$SUDOERS_D_TMP"
-  [[ -e "$CHECKOUT" ]] && rm -rf "$CHECKOUT"
+  [[ -e "$CHECKOUT_DIR" ]] && rm -rf "$CHECKOUT_DIR"
+}
+
+usage() {
+    echo "Usage: [-b | -d] [-g git_branch]"
+    echo "  -b  Run the Ansible bootstrap playbook."
+    echo "  -d  Run the Ansible dotfiles playbook (default)."
+    echo "  -g  Specify the Ansible repo git branch to run."
+    echo
+    echo "Options: ([-i icloud_email] [-e email_address] [-s]) | [-h]"
+    echo "  -i  Override the Mac App Store account."
+    echo "  -e  Override the email address in global gitconfig."
+    echo "  -s  Manage the ssh config file."
+    echo "  -h  Print this help menu and quit."
 }
 
 create_tmp_sudoers() {
@@ -31,8 +47,8 @@ create_tmp_sudoers() {
 }
 
 create_vault_file() {
-  local vaultpw vaultfile="$HOME/.ansible_vault_password"
-  [[ -e "$vaultfile" || $SKIP_TAGS == "home_only" ]] && return 0
+  local vaultpw vaultfile="$HOME/.ansible/vault"
+  [[ -e "$vaultfile" ]] && return 0
   read -r -s -p "Enter vault password: " vaultpw
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
@@ -53,7 +69,7 @@ keep_awake() {
 }
 
 not_supported() {
-  printf "%s\n" "Unsupported OS, aborting..." >&2
+  echo "Unsupported OS, aborting..." >&2
   exit 1
 }
 
@@ -102,42 +118,71 @@ bootstrap_linux() {
 }
 
 pre_ansible_run() {
-  git clone "$ANSIBLE_REPO" "$CHECKOUT"
-  ansible-galaxy collection install --requirements-file "$CHECKOUT"/requirements.yml
+  if ! type ansible &> /dev/null; then
+    if ! python3 -m pip install --user ansible &> /dev/null; then
+      echo "Failed to install Ansible, aborting..." >&2
+      return 1
+    fi
+  fi
+
+  if ! git clone "$ANSIBLE_REPO" "$CHECKOUT_DIR" &> /dev/null; then
+    echo "Failed to checkout Ansible repository, aborting..." >&2
+    return 1
+  fi
+
+  if ! ansible-galaxy collection install \
+    --requirements-file "$CHECKOUT_DIR"/requirements.yml
+  then
+    echo "Failed to install Ansible collections, aborting..." >&2
+    return 1
+  fi
+
+  [[ ${#HOST_VARS[@]} -gt 0 ]] && printf "---\n\n" > "$LOCALHOST_YML"
+  for key in "${!HOST_VARS[@]}"; do
+    echo "$key: ${HOST_VARS[$key]}" >> "$LOCALHOST_YML"
+  done
 }
 
 ansible_run() {
-  cd "$CHECKOUT" || return 1
+  pushd "$CHECKOUT_DIR" &> /dev/null || return 1
   if ansible-playbook \
-    --skip-tags "$SKIP_TAGS" \
     --ask-become-pass \
-    playbooks/"$SYSTEM_TYPE".yml
+    playbooks/"$PLAYBOOK".yml
   then
+    popd &> /dev/null || return 1
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
-    mv "$CHECKOUT" "$HOME"/.dotfiles
+    mv "$CHECKOUT_DIR" "$HOME"/.dotfiles
     return 0
   else
+    popd &> /dev/null || return 1
     return 1
   fi
 }
 
 
-# ----- begin ----- #
+# ----- main ----- #
 
-while getopts ':wh' flag; do
-  case "$flag" in
-    w) SKIP_TAGS="home_only" ;;
-    h) SKIP_TAGS="work_only" ;;
-    *) printf "%s\n" "Requires [-w|-h], aborting..." >&2 ; exit 1 ;;
+while getopts ':bdi:e:sh' opt; do
+  case "$opt" in
+    b) PLAYBOOK="bootstrap" ;;
+    d) PLAYBOOK="dotfiles"  ;;
+    i) HOST_VARS[icloud_address]="$OPTARG" ;;
+    e) HOST_VARS[email_address]="$OPTARG"  ;;
+    s) HOST_VARS[manage_ssh_config]="true" ;;
+    h) usage ; exit 0 ;;
+    *) usage ; exit 1 ;;
   esac
 done
 
-create_tmp_sudoers
-create_vault_file
-bootstrap_os
-pre_ansible_run
-ansible_run
+if [[ "$PLAYBOOK" == "bootstrap" ]]; then
+  create_tmp_sudoers
+  create_vault_file
+  bootstrap_os
+elif [[ "$PLAYBOOK" == "dotfiles" ]]; then
+  create_vault_file
+else
+  exit 1
+fi
 
-rc=$?
-cleanup
-exit "$rc"
+if ! pre_ansible_run; then exit 1; fi
+if ! ansible_run; then cleanup; exit 1; else exit 0; fi
