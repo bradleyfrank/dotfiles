@@ -1,28 +1,59 @@
 ---
 # tasks file for packages
 
-- name: Update apt cache
+- name: Install Ubuntu packages
   apt:
-    update_cache: true
-  become: true
-  when: "'Ubuntu' in ansible_distribution"
-
-- name: Install OS packages
-  package:
     name: "{{ base_packages | default([]) }}"
     state: present
+    update_cache: true
+    install_recommends: true
+    autoremove: true
+    autoclean: true
   become: true
+  when: "'Ubuntu' in ansible_distribution"
   tags:
     - packages
 
-- name: Install Gnome packages
-  package:
+- name: Install Ubuntu Gnome packages
+  apt:
     name: "{{ gnome_packages | default([]) }}"
     state: present
-  become: true
+    update_cache: true
+    install_recommends: true
+    autoremove: true
+    autoclean: true
   when: "'gnome' in desktop | lower"
+  become: true
+  when: "'Ubuntu' in ansible_distribution"
   tags:
     - packages
+
+
+- name: Install Fedora packages
+  dnf:
+    name: "{{ base_packages | default([]) }}"
+    state: present
+    update_cache: true
+    install_weak_deps: true
+    autoremove: true
+    autoclean: true
+  become: true
+  when: "'Fedora' in ansible_distribution"
+  tags:
+    - packages
+
+- name: Install Fedora Gnome packages
+  dnf:
+    name: "{{ gnome_packages | default([]) }}"
+    state: present
+    update_cache: true
+    install_weak_deps: true
+  when: "'gnome' in desktop | lower"
+  become: true
+  when: "'Fedora' in ansible_distribution"
+  tags:
+    - packages
+
 
 - name: Install fonts
   copy:
@@ -42,6 +73,7 @@
   tags:
     - fonts
     - packages
+
 
 - name: Install VSCode extensions
   command: "/usr/bin/code --install-extension {{ item }}"
