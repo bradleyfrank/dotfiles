@@ -53,6 +53,7 @@ create_tmp_sudoers() {
 create_vault_file() {
   local vaultpw vaultfile="$HOME/.ansible/vault"
   [[ -e "$vaultfile" ]] && return 0
+  [[ ! -d "$HOME/.ansible" ]] && mkdir "$HOME/.ansible"
   read -r -s -p "Enter vault password: " vaultpw
   printf "%s" "$vaultpw" > "$vaultfile"
   chmod 0400 "$vaultfile"
@@ -130,10 +131,12 @@ pre_ansible_run() {
   fi
 
   if git clone "${ANSIBLE_REPO[url]}" "$CHECKOUT_DIR" &> /dev/null; then
+    pushd "$CHECKOUT_DIR" &> /dev/null || return 1
     if ! git checkout "${ANSIBLE_REPO[branch]}"; then
       echo "Failed to checkout branch ${ANSIBLE_REPO[branch]}, aborting..." >&2
       return 1
     fi
+    popd &> /dev/null || return 1
   else
     echo "Failed to checkout Ansible repository, aborting..." >&2
     return 1
