@@ -3,11 +3,7 @@
 # ----- global variables ----- #
 
 declare -A ANSIBLE_REPO
-
-ANSIBLE_REPO[url]="https://github.com/bradleyfrank/dotfiles.git"
-ANSIBLE_REPO[branch]="master"
-ANSIBLE_REPO[playbook]="dotfiles"
-ANSIBLE_REPO[localhost_yml]="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
+declare -A HOST_VARS
 
 CHECKOUT_DIR="$(mktemp -d)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
@@ -17,7 +13,10 @@ case "$SYSTEM_TYPE" in
    linux) SUDOERS_D="/etc/sudoers.d"         ;;
 esac
 
-declare -A HOST_VARS
+ANSIBLE_REPO[url]="https://github.com/bradleyfrank/dotfiles.git"
+ANSIBLE_REPO[branch]="master"
+ANSIBLE_REPO[playbook]="dotfiles"
+ANSIBLE_REPO[localhost_yml]="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
 
 
 # ----- functions ----- #
