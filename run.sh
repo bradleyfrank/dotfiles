@@ -2,11 +2,15 @@
 
 # ----- global variables ----- #
 
-ANSIBLE_REPO="https://github.com/bradleyfrank/dotfiles.git"
+declare -A ANSIBLE_REPO
+
+ANSIBLE_REPO[url]="https://github.com/bradleyfrank/dotfiles.git"
+ANSIBLE_REPO[branch]="master"
+ANSIBLE_REPO[playbook]="dotfiles"
+ANSIBLE_REPO[localhost_yml]="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
+
 CHECKOUT_DIR="$(mktemp -d)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
-LOCALHOST_YML="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
-PLAYBOOK="dotfiles"
 
 case "$SYSTEM_TYPE" in
   darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
@@ -125,7 +129,12 @@ pre_ansible_run() {
     fi
   fi
 
-  if ! git clone "$ANSIBLE_REPO" "$CHECKOUT_DIR" &> /dev/null; then
+  if git clone "${ANSIBLE_REPO[url]}" "$CHECKOUT_DIR" &> /dev/null; then
+    if ! git checkout "${ANSIBLE_REPO[branch]}"; then
+      echo "Failed to checkout branch ${ANSIBLE_REPO[branch]}, aborting..." >&2
+      return 1
+    fi
+  else
     echo "Failed to checkout Ansible repository, aborting..." >&2
     return 1
   fi
@@ -137,9 +146,9 @@ pre_ansible_run() {
     return 1
   fi
 
-  [[ ${#HOST_VARS[@]} -gt 0 ]] && printf "---\n\n" > "$LOCALHOST_YML"
+  [[ ${#HOST_VARS[@]} -gt 0 ]] && printf "---\n\n" > "${ANSIBLE_REPO[localhost_yml]}"
   for key in "${!HOST_VARS[@]}"; do
-    echo "$key: ${HOST_VARS[$key]}" >> "$LOCALHOST_YML"
+    echo "$key: ${HOST_VARS[$key]}" >> "${ANSIBLE_REPO[localhost_yml]}"
   done
 }
 
@@ -147,7 +156,7 @@ ansible_run() {
   pushd "$CHECKOUT_DIR" &> /dev/null || return 1
   if ansible-playbook \
     --ask-become-pass \
-    playbooks/"$PLAYBOOK".yml
+    playbooks/"${ANSIBLE_REPO[playbook]}".yml
   then
     popd &> /dev/null || return 1
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
@@ -162,10 +171,11 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bdi:e:sh' opt; do
+while getopts ':bdg:i:e:sh' opt; do
   case "$opt" in
-    b) PLAYBOOK="bootstrap" ;;
-    d) PLAYBOOK="dotfiles"  ;;
+    b) ANSIBLE_REPO[playbook]="bootstrap"  ;;
+    d) ANSIBLE_REPO[playbook]="dotfiles"   ;;
+    g) ANSIBLE_REPO[branch]="$OPTARG"      ;;
     i) HOST_VARS[icloud_address]="$OPTARG" ;;
     e) HOST_VARS[email_address]="$OPTARG"  ;;
     s) HOST_VARS[manage_ssh_config]="true" ;;
@@ -174,15 +184,15 @@ while getopts ':bdi:e:sh' opt; do
   esac
 done
 
-if [[ "$PLAYBOOK" == "bootstrap" ]]; then
+if [[ "${ANSIBLE_REPO[playbook]}" == "bootstrap" ]]; then
   create_tmp_sudoers
   create_vault_file
   bootstrap_os
-elif [[ "$PLAYBOOK" == "dotfiles" ]]; then
+elif [[ "${ANSIBLE_REPO[playbook]}" == "dotfiles" ]]; then
   create_vault_file
 else
   exit 1
 fi
 
-if ! pre_ansible_run; then exit 1; fi
+if ! pre_ansible_run; then cleanup; exit 1; fi
 if ! ansible_run; then cleanup; exit 1; else exit 0; fi
