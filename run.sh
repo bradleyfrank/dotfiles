@@ -148,10 +148,13 @@ pre_ansible_run() {
     return 1
   fi
 
-  [[ ${#HOST_VARS[@]} -gt 0 ]] && printf "---\n\n" > "${ANSIBLE_REPO[localhost_yml]}"
-  for key in "${!HOST_VARS[@]}"; do
-    echo "$key: ${HOST_VARS[$key]}" >> "${ANSIBLE_REPO[localhost_yml]}"
-  done
+  if [[ ${#HOST_VARS[@]} -gt 0 ]]; then
+    mkdir "$(dirname "${ANSIBLE_REPO[localhost_yml]}")"
+    printf "---\n\n" > "${ANSIBLE_REPO[localhost_yml]}"
+    for key in "${!HOST_VARS[@]}"; do
+      echo "$key: ${HOST_VARS[$key]}" >> "${ANSIBLE_REPO[localhost_yml]}"
+    done
+  fi
 }
 
 ansible_run() {
