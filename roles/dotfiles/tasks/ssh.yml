@@ -12,8 +12,8 @@
     src: ssh/.ssh/config
     dest: "{{ ansible_env.HOME }}/.ssh/"
     mode: '0755'
+    backup: true
   when: manage_ssh_config
-  backup: true
 
 - name: Set proper permissions on ~/.ssh/authorized_keys
   file:
