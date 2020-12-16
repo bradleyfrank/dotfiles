@@ -1,6 +1,11 @@
 ---
 # tasks file for packages
 
+- name: Update apt cache
+  apt:
+    update_cache: true
+  when: "'Ubuntu' in ansible_distribution"
+
 - name: Install OS packages
   package:
     name: "{{ base_packages | default([]) }}"
