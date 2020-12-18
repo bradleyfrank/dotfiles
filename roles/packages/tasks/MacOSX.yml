@@ -39,19 +39,3 @@
   tags:
     - packages
     - apps
-
-- name: Install fonts
-  copy:
-    src: fonts/
-    dest: "{{ ansible_env.HOME }}/Library/Fonts/"
-    mode: 0644
-  tags:
-    - packages
-    - fonts
-
-- name: Install VSCode extensions
-  command: "/usr/local/bin/code --install-extension {{ item }}"
-  loop: "{{ vscode_extensions }}"
-  tags:
-    - packages
-    - vscode

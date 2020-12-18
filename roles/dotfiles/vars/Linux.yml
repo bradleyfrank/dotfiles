@@ -1,6 +1,7 @@
 ---
 # vars file for dotfiles
 
+font_dir: "{{ ansible_env.HOME }}/.local/share/fonts"
 usr_path: /usr
 vscode_config: "{{ ansible_env.HOME }}/.config/Code"
 kubectl: /usr/bin/kubectl

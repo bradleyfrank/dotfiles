@@ -5,13 +5,13 @@
   file:
     path: "{{ ansible_env.HOME }}/.ssh"
     state: directory
-    mode: '0700'
+    mode: 0700
 
 - name: Install ssh config file
   copy:
     src: ssh/.ssh/config
     dest: "{{ ansible_env.HOME }}/.ssh/"
-    mode: '0755'
+    mode: 0755
     backup: true
   when: manage_ssh_config
 
@@ -19,10 +19,10 @@
   file:
     path: "{{ ansible_env.HOME }}/.ssh/authorized_keys"
     state: touch
-    mode: '0600'
+    mode: 0600
 
 - name: Set proper permissions on ~/.ssh/config
   file:
     path: "{{ ansible_env.HOME }}/.ssh/config"
     state: touch
-    mode: '0644'
+    mode: 0644

@@ -5,13 +5,13 @@
   copy:
     src: vim/.vimrc
     dest: "{{ ansible_env.HOME }}/"
-    mode: '0755'
+    mode: 0755
 
 - name: Create vim extensions directory path
   file:
     path: "{{ vim_extensions_dest }}"
     state: directory
-    mode: '0755'
+    mode: 0755
 
 - name: Install vim extensions
   git:
