@@ -95,14 +95,6 @@ bootstrap_macos() {
 
 bootstrap_linux() {
   case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
-    centos)
-      sudo yum clean all
-      sudo yum makecache
-      sudo yum upgrade -y
-      sudo yum install -y centos-release-ansible-29
-      sudo yum install -y ansible git python38
-      sudo yum module enable python38
-      ;;
     fedora)
       keep_awake
       sudo dnf clean all

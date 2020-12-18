@@ -16,22 +16,3 @@
     filename: "{{ item.name }}"
   loop: "{{ repos }}"
   become: true
-
-- name: Remove snapd
-  apt:
-    name:
-      - gnome-software-plugin-snap
-      - snapd
-    state: absent
-    purge: true
-    autoremove: true
-  become: true
-
-- name: Block snap packages
-  dpkg_selections:
-    name: "{{ item }}"
-    selection: hold
-  loop:
-    - snap
-    - snapd
-  become: true
