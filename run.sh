@@ -29,8 +29,8 @@ cleanup() {
 }
 
 usage() {
-    echo "Usage: [-w | -d] [-g git_branch] [-h]"
-    echo "  -w  Run the workstation bootstrap playbook."
+    echo "Usage: [-b | -d] [-g git_branch] [-h]"
+    echo "  -b  Run the bootstrap playbook."
     echo "  -d  Run the dotfiles playbook (default)."
     echo "  -g  Specify the Ansible repo git branch to run."
     echo "  -h  Print this help menu and quit."
@@ -161,13 +161,13 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':wdg:mch' opt; do
+while getopts ':bdg:mch' opt; do
   case "$opt" in
-    w) ANSIBLE_REPO[playbook]="workstation" ;;
-    d) ANSIBLE_REPO[playbook]="dotfiles"    ;;
-    g) ANSIBLE_REPO[branch]="$OPTARG"       ;;
-    m) SKIP_TAGS+=("mac_app_store")         ;;
-    c) SKIP_TAGS+=("ssh_config")            ;;
+    w) ANSIBLE_REPO[playbook]="bootstrap" ;;
+    d) ANSIBLE_REPO[playbook]="dotfiles"  ;;
+    g) ANSIBLE_REPO[branch]="$OPTARG"     ;;
+    m) SKIP_TAGS+=("mac_app_store")       ;;
+    c) SKIP_TAGS+=("ssh_config")          ;;
     h) usage ; exit 0 ;;
     *) usage ; exit 1 ;;
   esac
