@@ -163,7 +163,7 @@ ansible_run() {
 
 while getopts ':bdg:mch' opt; do
   case "$opt" in
-    w) ANSIBLE_REPO[playbook]="bootstrap" ;;
+    b) ANSIBLE_REPO[playbook]="bootstrap" ;;
     d) ANSIBLE_REPO[playbook]="dotfiles"  ;;
     g) ANSIBLE_REPO[branch]="$OPTARG"     ;;
     m) SKIP_TAGS+=("mac_app_store")       ;;
