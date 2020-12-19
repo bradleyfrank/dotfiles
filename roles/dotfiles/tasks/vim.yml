@@ -4,7 +4,7 @@
 - name: Install vimrc
   copy:
     src: vim/.vimrc
-    dest: "{{ ansible_env.HOME }}/"
+    dest: "{{ ansible_user_dir }}/"
     mode: 0755
 
 - name: Create vim extensions directory path

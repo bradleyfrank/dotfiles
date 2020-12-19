@@ -3,7 +3,7 @@
 
 - name: Create directory structure
   file:
-    path: "{{ ansible_env.HOME }}/{{ item.path }}"
+    path: "{{ ansible_user_dir }}/{{ item.path }}"
     state: directory
     mode: 0755
   with_filetree: utils/
@@ -12,7 +12,7 @@
 - name: Install dotfiles
   copy:
     src: "{{ item.src }}"
-    dest: "{{ ansible_env.HOME }}/{{ item.path }}"
+    dest: "{{ ansible_user_dir }}/{{ item.path }}"
     mode: 0644
   with_filetree: utils/
   when: item.state == 'file'
@@ -20,18 +20,18 @@
 - name: Install gitconfig
   template:
     src: gitconfig.j2
-    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    dest: "{{ ansible_user_dir }}/.gitconfig"
     mode: 0755
 
 - name: Install tmux config
   template:
     src: tmux.conf.j2
-    dest: "{{ ansible_env.HOME }}/.tmux.conf"
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
     mode: 0755
 
 - name: Generate kubectl completions
   vars:
-    kubectl_completion_path: "{{ ansible_env.HOME }}/.local/share/k8s/kubectl"
+    kubectl_completion_path: "{{ ansible_user_dir }}/.local/share/k8s/kubectl"
   shell:
     cmd: "{{ kubectl }} completion {{ item }} > {{ kubectl_completion_path }}.{{ item }}"
   loop:

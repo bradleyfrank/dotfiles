@@ -2,6 +2,7 @@
 # vars file for packages
 
 desktop: ansible_env.XDG_CURRENT_DESKTOP | default('none')
+icloud_address: bradley.frank@icloud.com
 
 python_packages:
   - black

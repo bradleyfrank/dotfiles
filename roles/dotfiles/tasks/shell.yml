@@ -11,7 +11,7 @@
 - name: Install powerlevel10k
   git:
     repo: https://github.com/romkatv/powerlevel10k.git
-    dest: "{{ ansible_env.HOME }}/.local/share/powerlevel10k"
+    dest: "{{ ansible_user_dir }}/.local/share/powerlevel10k"
     depth: '1'
     version: v1.13.0
 
@@ -33,7 +33,7 @@
     sources: "{{ shared_sources + distribution_sources | default([]) }}"
   template:
     src: zshrc.j2
-    dest: "{{ ansible_env.HOME }}/.zshrc"
+    dest: "{{ ansible_user_dir }}/.zshrc"
 
 - name: Build bash_profile
   vars:
@@ -43,7 +43,7 @@
     manpaths: "{{ shared_manpaths + distribution_manpaths | default([]) }}"
   template:
     src: bash_profile.j2
-    dest: "{{ ansible_env.HOME }}/.bash_profile"
+    dest: "{{ ansible_user_dir }}/.bash_profile"
 
 - name: Build bashrc
   vars:
@@ -54,4 +54,4 @@
     sources: "{{ shared_sources + distribution_sources | default([]) }}"
   template:
     src: bashrc.j2
-    dest: "{{ ansible_env.HOME }}/.bashrc"
+    dest: "{{ ansible_user_dir }}/.bashrc"

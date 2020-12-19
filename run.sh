@@ -3,7 +3,7 @@
 # ----- global variables ----- #
 
 declare -A ANSIBLE_REPO
-declare -A HOST_VARS
+declare -a SKIP_TAGS
 
 CHECKOUT_DIR="$(mktemp -d)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
@@ -29,16 +29,15 @@ cleanup() {
 }
 
 usage() {
-    echo "Usage: [-b | -d] [-g git_branch]"
-    echo "  -b  Run the Ansible bootstrap playbook."
-    echo "  -d  Run the Ansible dotfiles playbook (default)."
+    echo "Usage: [-w | -d] [-g git_branch] [-h]"
+    echo "  -w  Run the workstation bootstrap playbook."
+    echo "  -d  Run the dotfiles playbook (default)."
     echo "  -g  Specify the Ansible repo git branch to run."
-    echo
-    echo "Options: ([-i icloud_email] [-e email_address] [-s]) | [-h]"
-    echo "  -i  Override the Mac App Store account."
-    echo "  -e  Override the email address in global gitconfig."
-    echo "  -s  Manage the ssh config file."
     echo "  -h  Print this help menu and quit."
+    echo
+    echo "Skip Tags: [-mc]"
+    echo "  -m  Skip installing Mac App Store apps. (mac_app_store)"
+    echo "  -c  Skip copying ssh config file. (ssh_config)"
 }
 
 create_tmp_sudoers() {
@@ -100,14 +99,14 @@ bootstrap_linux() {
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
-      sudo dnf install -y ansible git
+      sudo dnf install -y ansible git flatpak
       ;;
     ubuntu)
       keep_awake
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
-      sudo apt-get install -y ansible git
+      sudo apt-get install -y ansible git flatpak
       ;;
     *) not_supported ;;
   esac
@@ -139,20 +138,14 @@ pre_ansible_run() {
     echo "Failed to install Ansible collections, aborting..." >&2
     return 1
   fi
-
-  if [[ ${#HOST_VARS[@]} -gt 0 ]]; then
-    mkdir "$(dirname "${ANSIBLE_REPO[localhost_yml]}")"
-    printf "%s\n\n" "---" > "${ANSIBLE_REPO[localhost_yml]}"
-    for key in "${!HOST_VARS[@]}"; do
-      echo "$key: ${HOST_VARS[$key]}" >> "${ANSIBLE_REPO[localhost_yml]}"
-    done
-  fi
 }
 
 ansible_run() {
   pushd "$CHECKOUT_DIR" &> /dev/null || return 1
+
   if ansible-playbook \
     --ask-become-pass \
+    --skip-tags "$(tr ' ' ',' <<< "${SKIP_TAGS[*]}")" \
     playbooks/"${ANSIBLE_REPO[playbook]}".yml
   then
     popd &> /dev/null || return 1
@@ -168,14 +161,13 @@ ansible_run() {
 
 # ----- main ----- #
 
-while getopts ':bdg:i:e:sh' opt; do
+while getopts ':wdg:mch' opt; do
   case "$opt" in
-    b) ANSIBLE_REPO[playbook]="bootstrap"  ;;
-    d) ANSIBLE_REPO[playbook]="dotfiles"   ;;
-    g) ANSIBLE_REPO[branch]="$OPTARG"      ;;
-    i) HOST_VARS[icloud_address]="$OPTARG" ;;
-    e) HOST_VARS[email_address]="$OPTARG"  ;;
-    s) HOST_VARS[manage_ssh_config]="true" ;;
+    w) ANSIBLE_REPO[playbook]="workstation" ;;
+    d) ANSIBLE_REPO[playbook]="dotfiles"    ;;
+    g) ANSIBLE_REPO[branch]="$OPTARG"       ;;
+    m) SKIP_TAGS+=("mac_app_store")         ;;
+    c) SKIP_TAGS+=("ssh_config")            ;;
     h) usage ; exit 0 ;;
     *) usage ; exit 1 ;;
   esac

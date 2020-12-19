@@ -14,11 +14,11 @@ shared_exports:
 shared_paths:
   - /usr/bin:/usr/sbin:/bin:/sbin
   - /usr/local/bin:/usr/local/sbin
-  - "{{ ansible_env.HOME }}/.local/bin:~/bin"
+  - "{{ ansible_user_dir }}/.local/bin:~/bin"
 
 shared_manpaths:
   - /usr/local/share/man:/usr/share/man
-  - "{{ ansible_env.HOME }}/.local/share/man"
+  - "{{ ansible_user_dir }}/.local/share/man"
 
 shared_aliases:
   bw: bitwise --no-color
@@ -83,5 +83,5 @@ shared_functions:
     -o "%(title)s.%(ext)s" "$1"
 
 shared_sources:
-  - "{{ ansible_env.HOME }}/.local/share/k8s/fubectl"
-  - "{{ ansible_env.HOME }}/.local/share/k8s/kubectl.{{ shell_name }}"
+  - "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
+  - "{{ ansible_user_dir }}/.local/share/k8s/kubectl.{{ shell_name }}"

@@ -48,13 +48,13 @@ function {{ key }}() {
 
 {% if 'remmac06432' in ansible_hostname -%}
 # -- begin oreilly config -- #
-source {{ ansible_env.HOME }}/.infractl/secrets
+source {{ ansible_user_dir }}/.infractl/secrets
 source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
 # -- end oreilly config -- #
 {% endif %}
 
-source {{ ansible_env.HOME }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
-source {{ ansible_env.HOME }}/.config/p10k.zsh
+source {{ ansible_user_dir }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
+source {{ ansible_user_dir }}/.config/p10k.zsh
 {% for item in sources %}
 source {{ item }}
 {% endfor %}

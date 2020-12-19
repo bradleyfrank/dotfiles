@@ -9,7 +9,7 @@
   search = !git rev-list --all | xargs git grep -F
   unstage = reset HEAD --
 [core]
-  excludesfile = {{ ansible_env.HOME }}/.gitignore
+  excludesfile = {{ ansible_user_dir }}/.gitignore
   editor = vim
 [credential "https://git-codecommit.us-east-1.amazonaws.com"]
   helper =
@@ -30,4 +30,4 @@
   autoStash = true
 [user]
   name = {{ ansible_user_id }}
-  email = {{ email_address }}
+  email = {{ 'bfrank@oreilly.com' if 'remmac06432' in ansible_hostname else 'bradfrank@fastmail.com' }}

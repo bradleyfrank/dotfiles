@@ -4,7 +4,7 @@
 - name: Copy manual import app settings
   copy:
     src: "conf/{{ ansible_system }}/"
-    dest: "{{ ansible_env.HOME }}"
+    dest: "{{ ansible_user_dir }}"
     mode: 0755
 
 #
@@ -164,7 +164,7 @@
     - key: 'NewWindowTarget'
       value: "PfLo"
     - key: 'NewWindowTargetPath'
-      value: "file://{{ ansible_env.HOME }}/Downloads/"
+      value: "file://{{ ansible_user_dir }}/Downloads/"
 
 - name: Auto-hide the Dock
   osx_defaults:
@@ -200,7 +200,7 @@
   osx_defaults:
     domain: com.apple.screencapture
     key: location
-    value: "{{ ansible_env.HOME }}/Downloads"
+    value: "{{ ansible_user_dir }}/Downloads"
 
 - name: Set expose hot corners
   osx_defaults:
@@ -387,11 +387,11 @@
 
 - name: Unhide ~/Library directory (part 1 of 2)
   command:
-    cmd: "chflags nohidden {{ ansible_env.HOME }}/Library"
+    cmd: "chflags nohidden {{ ansible_user_dir }}/Library"
 
 - name: Unhide ~/Library directory (part 2 of 2)
   command:
-    cmd: "xattr -d com.apple.FinderInfo {{ ansible_env.HOME }}/Library"
+    cmd: "xattr -d com.apple.FinderInfo {{ ansible_user_dir }}/Library"
 
 - name: Unhide /Volumes directory
   command:

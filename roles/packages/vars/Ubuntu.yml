@@ -96,3 +96,7 @@ gnome_packages:
   - mpv
   - nextcloud-client-nautilus
   - transmission-gtk
+
+flatpak_packages:
+  - name: com.gitlab.newsflash
+    remote: flathub

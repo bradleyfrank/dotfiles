@@ -106,3 +106,7 @@ gnome_packages:
   - nextcloud-client-nautilus
   - transmission-gtk
   - yaru-icon-theme
+
+flatpak_packages:
+  - name: com.gitlab.newsflash
+    remote: flathub

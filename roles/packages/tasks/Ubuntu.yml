@@ -25,3 +25,10 @@
   when: "'gnome' in desktop | lower"
   tags:
     - packages
+
+- name: Install Ubuntu Flatpaks
+  community.general.flatpak:
+    name: "{{ item.name }}"
+    state: present
+    remote: "{{ item.remote }}"
+  loop: "{{ flatpak_packages }}"

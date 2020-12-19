@@ -6,14 +6,14 @@
     name: "{{ taps }}"
   tags:
     - packages
-    - taps
+    - homebrew_taps
 
 - name: Install Homebrew packages
   homebrew:
     name: "{{ packages }}"
   tags:
     - packages
-    - formulas
+    - homebrew_formulas
 
 - name: Install Homebrew casks
   homebrew_cask:
@@ -21,21 +21,21 @@
     accept_external_apps: true
   tags:
     - packages
-    - casks
+    - homebrew_casks
 
 - name: Check Mac App Store authentication status
   shell:
-    cmd: mas account
+    cmd: mas account >&1 | grep -vq 'Not signed in'  # success when 'Not signed in' not found
   register: mas_account
   tags:
     - packages
-    - apps
+    - mac_app_store
 
 - name: Install Mac App Store apps
   command:
     cmd: "/usr/local/bin/mas install {{ item }}"
   loop: "{{ apps }}"
-  when: mas_account.stdout == icloud_address
+  when: mas_account.rc == 0
   tags:
     - packages
-    - apps
+    - mac_app_store
