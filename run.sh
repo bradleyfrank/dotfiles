@@ -36,8 +36,8 @@ usage() {
     echo "  -h  Print this help menu and quit."
     echo
     echo "Skip Tags: [-mc]"
-    echo "  -m  Skip installing Mac App Store apps. (mac_app_store)"
-    echo "  -c  Skip copying ssh config file. (ssh_config)"
+    echo "  -m  Do not install Mac App Store apps [on macOS systems]. (tag: mac_app_store)"
+    echo "  -c  Do not manage ssh config file. (tag: ssh_config)"
 }
 
 create_tmp_sudoers() {

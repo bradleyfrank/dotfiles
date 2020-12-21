@@ -16,14 +16,14 @@
   tags:
     - ssh_config
 
-- name: Set proper permissions on ~/.ssh/authorized_keys
-  file:
-    path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
-    state: touch
-    mode: 0600
-
 - name: Set proper permissions on ~/.ssh/config
   file:
     path: "{{ ansible_user_dir }}/.ssh/config"
     state: touch
     mode: 0644
+
+- name: Set proper permissions on ~/.ssh/authorized_keys
+  file:
+    path: "{{ ansible_user_dir }}/.ssh/authorized_keys"
+    state: touch
+    mode: 0600
