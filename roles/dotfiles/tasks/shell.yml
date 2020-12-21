@@ -24,7 +24,7 @@
   file:
     path: "{{ ansible_user_dir }}/.local/share/k8s"
     state: directory
-    mode: 0644
+    mode: 0755
 
 - name: Install kubectl config
   copy:
