@@ -30,12 +30,6 @@ function {{ key }}() {
 
 {% endfor -%}
 
-{% if 'remmac06432' in ansible_hostname -%}
-# ----- begin oreilly config ----- #
-source {{ ansible_user_dir }}/.infractl/secrets
-source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
-# ----- end oreilly config ------- #
-{% endif %}
 {% if 'MacOSX' in ansible_distribution %}
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
@@ -50,6 +44,14 @@ source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
 source {{ ansible_user_dir }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
 source {{ ansible_user_dir }}/.config/p10k.zsh
 source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+{% if 'remmac06432' in ansible_hostname -%}
+# ----- begin oreilly config ----- #
+source {{ ansible_user_dir }}/.infractl/secrets
+source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
+export CLOUDSDK_PYTHON=python3.8
+# ----- end oreilly config ------- #
+{% endif %}
 
 unsetopt  BEEP
 setopt    APPEND_HISTORY \
