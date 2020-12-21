@@ -55,7 +55,6 @@ export CLOUDSDK_PYTHON=python3.8
 # ----- end oreilly config ------- #
 {% endif %}
 
-
 function precmd() {
   local rc=$?
   local _pwd _path _num_dirs=0 _new_pwd
@@ -69,25 +68,15 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  #_CWD=" ${blue}%~${reset}"
-  _CWD="" _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _PREFIX_1="" _PREFIX_2=""
+  _CWD="" _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _LINE_1="" _LINE_2=""
 
   _pwd="$(pwd | sed "s|^${HOME}|~|")"
   _path=("${(s|/|)_pwd}")
-  for _ in "${_path[@]}"; do ((_num_dirs++)); done
-  ((_num_dirs--))
-
-  if [[ "$_num_dirs" -gt 0 ]]; then
-    for ((i=0;i<"${_num_dirs}";i++)); do
-      _new_pwd="${violet}${_new_pwd}${_path[$i]}${blue}/${reset}"
-    done
-  fi
-
-  _CWD="${_new_pwd}${blue}${_path[$_num_dirs]}${reset}"
-
-  if [[ -n "$TMUX" ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD=" ${blue}%(3~|%-1~/…/%2~)${reset}"
-  fi
+  for _dir in "${_path[@]}"; do
+    [[ "$_dir" == "${_path[-1]}" ]] && break
+    _CWD="${_CWD}${violet}${_dir}${blue}/${reset}"
+  done
+  _CWD=" ${_CWD}%B${blue}%1~${reset}%b"
 
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST=" on ${orange}%m${reset}"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" ${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
@@ -100,7 +89,7 @@ function precmd() {
 
   _LINE_1="${_NL}┌─${_CWD}${_HOST}${_PYENV}"
   _LINE_2="${_NL}└─"
-  __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "%s"
+  __git_ps1 "${_LINE_1}" "${_LINE_2}${_PROMPT}" " (%s)"
 }
 
 
