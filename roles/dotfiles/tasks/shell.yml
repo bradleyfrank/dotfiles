@@ -7,6 +7,16 @@
 - name: Load distribution shell variables
   include_vars: "shell/{{ ansible_system }}.yml"
 
+# Create dynamically in case of package update.
+- name: Generate kubectl completions
+  vars:
+    kubectl_completion_path: "{{ ansible_user_dir }}/.local/share/k8s/kubectl"
+  shell:
+    cmd: "{{ kubectl }} completion {{ item }} > {{ kubectl_completion_path }}.{{ item }}"
+  loop:
+    - zsh
+    - bash
+
 # p10k is not available as a Linux package so clone a release on all systems for consistency.
 - name: Install powerlevel10k
   git:

@@ -28,12 +28,3 @@
     src: tmux.conf.j2
     dest: "{{ ansible_user_dir }}/.tmux.conf"
     mode: 0755
-
-- name: Generate kubectl completions
-  vars:
-    kubectl_completion_path: "{{ ansible_user_dir }}/.local/share/k8s/kubectl"
-  shell:
-    cmd: "{{ kubectl }} completion {{ item }} > {{ kubectl_completion_path }}.{{ item }}"
-  loop:
-    - zsh
-    - bash

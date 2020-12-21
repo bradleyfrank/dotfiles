@@ -53,11 +53,17 @@ source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
 # -- end oreilly config -- #
 {% endif %}
 
+{% if 'MacOSX' in ansible_distribution %}
+source /usr/local/opt/fzf/shell/completion.zsh
+source /usr/local/opt/fzf/shell/key-bindings.zsh
+{% elif 'Ubuntu' in ansible_distribution %}
+source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+{% elif 'Fedora' in ansible_distribution %}
+source /usr/share/fzf/shell/key-bindings.zsh
+{% endif %}
 source {{ ansible_user_dir }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
 source {{ ansible_user_dir }}/.config/p10k.zsh
-{% for item in sources %}
-source {{ item }}
-{% endfor %}
 source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 complete -F __start_kubectl k
