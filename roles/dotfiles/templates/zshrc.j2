@@ -31,18 +31,19 @@ function {{ key }}() {
 {% endfor -%}
 
 {% if 'MacOSX' in ansible_distribution %}
+source /usr/local/etc/bash_completion.d/git-prompt.sh
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
 {% elif 'Ubuntu' in ansible_distribution %}
+source /etc/bash_completion.d/git-prompt
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% elif 'Fedora' in ansible_distribution %}
+source /etc/bash_completion.d/git-prompt
 source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
 source {{ ansible_user_dir }}/.local/share/k8s/fubectl
 source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
-source {{ ansible_user_dir }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
-source {{ ansible_user_dir }}/.config/p10k.zsh
 source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 {% if 'remmac06432' in ansible_hostname -%}
@@ -52,6 +53,40 @@ source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
 export CLOUDSDK_PYTHON=python3.8
 # ----- end oreilly config ------- #
 {% endif %}
+
+
+function precmd() {
+  local ret=$?
+  local reset="%f"
+  local blue="%F{33}" \
+        cyan="%F{37}" \
+        violet="%F{61}" \
+        green="%F{64}" \
+        magenta="%F{125}" \
+        red="%F{160}" \
+        orange="%F{166}" \
+        base03="%F{234}"
+
+  _CWD="${blue}%~${reset}" _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _PREFIX_1="" _PREFIX_2=""
+
+  if [[ -n "$TMUX" ]]; then
+    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD="${blue}%(5~|…/%3~|%~)${reset}"
+  fi
+
+  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="on ${orange}%m${reset}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
+
+  case "$ret" in
+    0) _PROMPT="%B${green} %# ${reset}%b"   ;;
+    1) _PROMPT="%B${red} %# ${reset}%b"     ;;
+    *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
+  esac
+
+  _LINE_1="${_NL}┌─${_HOST}${_CWD}${_PYENV}"
+  _LINE_2="${_NL}└─"
+  __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "%s"
+}
+
 
 unsetopt  BEEP
 setopt    APPEND_HISTORY \

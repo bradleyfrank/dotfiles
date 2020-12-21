@@ -3,4 +3,6 @@
 if type gcloud &> /dev/null; then
 	export CLOUDSDK_PYTHON="python3.8"
 	gcloud projects list | grep "$(gcloud config get-value project)" | awk '{print $2}'
+else
+	echo "<none>"
 fi

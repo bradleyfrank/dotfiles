@@ -20,13 +20,22 @@
     dest: "{{ ansible_user_dir }}/.dir_colors"
     mode: 0644
 
-- name: Create ~/.local/share/k8s directory
+- name: Create ~/.local/share directories
   file:
-    path: "{{ ansible_user_dir }}/.local/share/k8s"
+    path: "{{ ansible_user_dir }}/.local/share/{{ item }}"
     state: directory
     mode: 0755
+  loop:
+    - k8s
+    - gcloud
 
-- name: Install kubectl config
+- name: Install gcloud helpers
+  copy:
+    src: shell/.local/share/gcloud/gcsh
+    dest: "{{ ansible_user_dir }}/.local/share/gcloud/gcsh"
+    mode: 0644
+
+- name: Install kubectl helpers
   copy:
     src: shell/.local/share/k8s/fubectl
     dest: "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
@@ -41,20 +50,6 @@
   loop:
     - zsh
     - bash
-
-# p10k is not available as a Linux package so clone a release on all systems for consistency.
-- name: Install powerlevel10k
-  git:
-    repo: https://github.com/romkatv/powerlevel10k.git
-    dest: "{{ ansible_user_dir }}/.local/share/powerlevel10k"
-    depth: '1'
-    version: v1.13.0
-
-- name: Install p10k config
-  copy:
-    src: shell/.config/p10k.zsh
-    dest: "{{ ansible_user_dir }}/.config/p10k.zsh"
-    mode: 0644
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location

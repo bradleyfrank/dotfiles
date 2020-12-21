@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-kubectl config current-context | grep -o '[^_]*$'
+if type kubectl &> /dev/null; then
+    kubectl config current-context | grep -o '[^_]*$'
+else
+	echo "<none>"
+fi

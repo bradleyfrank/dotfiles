@@ -26,11 +26,8 @@ shared_aliases:
   d: docker
   dc: docker-compose
   e: extract
-  gc: gcloud
-  gcs: gclcoud config set
   glances: glances --theme-white
   glow: glow -s light
-  gpl: gcloud projects list --format="value(projectId)"
   groot: cd "$(git rev-parse --show-toplevel)"
   http: curl -s -L -D -
   isodate: date --iso-8601=seconds
@@ -45,9 +42,10 @@ shared_aliases:
   pipu: pip_upgrade_outdated -3 --user --verbose
   pubip: dig myip.opendns.com @resolver1.opendns.com
   rcp: rsync --info=progress2
-  shortnames: kubectl api-resources
   tf: terraform
   venv: source "$(git rev-parse --show-toplevel)/ve/bin/activate"
+  _inline_fzf: fzf --multi --ansi -i -1 --height=50% --reverse -0 --header-lines=1 --inline-info --border
+  _inline_fzf_nh: fzf --multi --ansi -i -1 --height=50% --reverse -0 --inline-info --border
 
 shared_functions:
   blackdiff: black --line-length 100 --diff "$@" | diff-so-fancy
@@ -81,7 +79,3 @@ shared_functions:
     --format "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best" \
     --merge-output-format mp4 \
     -o "%(title)s.%(ext)s" "$1"
-
-shared_sources:
-  - "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
-  - "{{ ansible_user_dir }}/.local/share/k8s/kubectl.{{ shell_name }}"

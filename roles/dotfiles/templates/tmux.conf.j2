@@ -22,10 +22,10 @@ set -g status-left ""
 
 # ----- Status bar: right
 set -g status-right \
-  "#[fg=colour33]G #(tmux-gcloud) #[fg=colour234]| \
-  #[fg=colour37]k8s #(tmux-kubectl) #[fg=colour234]| \
-  #[fg=colour125] {{ ansible_distribution }} {{ ansible_distribution_version }} #[fg=colour234]| \
-	#[fg=colour61]#{session_name}"
+  "#[fg=colour33]G: #(tmux-gcloud)\
+  #[fg=colour37]#(tmux-kubectl)\
+  #[fg=colour125]{{ ansible_distribution }} {{ ansible_distribution_version }}\
+  #[fg=colour61]#{session_name}"
 set -g status-right-length 250
 
 
