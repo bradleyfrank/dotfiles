@@ -42,13 +42,6 @@
     creates: /etc/ssh/ssh_host_*_key
   become: true
 
-- name: Secure OS settings
-  import_role:
-    name: devsec.hardening.os_hardening
-  become: true
-  tags:
-    - security
-
 - name: Secure SSH settings
   import_role:
     name: devsec.hardening.ssh_hardening

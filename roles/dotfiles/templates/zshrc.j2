@@ -44,6 +44,7 @@ source /usr/share/fzf/shell/key-bindings.zsh
 {% endif %}
 source {{ ansible_user_dir }}/.local/share/k8s/fubectl
 source {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh
+source {{ ansible_user_dir }}/.local/share/gcloud/gcsh
 source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 {% if 'remmac06432' in ansible_hostname -%}
@@ -56,7 +57,8 @@ export CLOUDSDK_PYTHON=python3.8
 
 
 function precmd() {
-  local ret=$?
+  local rc=$?
+  local _pwd _path _num_dirs=0 _new_pwd
   local reset="%f"
   local blue="%F{33}" \
         cyan="%F{37}" \
@@ -67,22 +69,36 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  _CWD="${blue}%~${reset}" _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _PREFIX_1="" _PREFIX_2=""
+  #_CWD=" ${blue}%~${reset}"
+  _CWD="" _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _PREFIX_1="" _PREFIX_2=""
 
-  if [[ -n "$TMUX" ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD="${blue}%(5~|…/%3~|%~)${reset}"
+  _pwd="$(pwd | sed "s|^${HOME}|~|")"
+  _path=("${(s|/|)_pwd}")
+  for _ in "${_path[@]}"; do ((_num_dirs++)); done
+  ((_num_dirs--))
+
+  if [[ "$_num_dirs" -gt 0 ]]; then
+    for ((i=0;i<"${_num_dirs}";i++)); do
+      _new_pwd="${violet}${_new_pwd}${_path[$i]}${blue}/${reset}"
+    done
   fi
 
-  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST="on ${orange}%m${reset}"
-  [[ -n "$VIRTUAL_ENV" ]] && _PYENV="${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
+  _CWD="${_new_pwd}${blue}${_path[$_num_dirs]}${reset}"
 
-  case "$ret" in
+  if [[ -n "$TMUX" ]]; then
+    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD=" ${blue}%(3~|%-1~/…/%2~)${reset}"
+  fi
+
+  [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST=" on ${orange}%m${reset}"
+  [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" ${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
+
+  case "$rc" in
     0) _PROMPT="%B${green} %# ${reset}%b"   ;;
     1) _PROMPT="%B${red} %# ${reset}%b"     ;;
     *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
   esac
 
-  _LINE_1="${_NL}┌─${_HOST}${_CWD}${_PYENV}"
+  _LINE_1="${_NL}┌─${_CWD}${_HOST}${_PYENV}"
   _LINE_2="${_NL}└─"
   __git_ps1 "${_LINE_1}${_LINE_2}" "${_PROMPT}" "%s"
 }
