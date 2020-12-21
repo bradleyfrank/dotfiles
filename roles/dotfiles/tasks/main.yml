@@ -12,12 +12,6 @@
     - dotfiles
     - homedir
 
-- name: Install fonts
-  import_tasks: tasks/fonts.yml
-  tags:
-    - dotfiles
-    - fonts
-
 - name: Install scripts
   copy:
     src: scripts/
@@ -33,11 +27,24 @@
     dest: "{{ vscode_config }}"
     mode: 0755
 
-- name: Install utility dotfiles
-  import_tasks: tasks/utils.yml
+
+- name: Install fonts
+  import_tasks: tasks/fonts.yml
+  tags:
+    - dotfiles
+    - fonts
+
+- name: Install cli utility configs
+  import_tasks: tasks/cli.yml
   tags:
     - dotfiles
     - utilities
+
+- name: Setup git
+  import_tasks: tasks/git.yml
+  tags:
+    - dotfiles
+    - git
 
 - name: Setup ssh
   import_tasks: tasks/ssh.yml
@@ -46,7 +53,7 @@
     - ssh
 
 - name: Setup Vim
-  import_tasks: tasks/vim.yml
+  import_tasks: tasks/editors.yml
   tags:
     - dotfiles
     - vim

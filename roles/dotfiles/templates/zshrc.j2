@@ -11,22 +11,6 @@ MANPATH=""
 MANPATH={{ item }}:"$MANPATH"
 {% endfor %}
 
-unsetopt BEEP
-setopt AUTO_CD EXTENDED_GLOB NOMATCH NO_CASE_GLOB NOTIFY CORRECT CORRECT_ALL GLOB_DOTS
-setopt SHARE_HISTORY APPEND_HISTORY HIST_VERIFY EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST HIST_SAVE_NO_DUPS HIST_IGNORE_DUPS HIST_REDUCE_BLANKS
-
-HISTFILE=~/.zsh_history
-HISTSIZE=2000
-SAVEHIST=5000
-
-bindkey -e
-
-FPATH=/usr/local/share/zsh-completions:"$FPATH"
-zstyle ':completion:*' list-suffixes expand prefix suffix
-zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
-autoload -Uz compinit && compinit
-
 {% for item in exports %}
 export {{ item }}
 {% endfor %}
@@ -52,7 +36,6 @@ source {{ ansible_user_dir }}/.infractl/secrets
 source /usr/local/bin/google-cloud-sdk/completion.zsh.inc
 # -- end oreilly config -- #
 {% endif %}
-
 {% if 'MacOSX' in ansible_distribution %}
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
@@ -65,5 +48,36 @@ source /usr/share/fzf/shell/key-bindings.zsh
 source {{ ansible_user_dir }}/.local/share/powerlevel10k/powerlevel10k.zsh-theme
 source {{ ansible_user_dir }}/.config/p10k.zsh
 source {{ usr_path }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+unsetopt  BEEP
+setopt    APPEND_HISTORY \
+          AUTO_CD \
+          COMPLETE_ALIASES \
+          CORRECT \
+          CORRECT_ALL \
+          EXTENDED_GLOB \
+          EXTENDED_HISTORY \
+          GLOB_DOTS \
+          HIST_EXPIRE_DUPS_FIRST \
+          HIST_IGNORE_DUPS \
+          HIST_REDUCE_BLANKS \
+          HIST_SAVE_NO_DUPS \
+          HIST_VERIFY \
+          NO_CASE_GLOB \
+          NOMATCH \
+          NOTIFY \
+          SHARE_HISTORY
+
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=5000
+
+bindkey -e
+
+zstyle ':completion:*' menu select list-suffixes expand prefix suffix
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+
+autoload -Uz compinit && compinit
 
 complete -F __start_kubectl k

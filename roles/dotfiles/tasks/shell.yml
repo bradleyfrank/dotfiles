@@ -7,6 +7,31 @@
 - name: Load distribution shell variables
   include_vars: "shell/{{ ansible_system }}.yml"
 
+
+- name: Install tmux config
+  template:
+    src: tmux.conf.j2
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    mode: 0644
+
+- name: Install dircolors config
+  copy:
+    src: shell/.dir_colors
+    dest: "{{ ansible_user_dir }}/.dir_colors"
+    mode: 0644
+
+- name: Create ~/.local/share/k8s directory
+  file:
+    path: "{{ ansible_user_dir }}/.local/share/k8s"
+    state: directory
+    mode: 0644
+
+- name: Install kubectl config
+  copy:
+    src: shell/.local/share/k8s/fubectl
+    dest: "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
+    mode: 0644
+
 # Create dynamically in case of package update.
 - name: Generate kubectl completions
   vars:
@@ -24,6 +49,12 @@
     dest: "{{ ansible_user_dir }}/.local/share/powerlevel10k"
     depth: '1'
     version: v1.13.0
+
+- name: Install p10k config
+  copy:
+    src: shell/.config/p10k.zsh
+    dest: "{{ ansible_user_dir }}/.config/p10k.zsh"
+    mode: 0644
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location
