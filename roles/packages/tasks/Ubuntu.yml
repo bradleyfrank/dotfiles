@@ -22,7 +22,7 @@
     autoremove: true
     autoclean: true
   become: true
-  when: "'gnome' in desktop | lower"
+  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
   tags:
     - packages
 
