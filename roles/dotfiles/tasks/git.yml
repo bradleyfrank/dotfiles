@@ -3,7 +3,7 @@
 
 - name: Install global gitignore
   copy:
-    src: utils/.gitignore
+    src: git/.gitignore
     dest: "{{ ansible_user_dir }}/.gitignore"
     mode: 0644
 
