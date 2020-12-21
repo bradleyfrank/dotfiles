@@ -68,7 +68,7 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  _CWD="" _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _LINE_1="" _LINE_2=""
+  _CWD="" _NL=$'\n' _HOST="" _PYENV="" _PROMPT=""
 
   _pwd="$(pwd | sed "s|^${HOME}|~|")"
   _path=("${(s|/|)_pwd}")
@@ -87,9 +87,7 @@ function precmd() {
     *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
   esac
 
-  _LINE_1="${_NL}┌─${_CWD}${_HOST}${_PYENV}"
-  _LINE_2="${_NL}└─"
-  __git_ps1 "${_LINE_1}" "${_LINE_2}${_PROMPT}" " (%s)"
+  __git_ps1 "${_NL}╭─${_CWD}${_HOST}" "${_PYENV}${_NL}╰─${_PROMPT}" " (%s)"
 }
 
 
