@@ -53,7 +53,7 @@
     - ssh
 
 - name: Setup Vim
-  import_tasks: tasks/editors.yml
+  import_tasks: tasks/vim.yml
   tags:
     - dotfiles
     - vim
