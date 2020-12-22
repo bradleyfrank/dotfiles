@@ -1,0 +1,21 @@
+---
+# tasks file for dotfiles
+
+- name: Download kubectl stable version info
+  get_url:
+    url: "{{ kubectl_url }}/stable.txt"
+    dest: /tmp/stable.txt
+
+- name: Register kubectl stable version
+  shell:
+    cmd: cat /tmp/stable.txt
+  register: stable_txt
+
+- name: Install kubectl
+  vars:
+    system: "{{ ansible_system | lower }}"
+    release: "{{ stable_txt.stdout }}"
+  get_url:
+    url: "{{ kubectl_url }}/{{ release }}/bin/{{ system }}/amd64/kubectl"
+    dest: "{{ ansible_user_dir }}/.local/bin/"
+    mode: 0755

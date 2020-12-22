@@ -115,7 +115,7 @@ bootstrap_linux() {
 pre_ansible_run() {
   if ! type ansible &> /dev/null; then
     if python3 -m pip install --user ansible &> /dev/null; then
-      PATH="$PATH:$(python3 -m site --user-base)"
+      PATH="$PATH:$(python3 -m site --user-base)/bin"
       export PATH
     else
       echo "Failed to install Ansible, aborting..." >&2

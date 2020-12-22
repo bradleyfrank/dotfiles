@@ -27,6 +27,12 @@
     dest: "{{ vscode_config }}"
     mode: 0755
 
+- name: Install kubectl
+  import_tasks: tasks/kubectl.yml
+  tags:
+    - dotfiles
+    - kubectl
+  when: "'kubectl' not in ansible_facts.packages"
 
 - name: Install fonts
   import_tasks: tasks/fonts.yml
