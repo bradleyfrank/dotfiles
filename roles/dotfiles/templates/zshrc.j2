@@ -55,14 +55,9 @@ export CLOUDSDK_PYTHON=python3.8
 # ----- end oreilly config ------- #
 {% endif %}
 
-function makecwd() {
-  local cwd pwd path dir blue="%F{33}" reset="%f"
-
-}
 
 function precmd() {
   local rc=$?
-  local cwd pwd path dir
   local reset="%f"
   local blue="%F{33}" \
         cyan="%F{37}" \
@@ -73,19 +68,7 @@ function precmd() {
         orange="%F{166}" \
         base03="%F{234}"
 
-  _CWD="" _NL=$'\n' _HOST="" _PYENV="" _PROMPT=""
-
-  pwd="$(pwd | sed "s|^${HOME}|~|")"
-  path=("${(s|/|)pwd}")
-  for dir in "${path[@]}"; do
-    [[ "$dir" == "${path[-1]}" ]] && break
-    _CWD="${_CWD}${violet}${dir}${blue}/${reset}"
-  done
-  _CWD=" ${_CWD}%B${blue}%1~${reset}%b"
-
-  if [[ -n "$TMUX" ]]; then
-    [[ "$(tmux list-panes | wc -l)" -gt 2 ]] && _CWD=" ${blue}%(4~|%-1~/.../%3~|%~)${reset}"
-  fi
+  _NL=$'\n' _HOST="" _PYENV="" _PROMPT="" _CWD=" ${blue}%(5~|%-1~/.../%3~|%~)${reset}"
 
   [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]] && _HOST=" on ${orange}%m${reset}"
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV=" ${cyan}Py $(basename "$VIRTUAL_ENV")${reset}"
@@ -96,7 +79,7 @@ function precmd() {
     *) _PROMPT="%B${magenta} %# ${reset}%b" ;;
   esac
 
-  __git_ps1 "${_NL}╭─${_CWD}${_HOST}" "${_PYENV}${_NL}╰─${_PROMPT}" " (%s)"
+  __git_ps1 "${_NL}╭─${_CWD}${_HOST}" "${_PYENV}${_NL}╰─${_PROMPT}" " on %s"
 }
 
 
