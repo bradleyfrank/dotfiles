@@ -23,12 +23,12 @@ ANSIBLE_REPO[localhost_yml]="$CHECKOUT_DIR/inventories/host_vars/localhost.yml"
 
 trap cleanup SIGINT
 
-cleanup() {
+function cleanup() {
   [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -f "$SUDOERS_D_TMP"
   [[ -e "$CHECKOUT_DIR" ]] && rm -rf "$CHECKOUT_DIR"
 }
 
-usage() {
+function usage() {
     echo "Usage: [-b | -d] [-g git_branch] [-h]"
     echo "  -b  Run the bootstrap playbook."
     echo "  -d  Run the dotfiles playbook (default)."
@@ -40,7 +40,7 @@ usage() {
     echo "  -c  Do not manage ssh config file. (tag: ssh_config)"
 }
 
-create_tmp_sudoers() {
+function create_tmp_sudoers() {
   [[ -e "$SUDOERS_D_TMP" ]] && sudo rm -rf "$SUDOERS_D_TMP"
   SUDOERS_D_TMP="${SUDOERS_D}/99-ansible-$(date +%F)"
   sudo --validate --prompt "Enter sudo password: " # reset sudo timer for following command
@@ -48,7 +48,7 @@ create_tmp_sudoers() {
   printf "\n\n" # insert newlines for readability
 }
 
-create_vault_file() {
+function create_vault_file() {
   local vaultpw vaultfile="$HOME/.ansible/vault"
   [[ -e "$vaultfile" ]] && return 0
   [[ ! -d "$HOME/.ansible" ]] && mkdir "$HOME/.ansible"
@@ -58,7 +58,7 @@ create_vault_file() {
   printf "\n\n" # insert newlines for readability
 }
 
-keep_awake() {
+function keep_awake() {
   case "$SYSTEM_TYPE" in
     darwin)
       kill "$(pgrep caffeinate)" &> /dev/null
@@ -71,12 +71,12 @@ keep_awake() {
   esac
 }
 
-not_supported() {
+function not_supported() {
   echo "Unsupported OS, aborting..." >&2
   exit 1
 }
 
-bootstrap_os() {
+function bootstrap_os() {
   case "$SYSTEM_TYPE" in
     darwin) bootstrap_macos ;;
     linux ) bootstrap_linux ;;
@@ -84,7 +84,7 @@ bootstrap_os() {
   esac
 }
 
-bootstrap_macos() {
+function bootstrap_macos() {
   local homebrew_url="https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
   keep_awake
   softwareupdate --install --all
@@ -92,7 +92,7 @@ bootstrap_macos() {
   brew install ansible git
 }
 
-bootstrap_linux() {
+function bootstrap_linux() {
   case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
     fedora)
       keep_awake
@@ -112,7 +112,7 @@ bootstrap_linux() {
   esac
 }
 
-pre_ansible_run() {
+function pre_ansible_run() {
   if ! type ansible &> /dev/null; then
     if python3 -m pip install --user ansible &> /dev/null; then
       PATH="$PATH:$(python3 -m site --user-base)/bin"
@@ -143,14 +143,19 @@ pre_ansible_run() {
   fi
 }
 
-ansible_run() {
-  pushd "$CHECKOUT_DIR" &> /dev/null || return 1
+function ansible_playbook() {
+  local skip_tags
+  skip_tags="$(tr ' ' ',' <<< "${SKIP_TAGS[*]}")"
 
-  if ansible-playbook \
-    --ask-become-pass \
-    --skip-tags "$(tr ' ' ',' <<< "${SKIP_TAGS[*]}")" \
-    playbooks/"${ANSIBLE_REPO[playbook]}".yml
-  then
+  case "${ANSIBLE_REPO[playbook]}" in
+    bootstrap) ansible-playbook --ask-become-pass --skip-tags "$skip_tags" playbooks/bootstrap.yml ;;
+    dotfiles ) ansible-playbook --skip-tags "$skip_tags" playbooks/dotfiles.yml                    ;;
+  esac
+}
+
+function ansible_run() {
+  pushd "$CHECKOUT_DIR" &> /dev/null || return 1
+  if ansible_playbook; then
     popd &> /dev/null || return 1
     [[ -e "$HOME"/.dotfiles ]] && rm -rf "$HOME"/.dotfiles
     mv "$CHECKOUT_DIR" "$HOME"/.dotfiles
