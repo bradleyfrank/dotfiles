@@ -41,7 +41,7 @@ packages:
   - jq
   - keychain
   - kpcli
-  - kubectx
+  - kubectl
   - lame
   - less
   - markdown
