@@ -37,7 +37,7 @@
 # Create dynamically in case of package update.
 - name: Generate kubectl completions
   shell:
-    cmd: "{{ kubectl }} completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
+    cmd: "kubectl completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
   environment: 
         PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
 
