@@ -36,11 +36,10 @@
 
 # Create dynamically in case of package update.
 - name: Generate kubectl completions
-  vars:
-    kubectl_completion_path: "{{ ansible_user_dir }}/.local/share/k8s/kubectl"
-    path: "PATH={{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
   shell:
-    cmd: "export {{ path }} ; {{ kubectl }} completion zsh > {{ kubectl_completion_path }}.zsh"
+    cmd: "{{ kubectl }} completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
+  environment: 
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location
