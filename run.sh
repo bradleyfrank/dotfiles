@@ -7,6 +7,7 @@ declare -a SKIP_TAGS
 
 CHECKOUT_DIR="$(mktemp -d)"
 SYSTEM_TYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
+PIP_URL="https://bootstrap.pypa.io/get-pip.py"
 
 case "$SYSTEM_TYPE" in
   darwin) SUDOERS_D="/private/etc/sudoers.d" ;;
@@ -79,8 +80,8 @@ not_supported() {
 bootstrap_os() {
   case "$SYSTEM_TYPE" in
     darwin) bootstrap_macos ;;
-    linux)  bootstrap_linux ;;
-    *)      not_supported   ;;
+    linux ) bootstrap_linux ;;
+    *     ) not_supported   ;;
   esac
 }
 
@@ -112,12 +113,31 @@ bootstrap_linux() {
   esac
 }
 
-pre_ansible_run() {
-  if ! type ansible &> /dev/null; then
+bootstrap_ansible() {
+  local install_pip
+
+  if ! python -m pip --version &> /dev/null; then
+    install_pip="$(mktemp)"
+    case "$SYSTEM_TYPE" in
+      darwin) curl "$PIP_URL" -s -o "$install_pip"     ;;
+      linux ) wget -q -O - "$PIP_URL" > "$install_pip" ;;
+      *     ) not_supported                            ;;
+    esac
+
+    python3 "$install_pip"
+    rm -f "$install_pip"
+
     if ! python3 -m pip install --user ansible &> /dev/null; then
       echo "Failed to install Ansible, aborting..." >&2
       return 1
     fi
+  fi
+
+}
+
+pre_ansible_run() {
+  if ! type ansible &> /dev/null; then
+    if ! bootstrap_ansible; then return 1; fi
   fi
 
   if git clone "${ANSIBLE_REPO[url]}" "$CHECKOUT_DIR" &> /dev/null; then
