@@ -6,6 +6,11 @@
   tags:
     - dotfiles
 
+- name: Find installed packages
+  package_facts:
+    manager: apt
+  when: "'linux' in {{ ansible_system | lower }}"
+
 - name: Create homedir structure
   import_tasks: tasks/homedir.yml
   tags:
