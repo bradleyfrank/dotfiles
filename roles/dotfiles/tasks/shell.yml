@@ -38,8 +38,9 @@
 - name: Generate kubectl completions
   vars:
     kubectl_completion_path: "{{ ansible_user_dir }}/.local/share/k8s/kubectl"
+    path: "PATH={{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
   shell:
-    cmd: "{{ kubectl }} completion zsh > {{ kubectl_completion_path }}.zsh"
+    cmd: "export {{ path }} ; {{ kubectl }} completion zsh > {{ kubectl_completion_path }}.zsh"
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location
