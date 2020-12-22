@@ -3,7 +3,6 @@
 
 python_packages:
   - black
-  - dns-lexicon
   - imgur_downloader
   - pip-autoremove
   - pip_upgrade_outdated
@@ -13,6 +12,7 @@ python_packages:
   - pylint
   - tmuxp
   - tuir
+  - virtualenv
   - wily
 
 vscode_extensions:

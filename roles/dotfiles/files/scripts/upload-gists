@@ -26,7 +26,7 @@ function push_or_create() {
 function gist_dotfiles() {
   local hostname dotfiles filename description
   hostname="$(uname -n | cut -d. -f1)"
-  dotfiles=( "$HOME/.zshrc" "$HOME/.tmux.conf" "$HOME/.vimrc" "$HOME/.bashrc" )
+  dotfiles=( "$HOME/.zshrc" "$HOME/.tmux.conf" "$HOME/.vimrc" )
 
   for filename in "${dotfiles[@]}"; do
     description="$hostname-$(basename "$filename")"
