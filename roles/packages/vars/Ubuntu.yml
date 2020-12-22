@@ -40,7 +40,6 @@ base_packages:
   - most
   - msmtp
   - mtr
-  - multipass
   - ncdu
   - neofetch
   - nextcloud-client
