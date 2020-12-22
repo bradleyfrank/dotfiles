@@ -23,7 +23,7 @@ repos:
     key: https://updates.signal.org/desktop/apt/keys.asc
 
   - name: google-chrome
-    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
 
   - name: foliate
