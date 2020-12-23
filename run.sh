@@ -141,8 +141,7 @@ function pre_ansible_run() {
     return 1
   fi
 
-  if ! ansible-galaxy collection install \
-    --requirements-file "$CHECKOUT_DIR"/requirements.yml
+  if ! ansible-galaxy install -r "$CHECKOUT_DIR"/requirements.yml
   then
     echo "Failed to install Ansible collections, aborting..." >&2
     return 1
