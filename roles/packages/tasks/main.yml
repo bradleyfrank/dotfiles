@@ -1,11 +1,6 @@
 ---
 # tasks file for packages
 
-- name: Install Linux repositories
-  import_role:
-    name: repositories
-  when: "'linux' in ansible_system | lower"
-
 - name: Load OS packages lists
   include_vars: "{{ ansible_distribution }}.yml"
   tags:

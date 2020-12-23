@@ -1,6 +1,11 @@
 ---
 # tasks file for packages
 
+- name: Install Ubuntu repositories
+  import_role:
+    name: repositories
+  when: "'Ubuntu' in ansible_distribution"
+
 - name: Install Ubuntu packages
   apt:
     name: "{{ base_packages | default([]) }}"
@@ -10,19 +15,6 @@
     autoremove: true
     autoclean: true
   become: true
-  tags:
-    - packages
-
-- name: Install Ubuntu Gnome packages
-  apt:
-    name: "{{ gnome_packages | default([]) }}"
-    state: present
-    update_cache: true
-    install_recommends: true
-    autoremove: true
-    autoclean: true
-  become: true
-  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
   tags:
     - packages
 

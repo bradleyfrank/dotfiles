@@ -37,11 +37,19 @@ shared_exports:
   - GIT_PS1_SHOWUNTRACKEDFILES=true
   - GIT_PS1_SHOWCOLORHINTS=true
   - GIT_PS1_SHOWUPSTREAM="verbose name"
+  - LESS_TERMCAP_mb=$'\E[01;32m'
+  - LESS_TERMCAP_md=$'\E[01;32m'
+  - LESS_TERMCAP_me=$'\E[0m'
+  - LESS_TERMCAP_se=$'\E[0m'
+  - LESS_TERMCAP_so=$'\E[01;47;34m'
+  - LESS_TERMCAP_ue=$'\E[0m'
+  - LESS_TERMCAP_us=$'\E[01;36m'
+  - LESS=-r
 
 shared_paths:
   - /usr/bin:/usr/sbin:/bin:/sbin
   - /usr/local/bin:/usr/local/sbin
-  - "{{ ansible_user_dir }}/.local/bin:~/bin"
+  - "{{ ansible_user_dir }}/.local/bin"
 
 shared_manpaths:
   - /usr/local/share/man:/usr/share/man
@@ -50,10 +58,13 @@ shared_manpaths:
 shared_aliases:
   bw: bitwise --no-color
   condense: grep -Erv "(^#|^$)"
+  cp: cp -i
   d: docker
   dc: docker-compose
+  df: df -h
   dmux: tmux new -s "$(diceware 2)"
   e: extract
+  free: free -g
   glances: glances --theme-white
   glow: glow -s light
   groot: cd "$(git rev-parse --show-toplevel)"

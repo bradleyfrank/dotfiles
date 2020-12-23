@@ -33,13 +33,17 @@
     src: shell/.local/share/k8s/fubectl
     dest: "{{ ansible_user_dir }}/.local/share/k8s/fubectl"
     mode: 0644
+  tags:
+    - kubectl
 
 # Create dynamically in case of package update.
 - name: Generate kubectl completions
   shell:
     cmd: "kubectl completion zsh > {{ ansible_user_dir }}/.local/share/k8s/kubectl.zsh"
   environment: 
-        PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
+  tags:
+    - kubectl
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location

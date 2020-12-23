@@ -2,10 +2,7 @@
 # vars file for packages
 
 base_packages:
-  - 1password
   - abcde
-  - apt-file
-  - apt-transport-https  # kubernetes
   - audacious
   - bat
   - borgbackup
@@ -19,37 +16,31 @@ base_packages:
   - ffmpeg
   - figlet
   - foliate
-  - fonts-noto-color-emoji
   - fwupd
   - fzf
-  - gedit-plugin-code-comment
-  - gedit-plugin-color-picker
-  - gedit-plugin-git
-  - gedit-plugin-join-lines
-  - gedit-plugin-multi-edit
-  - gh
+  - gedit-autotab-git
+  - gedit-duplicate-line
+  - gedit-markdownpreview-git
+  - gedit-scroll-past
+  - gedit-solarized-git
+  - gedit-strip-whitespace
   - ghostscript
   - ghostwriter
+  - github-cli
   - glances
-  - gnome-shell-extension-system-monitor
-  - gnome-shell-extensions-gpaste
   - gnome-tweaks
   - gnote
-  - gnupg2  # kubernetes
-  - google-chrome-stable
-  - gpaste*
+  - gpaste
   - htop
   - iftop
   - keepassxc
   - keychain
   - kubectl
-  - libmp4-info-perl
+  - libgnome-keyring
   - libreoffice
-  - libvirt-clients
-  - makemkv-bin
-  - makemkv-oss
   - meld
-  - mkvtoolnix
+  - mkvtoolnix-cli
+  - mkvtoolnix-gui
   - most
   - mpv
   - msmtp
@@ -57,16 +48,15 @@ base_packages:
   - ncdu
   - neofetch
   - nextcloud-client
-  - nextcloud-client-nautilus
   - nmap
-  - p7zip-*
-  - par
-  - perf-tools-unstable
+  - noto-fonts-emoji
+  - openconnect
+  - p7zip
+  - perf
   - picard
   - pidgin
+  - python-pip
   - python3
-  - python3-dev
-  - python3-pip
   - remmina
   - reptyr
   - ruby
@@ -74,8 +64,6 @@ base_packages:
   - shellcheck
   - signal-desktop
   - solaar
-  - spotify-client
-  - ssh
   - stow
   - strace
   - system-config-printer
@@ -83,7 +71,6 @@ base_packages:
   - timeshift
   - tlp
   - tmux
-  - toilet
   - torbrowser-launcher
   - transmission-gtk
   - trash-cli
@@ -91,11 +78,18 @@ base_packages:
   - vim
   - vlc
   - wget
-  - xz-utils
+  - xz
+  - yay
   - youtube-dl
   - zsh
-  - zsh-syntax-highlighting
 
-flatpak_packages:
-  - name: com.gitlab.newsflash
-    remote: flathub
+aur_packages:
+  - 1password
+  - google-chrome
+  - makemkv
+  - makemkv-libaacs
+  - nautilus-nextcloud
+  - newsflash
+  - par
+  - spotify
+  - toilet

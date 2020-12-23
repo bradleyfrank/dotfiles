@@ -1,6 +1,11 @@
 ---
 # tasks file for packages
 
+- name: Install Fedora repositories
+  import_role:
+    name: repositories
+  when: "'linux' in ansible_system | lower"
+
 - name: Install Fedora packages
   dnf:
     name: "{{ base_packages | default([]) }}"
@@ -10,17 +15,6 @@
     autoremove: true
     autoclean: true
   become: true
-  tags:
-    - packages
-
-- name: Install Fedora Gnome packages
-  dnf:
-    name: "{{ gnome_packages | default([]) }}"
-    state: present
-    update_cache: true
-    install_weak_deps: true
-  become: true
-  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
   tags:
     - packages
 
