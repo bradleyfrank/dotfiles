@@ -18,12 +18,6 @@ base_packages:
   - foliate
   - fwupd
   - fzf
-  - gedit-autotab-git
-  - gedit-duplicate-line
-  - gedit-markdownpreview-git
-  - gedit-scroll-past
-  - gedit-solarized-git
-  - gedit-strip-whitespace
   - ghostscript
   - ghostwriter
   - github-cli
@@ -86,6 +80,12 @@ base_packages:
 
 aur_packages:
   - 1password
+  - gedit-autotab-git
+  - gedit-duplicate-line
+  - gedit-markdownpreview-git
+  - gedit-scroll-past
+  - gedit-solarized-git
+  - gedit-strip-whitespace
   - google-chrome
   - makemkv
   - makemkv-libaacs
