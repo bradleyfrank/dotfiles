@@ -85,7 +85,6 @@ aur_packages:
   - gedit-duplicate-line
   - gedit-markdownpreview-git
   - gedit-scroll-past
-  - gedit-solarized-git
   - gedit-strip-whitespace
   - google-chrome
   - makemkv
