@@ -93,16 +93,22 @@ function bootstrap_macos() {
 }
 
 function bootstrap_linux() {
+  keep_awake
+
   case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
+    manjaro)
+      sudo pacman -Scc --noconfirm
+      sudo pacman -Syy --noconfirm
+      sudo pacman -Syu --noconfirm
+      sudo pacman -Si --noconfirm ansible git
+      ;;
     fedora)
-      keep_awake
       sudo dnf clean all
       sudo dnf makecache
       sudo dnf upgrade -y
       sudo dnf install -y ansible git flatpak
       ;;
     ubuntu)
-      keep_awake
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
