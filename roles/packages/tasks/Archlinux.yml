@@ -10,16 +10,6 @@
   tags:
     - packages
 
-- name: Install Manjaro Gnome packages
-  pacman:
-    name: "{{ gnome_packages | default([]) }}"
-    state: present
-    update_cache: true
-  become: true
-  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
-  tags:
-    - packages
-
 - name: Install Manjaro AUR packages
   aur:
     name: "{{ aur_packages | default([]) }}"
