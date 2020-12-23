@@ -28,6 +28,7 @@ base_packages:
   - ghostwriter
   - github-cli
   - glances
+  - gnome-shell-extensions
   - gnome-tweaks
   - gnote
   - gpaste
@@ -91,5 +92,6 @@ aur_packages:
   - nautilus-nextcloud
   - newsflash
   - par
+  - plexamp-appimage
   - spotify
   - toilet

@@ -1,7 +1,6 @@
 [org/gnome/calendar]
 follow-night-light=false
 
-
 [org/gnome/desktop/datetime]
 automatic-timezone=true
 
@@ -12,8 +11,6 @@ clock-show-seconds=false
 clock-show-weekday=true
 enable-animations=false
 show-battery-percentage=true
-gtk-theme='Yaru-light'
-icon-theme='Yaru'
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
@@ -31,7 +28,6 @@ tap-to-click=true
 [org/gnome/desktop/privacy]
 remove-old-temp-files=true
 remove-old-trash-files=true
-
 
 [org/gnome/gedit/preferences/editor]
 auto-indent=true
@@ -54,7 +50,6 @@ wrap-last-split-mode='word'
 show-tabs-mode='auto'
 side-panel-visible=false
 
-
 [org/gnome/nautilus/preferences]
 default-folder-viewer='list-view'
 search-filter-time-type='last_modified'
@@ -67,11 +62,9 @@ default-zoom-level='small'
 use-tree-view=true
 default-column-order=['name', 'size', 'type', 'owner', 'group', 'permissions', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'recency', 'starred', 'detailed_type']
 
-
 [org/gnome/settings-daemon/plugins/color]
 night-light-schedule-automatic=true
 night-light-enabled=true
-
 
 [org/gnome/shell]
 favorite-apps=['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'code.desktop', '1password.desktop', 'org.gnome.gedit.desktop', 'org.gnome.Calculator.desktop', 'spotify.desktop', 'signal-desktop.desktop', 'gnome-control-center.desktop']
@@ -137,7 +130,6 @@ show-favorites=true
 show-show-apps-button=true
 transparency-mode='FIXED'
 unity-backlit-items=false
-
 
 [org/gnome/terminal/legacy]
 theme-variant='system'
