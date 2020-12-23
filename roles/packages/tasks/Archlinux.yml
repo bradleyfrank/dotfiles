@@ -21,7 +21,7 @@
     - packages
 
 - name: Install Manjaro AUR packages
-  kewlfft.aur:
+  aur:
     name: "{{ aur_packages | default([]) }}"
     use: yay
     state: present
