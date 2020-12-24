@@ -33,7 +33,6 @@ base_packages:
   - glances
   - gnome-shell-extension-system-monitor
   - gnome-shell-extensions-gpaste
-  - gnome-tweaks
   - gnote
   - gnupg2  # kubernetes
   - google-chrome-stable

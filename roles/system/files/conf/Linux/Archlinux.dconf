@@ -1,9 +1,0 @@
-[org/gnome/desktop/interface]
-gtk-theme='Matcha-light-sea'
-icon-theme='Papirus-Light-Maia'
-
-[org/gnome/shell/extensions/user-theme]
-name='Match-light-sea'
-
-[org/gnome/shell]
-enabled-extensions=['system-monitor@paradoxxx.zero.gmail.com', 'GPaste@gnome-shell-extensions.gnome.org', 'pop-shell@system76.com', 'dash-to-dock@micxgx.gmail.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'pamac-updates@manjaro.org']

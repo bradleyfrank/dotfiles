@@ -96,12 +96,6 @@ function bootstrap_linux() {
   keep_awake
 
   case "$(sed -rn 's/^ID="?([a-z]+)"?/\1/p' /etc/os-release)" in
-    manjaro)
-      sudo pacman -Scc --noconfirm
-      sudo pacman -Syy --noconfirm
-      sudo pacman -Syu --noconfirm
-      sudo pacman -Si --noconfirm ansible git
-      ;;
     fedora)
       sudo dnf clean all
       sudo dnf makecache

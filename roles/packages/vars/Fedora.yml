@@ -37,7 +37,6 @@ base_packages:
   - gnome-shell-extension-gpaste
   - gnome-shell-extension-system-monitor-applet
   - gnome-shell-theme-yaru
-  - gnome-tweaks
   - gnote
   - google-chrome-stable
   - google-noto-emoji-color-fonts

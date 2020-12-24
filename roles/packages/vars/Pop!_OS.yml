@@ -34,7 +34,6 @@ base_packages:
   - gnome-shell-extension-system-monitor
   - gnome-shell-extension-dashtodock
   - gnome-shell-extensions-gpaste
-  - gnome-tweaks
   - gnote
   - gnupg2  # kubernetes
   - google-chrome-stable
