@@ -32,6 +32,7 @@ base_packages:
   - ghostwriter
   - glances
   - gnome-shell-extension-system-monitor
+  - gnome-shell-extension-dashtodock
   - gnome-shell-extensions-gpaste
   - gnome-tweaks
   - gnote

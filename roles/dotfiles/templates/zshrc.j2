@@ -36,7 +36,7 @@ source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-{% elif 'Ubuntu' in ansible_distribution %}
+{% elif ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
 source /etc/bash_completion.d/git-prompt
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
