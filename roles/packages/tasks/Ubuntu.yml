@@ -4,7 +4,6 @@
 - name: Install Ubuntu repositories
   import_role:
     name: repositories
-  when: "'Ubuntu' in ansible_distribution"
 
 - name: Install Ubuntu packages
   ansible.builtin.apt:

@@ -4,7 +4,6 @@
 - name: Install Fedora repositories
   import_role:
     name: repositories
-  when: "'linux' in ansible_system | lower"
 
 - name: Install Fedora packages
   ansible.builtin.dnf:

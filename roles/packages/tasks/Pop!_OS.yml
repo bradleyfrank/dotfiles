@@ -4,7 +4,6 @@
 - name: Install Pop!_OS repositories
   import_role:
     name: repositories
-  when: "'Pop!_OS' in ansible_distribution"
 
 - name: Install Pop!_OS packages
   ansible.builtin.apt:
