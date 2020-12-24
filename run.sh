@@ -108,7 +108,7 @@ function bootstrap_linux() {
       sudo dnf upgrade -y
       sudo dnf install -y ansible git flatpak
       ;;
-    ubuntu)
+    ubuntu|pop)
       sudo apt-get clean
       sudo apt-get update
       sudo apt-get upgrade -y
