@@ -124,7 +124,6 @@ function pre_ansible_run() {
   git checkout "${ANSIBLE_REPO[branch]}" || return 1
   popd &> /dev/null || return 1
 
-  ansible-galaxy role install -r "$CHECKOUT_DIR"/requirements.yml || return 1
   ansible-galaxy collection install -r "$CHECKOUT_DIR"/requirements.yml || return 1
 }
 
