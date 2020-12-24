@@ -34,6 +34,7 @@ base_packages:
   - kubectl
   - libgnome-keyring
   - libreoffice
+  - lostfiles
   - meld
   - mkvtoolnix-cli
   - mkvtoolnix-gui
@@ -89,7 +90,6 @@ aur_packages:
   - google-chrome
   - makemkv
   - makemkv-libaacs
-  - newsflash
   - par
   - plexamp-appimage
   - spotify
