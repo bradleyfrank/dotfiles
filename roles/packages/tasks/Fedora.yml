@@ -6,7 +6,7 @@
     name: repositories
 
 - name: Install Fedora packages
-  ansible.builtin.dnf:
+  dnf:
     name: "{{ base_packages | default([]) }}"
     state: present
     update_cache: true

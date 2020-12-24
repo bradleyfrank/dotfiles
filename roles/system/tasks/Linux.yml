@@ -2,7 +2,7 @@
 # tasks file for system
 
 - name: Make zsh default for user
-  ansible.builtin.user:
+  user:
     name: "{{ ansible_env.USER }}"
     shell: "/usr/bin/zsh"
   become: true
@@ -10,7 +10,7 @@
     - shell
 
 - name: Make bash default for root
-  ansible.builtin.user:
+  user:
     name: root
     shell: /usr/bin/bash
   become: true
@@ -19,7 +19,7 @@
     - shell
 
 - name: Install root dotfiles
-  ansible.builtin.copy:
+  copy:
     src: root/
     dest: /root/
     mode: 0644
@@ -29,7 +29,7 @@
     - shell
 
 - name: Import dconf settings
-  ansible.builtin.shell: dconf load / < "{{ item }}"
+  shell: dconf load / < "{{ item }}"
   with_fileglob:
     - "conf/Linux/shared.dconf"
     - "conf/Linux/{{ ansible_distribution }}.dconf"
@@ -37,7 +37,7 @@
     - gnome_settings
 
 - name: Generate host keys
-  ansible.builtin.command:
+  command:
     cmd: ssh-keygen -A
     creates: /etc/ssh/ssh_host_*_key
   become: true

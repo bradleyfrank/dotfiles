@@ -2,7 +2,7 @@
 # tasks file for dotfiles
 
 - name: Check if `kubectl` is installed
-  ansible.builtin.command:
+  command:
     cmd: which kubectl
   environment: 
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_dir }}/.local/bin"
@@ -16,7 +16,7 @@
         dest: "{{ ansible_user_dir }}/stable.txt"
 
     - name: Register kubectl stable version
-      ansible.builtin.shell:
+      shell:
         cmd: "cat {{ ansible_user_dir }}/stable.txt"
       register: stable_txt
 
@@ -30,7 +30,7 @@
         mode: 0755
 
     - name: Cleanup kubectl stable.txt
-      ansible.builtin.file:
+      file:
         path: "{{ ansible_user_dir }}/stable.txt"
         state: absent
   when: which_kubectl.rc == 1

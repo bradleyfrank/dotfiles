@@ -2,14 +2,14 @@
 # tasks file for repositories
 
 - name: Install "rpmfusion-free" repo
-  ansible.builtin.yum:
+  yum:
     name: "{{ rpmfusion_https }}/free/fedora/{{ rpmfusion_free_release }}.noarch.rpm"
     disable_gpg_check: true
     state: present
   become: true
 
 - name: Install "rpmfusion-nonfree" repo
-  ansible.builtin.yum:
+  yum:
     name: "{{ rpmfusion_https }}/nonfree/fedora/{{ rpmfusion_nonfree_release }}.noarch.rpm"
     disable_gpg_check: true
     state: present

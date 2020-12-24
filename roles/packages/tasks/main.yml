@@ -14,7 +14,7 @@
 - name: Install VSCode extensions
   vars:
     vscode: "'/usr/bin/code' if {{ ansible_system }} == 'Linux' else '/usr/local/bin/code'"
-  ansible.builtin.shell:
+  command:
     cmd: "{{ vscode }} --install-extension {{ item }}"
   loop: "{{ vscode_extensions }}"
   tags:
@@ -22,7 +22,7 @@
     - vscode
 
 - name: Install Python packages
-  ansible.builtin.pip:
+  pip:
     name: "{{ python_packages }}"
     extra_args: --user
   tags:

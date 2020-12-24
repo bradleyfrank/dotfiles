@@ -2,7 +2,7 @@
 # tasks file for system
 
 - name: Copy manual import app settings
-  ansible.builtin.copy:
+  copy:
     src: "conf/{{ ansible_system }}/"
     dest: "{{ ansible_user_dir }}"
     mode: 0755
@@ -12,7 +12,7 @@
 #
 
 - name: Make additional shells available
-  ansible.builtin.blockinfile:
+  blockinfile:
     path: /etc/shells
     block: |
       /usr/local/bin/bash
@@ -21,7 +21,7 @@
   become: true
 
 - name: Make zsh default for user
-  ansible.builtin.user:
+  user:
     name: "{{ ansible_env.USER }}"
     shell: "/usr/local/bin/zsh"
   become: true
@@ -29,7 +29,7 @@
     - shell
 
 - name: Fix permissions for zsh
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     mode: 0755
   loop:
@@ -40,7 +40,7 @@
     - shell
 
 - name: Make bash default for root
-  ansible.builtin.user:
+  user:
     name: root
     shell: "/usr/local/bin/bash"
   become: true
@@ -49,7 +49,7 @@
     - shell
 
 - name: Install root dotfiles
-  ansible.builtin.copy:
+  copy:
     src: root/
     dest: /var/root/
     mode: 0644
@@ -348,27 +348,27 @@
     value: '1'
 
 - name: Enable firewall
-  ansible.builtin.command:
+  command:
     cmd: '/usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on'
   become: true
 
 - name: Put display to sleep after 15 minutes
-  ansible.builtin.command:
+  command:
     cmd: 'pmset displaysleep 15'
   become: true
 
 - name: Put computer to sleep after 30 minutes
-  ansible.builtin.command:
+  command:
     cmd: 'pmset sleep 30'
   become: true
 
 - name: Disable Gatekeeper
-  ansible.builtin.command:
+  command:
     cmd: 'spctl --master-disable'
   become: true
 
 - name: Use Touch ID for sudo
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /etc/pam.d/sudo
     insertafter: '^# sudo:'
     firstmatch: true
@@ -381,20 +381,20 @@
 #
 
 - name: Enable locate database
-  ansible.builtin.command:
+  command:
     cmd: 'launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist'
   become: true
 
 - name: Unhide ~/Library directory (part 1 of 2)
-  ansible.builtin.command:
+  command:
     cmd: "chflags nohidden {{ ansible_user_dir }}/Library"
 
 - name: Unhide ~/Library directory (part 2 of 2)
-  ansible.builtin.command:
+  command:
     cmd: "xattr -d com.apple.FinderInfo {{ ansible_user_dir }}/Library"
 
 - name: Unhide /Volumes directory
-  ansible.builtin.command:
+  command:
     cmd: 'chflags nohidden /Volumes'
   become: true
 
@@ -415,6 +415,6 @@
 #
 
 - name: Restart dock to apply changes
-  ansible.builtin.command:
+  command:
     cmd: 'killall Dock'
   become: true

@@ -6,14 +6,14 @@
     name: repositories
 
 - name: Clean cache
-  ansible.builtin.apt:
+  apt:
     update_cache: true
   become: true
   tags:
     - packages
 
 - name: Install Pop!_OS packages
-  ansible.builtin.apt:
+  apt:
     name: "{{ base_packages | default([]) }}"
     state: present
     install_recommends: true
