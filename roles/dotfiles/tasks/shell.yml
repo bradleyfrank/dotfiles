@@ -47,7 +47,8 @@
 
 # Used to add Python bin to PATH on macOS.
 - name: Register Python3 user base location
-  ansible.builtin.shell: python3 -m site --user-base
+  ansible.builtin.shell:
+    cmd: python3 -m site --user-base
   register: python3_user_base
   when: "'Darwin' in ansible_system"
 
