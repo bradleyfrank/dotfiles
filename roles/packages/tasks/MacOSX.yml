@@ -2,21 +2,21 @@
 # tasks file for packages
 
 - name: Install Homebrew taps
-  homebrew_tap:
+  community.general.homebrew_tap:
     name: "{{ taps }}"
   tags:
     - packages
     - homebrew_taps
 
 - name: Install Homebrew packages
-  homebrew:
+  community.general.homebrew:
     name: "{{ packages }}"
   tags:
     - packages
     - homebrew_formulas
 
 - name: Install Homebrew casks
-  homebrew_cask:
+  community.general.homebrew_cask:
     name: "{{ casks }}"
     accept_external_apps: true
   tags:
@@ -24,7 +24,7 @@
     - homebrew_casks
 
 - name: Check Mac App Store authentication status
-  shell:
+  ansible.builtin.shell:
     cmd: mas account >&1 | grep -vq 'Not signed in'  # success when 'Not signed in' not found
   register: mas_account
   tags:
@@ -32,7 +32,7 @@
     - mac_app_store
 
 - name: Install Mac App Store apps
-  command:
+  ansible.builtin.command:
     cmd: "/usr/local/bin/mas install {{ item }}"
   loop: "{{ apps }}"
   when: mas_account.rc == 0

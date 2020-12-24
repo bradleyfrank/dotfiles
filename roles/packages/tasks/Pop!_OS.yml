@@ -7,7 +7,7 @@
   when: "'Pop!_OS' in ansible_distribution"
 
 - name: Install Pop!_OS packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ base_packages | default([]) }}"
     state: present
     update_cache: true

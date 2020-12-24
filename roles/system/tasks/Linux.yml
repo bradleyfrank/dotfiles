@@ -2,7 +2,7 @@
 # tasks file for system
 
 - name: Make zsh default for user
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_env.USER }}"
     shell: "/usr/bin/zsh"
   become: true
@@ -10,7 +10,7 @@
     - shell
 
 - name: Make bash default for root
-  user:
+  ansible.builtin.user:
     name: root
     shell: /usr/bin/bash
   become: true
@@ -19,7 +19,7 @@
     - shell
 
 - name: Install root dotfiles
-  copy:
+  ansible.builtin.copy:
     src: root/
     dest: /root/
     mode: 0644
@@ -29,16 +29,15 @@
     - shell
 
 - name: Import dconf settings
-  shell: dconf load / < "{{ item }}"
+  ansible.builtin.shell: dconf load / < "{{ item }}"
   with_fileglob:
     - "conf/Linux/shared.dconf"
     - "conf/Linux/{{ ansible_distribution }}.dconf"
-  when: "'gnome' in ansible_env.XDG_CURRENT_DESKTOP | lower"
   tags:
     - gnome_settings
 
 - name: Generate host keys
-  command:
+  ansible.builtin.command:
     cmd: ssh-keygen -A
     creates: /etc/ssh/ssh_host_*_key
   become: true

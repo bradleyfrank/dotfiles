@@ -13,7 +13,7 @@
     - homedir
 
 - name: Install scripts
-  copy:
+  ansible.builtin.copy:
     src: scripts/
     dest: "{{ ansible_user_dir }}/.local/bin/"
     mode: 0755
@@ -22,7 +22,7 @@
     - scripts
 
 - name: Install VSCode configs
-  copy:
+  ansible.builtin.copy:
     src: vscode/
     dest: "{{ vscode_config }}"
     mode: 0755

@@ -7,7 +7,7 @@
   when: "'linux' in ansible_system | lower"
 
 - name: Install Fedora packages
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ base_packages | default([]) }}"
     state: present
     update_cache: true
