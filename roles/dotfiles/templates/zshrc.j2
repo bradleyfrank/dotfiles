@@ -82,9 +82,9 @@ function precmd() {
   [[ -n "$VIRTUAL_ENV" ]] && _PYENV="-[${cyan}Py $(basename "$VIRTUAL_ENV")${reset}]"
 
   case "$rc" in
-    0) _PROMPT="%B${green}${_PROMPT}${reset}%b"   ;;
-    1) _PROMPT="%B${red}${_PROMPT}${reset}%b"     ;;
-    *) _PROMPT="%B${magenta}${_PROMPT}${reset}%b" ;;
+    0) _PROMPT="%B${green}${_PROMPT}${reset}%b "   ;;
+    1) _PROMPT="%B${red}${_PROMPT}${reset}%b "     ;;
+    *) _PROMPT="%B${magenta}${_PROMPT}${reset}%b " ;;
   esac
 
   __git_ps1 "${_NL}${_CWD}" "${_PYENV}${_NL}${_PROMPT}" "-[%s]"
@@ -121,7 +121,7 @@ bindkey -e                                         # Emacs style shortcuts
 
 bindkey '^[[7~' beginning-of-line                  # Home key
 bindkey '^[[H' beginning-of-line                   # Home key
-[[ "${terminfo[khome]}" != "" ]]; then
+if [[ "${terminfo[khome]}" != "" ]]; then
   bindkey "${terminfo[khome]}" beginning-of-line   # [Home] - Go to beginning of line
 fi
 bindkey '^[[8~' end-of-line                        # End key
