@@ -26,6 +26,7 @@
   become: true
   tags:
     - root
+    - shell
 
 - name: Import dconf settings
   shell: dconf load / < "{{ item }}"
@@ -46,5 +47,27 @@
   import_role:
     name: devsec.hardening.ssh_hardening
   become: true
+  when: "'Pop!_OS' not in ansible_distribution"
+  tags:
+    - security
+
+- name: Secure SSH settings
+  vars:
+    sshd_path: /usr/sbin/sshd
+    ssh_host_keys_dir: '/etc/ssh'
+    sshd_service_name: ssh
+    ssh_owner: root
+    ssh_group: root
+    ssh_selinux_packages:
+      - policycoreutils-python
+      - checkpolicy
+    ssh_kerberos_support: true
+    ssh_pam_support: true
+    sshd_moduli_file: '/etc/ssh/moduli'
+    sshd_disable_crypto_policy: false
+  import_role:
+    name: devsec.hardening.ssh_hardening
+  become: true
+  when: "'Pop!_OS' in ansible_distribution"
   tags:
     - security

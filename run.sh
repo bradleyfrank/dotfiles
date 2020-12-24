@@ -120,32 +120,18 @@ function bootstrap_linux() {
 
 function pre_ansible_run() {
   if ! type ansible &> /dev/null; then
-    if python3 -m pip install --user ansible &> /dev/null; then
-      PATH="$PATH:$(python3 -m site --user-base)/bin"
-      export PATH
-    else
-      echo "Failed to install Ansible, aborting..." >&2
-      return 1
-    fi
+    python3 -m pip install --user ansible || return 1
+    PATH="$PATH:$(python3 -m site --user-base)/bin"
+    export PATH
   fi
 
-  if git clone "${ANSIBLE_REPO[url]}" "$CHECKOUT_DIR" &> /dev/null; then
-    pushd "$CHECKOUT_DIR" &> /dev/null || return 1
-    if ! git checkout "${ANSIBLE_REPO[branch]}"; then
-      echo "Failed to checkout branch ${ANSIBLE_REPO[branch]}, aborting..." >&2
-      return 1
-    fi
-    popd &> /dev/null || return 1
-  else
-    echo "Failed to checkout Ansible repository, aborting..." >&2
-    return 1
-  fi
+  git clone "${ANSIBLE_REPO[url]}" "$CHECKOUT_DIR" || return 1
+  pushd "$CHECKOUT_DIR" &> /dev/null || return 1
+  git checkout "${ANSIBLE_REPO[branch]}" || return 1
+  popd &> /dev/null || return 1
 
-  if ! ansible-galaxy install -r "$CHECKOUT_DIR"/requirements.yml
-  then
-    echo "Failed to install Ansible collections, aborting..." >&2
-    return 1
-  fi
+  ansible-galaxy role install -r "$CHECKOUT_DIR"/requirements.yml || return 1
+  ansible-galaxy collection install -r "$CHECKOUT_DIR"/requirements.yml || return 1
 }
 
 function ansible_playbook() {
