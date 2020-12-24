@@ -5,14 +5,18 @@
   import_role:
     name: repositories
 
+- name: Clean cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  tags:
+    - packages
+
 - name: Install Ubuntu packages
   ansible.builtin.apt:
     name: "{{ base_packages | default([]) }}"
     state: present
-    update_cache: true
     install_recommends: true
-    autoremove: true
-    autoclean: true
   become: true
   tags:
     - packages
