@@ -34,24 +34,24 @@ function {{ key }}() {
 source /usr/local/etc/bash_completion.d/git-prompt.sh
 source /usr/local/opt/fzf/shell/completion.zsh
 source /usr/local/opt/fzf/shell/key-bindings.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 {% elif ('Ubuntu' in ansible_distribution) or ('Pop!_OS' in ansible_distribution) %}
 source /etc/bash_completion.d/git-prompt
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 {% elif 'Fedora' in ansible_distribution %}
 source /etc/bash_completion.d/git-prompt
 source /usr/share/fzf/shell/key-bindings.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 {% elif 'Archlinux' in ansible_distribution %}
 source /usr/share/git/git-prompt.sh
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 {% endif %}
 source {{ ansible_user_dir }}/.local/share/k8s/fubectl

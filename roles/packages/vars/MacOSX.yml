@@ -72,7 +72,7 @@ packages:
   - youtube-dl
   - yq
   - zsh
-  - zsh-history-substring-search
+  - zsh-autosuggestions
   - zsh-syntax-highlighting
 
 casks:

@@ -103,6 +103,7 @@ base_packages:
   - yaru-icon-theme
   - youtube-dl
   - zsh
+  - zsh-autosuggestions
   - zsh-syntax-highlighting
 
 flatpak_packages:

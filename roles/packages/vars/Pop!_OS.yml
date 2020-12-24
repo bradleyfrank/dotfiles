@@ -95,6 +95,7 @@ base_packages:
   - xz-utils
   - youtube-dl
   - zsh
+  - zsh-autosuggestions
   - zsh-syntax-highlighting
 
 flatpak_packages:
