@@ -1,5 +1,9 @@
 ---
 
+pkgs_binaries:
+  - name: "cht"
+    url: "https://cht.sh/:cht.sh"
+
 nerd_fonts:
   - JetBrainsMono
   - SourceCodePro
