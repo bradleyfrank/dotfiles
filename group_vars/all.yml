@@ -1,10 +1,19 @@
 ---
 
+git_clone_repos_as_worktrees: true
+git_clone_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+
+zsh_rcd: "{{ ansible_user_dir }}/.local/share/zsh/rc.d"
+
+dots_post_processing:
+  - name: "Install `bat` themes"
+    cmd: "bat cache --build"
+
 pkgs_binaries:
   - name: "cht"
     url: "https://cht.sh/:cht.sh"
 
-nerd_fonts:
+fonts_to_install:
   - JetBrainsMono
   - SourceCodePro
 
@@ -41,9 +50,7 @@ pypi_packages:
   - edir
   - eyed3
   - Jinja2
-  - tmuxp
   - virtualenv
-  - yq
   - yt-dlp
 
 vim_extensions:
@@ -94,3 +101,11 @@ zsh_plugins:
   - name: zsh-vi-mode
     repo: https://github.com/jeffreytse/zsh-vi-mode.git
     source: zsh-vi-mode.plugin.zsh
+
+ssh_config:
+  all:
+    - "CanonicalizeHostname yes"
+    - "IdentityFile ~/.ssh/id_ed25519"
+    - "ServerAliveCountMax 4"
+    - "ServerAliveInterval 15"
+    - "User bfrank"

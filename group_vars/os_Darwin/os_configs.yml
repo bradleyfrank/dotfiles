@@ -3,7 +3,7 @@
 system_macos_launchd:
   com.apple.locate: "started"
 
-defaults:
+system_macos_defaults:
   - name: Disable prompting to use new exteral drives as Time Machine volume
     domain: com.apple.TimeMachine
     key: DoNotOfferNewDisksForBackup

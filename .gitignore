@@ -1,3 +1,6 @@
-roles
-collections
+/roles
+/collections
 /cache
+/tmp
+/inventory.yml
+/secrets.yml
