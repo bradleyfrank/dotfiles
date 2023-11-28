@@ -78,6 +78,7 @@ dnf_packages:
     - wget
     - xsel
     - xz
+    - yt-dlp
     - zsh
     - zsh-autosuggestions
     - zsh-syntax-highlighting

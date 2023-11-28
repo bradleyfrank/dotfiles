@@ -42,17 +42,6 @@ krew_plugins:
   - neat
   - stern
 
-pypi_packages:
-  - archivebox
-  - bashate
-  - beets
-  - diceware
-  - edir
-  - eyed3
-  - Jinja2
-  - virtualenv
-  - yt-dlp
-
 vim_extensions:
   - name: vim-airline
     repo: https://github.com/vim-airline/vim-airline.git

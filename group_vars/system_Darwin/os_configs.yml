@@ -1,7 +1,6 @@
 ---
 
-system_macos_launchd:
-  com.apple.locate: "started"
+system_macos_launchd: {}
 
 system_macos_defaults:
   - name: Disable prompting to use new exteral drives as Time Machine volume

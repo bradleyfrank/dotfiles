@@ -38,10 +38,3 @@ flatpak_packages:
     - us.zoom.Zoom
   elementary:
     - com.github.phase1geo.annotator
-
-nix_packages:
-  - du-dust
-  - glyr
-  - jqp
-  - k9s
-  - krew
