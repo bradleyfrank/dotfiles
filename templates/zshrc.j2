@@ -9,10 +9,10 @@ PATH="$PATH:/opt/homebrew/opt/gsed/libexec/gnubin"
 PATH="$PATH:/opt/homebrew/opt/gawk/libexec/gnubin"
 PATH="$PATH:/opt/homebrew/opt/findutils/libexec/gnubin"
 PATH="$PATH:/opt/homebrew/opt/gnu-which/libexec/gnubin"
-PATH="$PATH:{{ zsh_homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
 PATH="$PATH:{{ zsh_homebrew_prefix }}/bin:{{ zsh_homebrew_prefix }}/sbin"
-{% endif %}
+{% else %}
 PATH="$PATH:/snap/bin"
+{% endif %}
 PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 MANPATH="$HOME/.local/share/man"
@@ -50,10 +50,8 @@ export LESS_TERMCAP_ue=$'\E[0m'         # "
 export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export PRE_COMMIT_COLOR=never  # Colors are incompatible with solarized-light
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=37"
 {% if (ansible_facts['distribution'] == "MacOSX") or (zsh_prefer_homebrew) %}
 export CLICOLOR=1
-export CLOUDSDK_PYTHON=/usr/bin/python3
 export HELPDIR={{ zsh_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
 export HOMEBREW_CELLAR={{ zsh_homebrew_prefix }}/Cellar
 export HOMEBREW_NO_AUTO_UPDATE=1
@@ -75,17 +73,16 @@ unalias run-help
 {% endif %}
 alias help='run-help'  # help topics path set via $HELPDIR
 
-alias l='eza --color always --classify'
-alias la='eza --color always --classify --all'
-alias lc='eza --color always --classify --long --all --grid'
-alias ld='eza --color always --classify --long --all --only-dirs'
-alias lg='eza --color always --classify --long --all --git'
-alias ll='eza --color always --classify --long --all --group'
-alias lm='eza --color always --classify --long --all --sort time'
-alias lp='eza --color always --classify --long --all --no-permissions --octal-permissions'
-alias lS='eza --color always --classify --long --all --group-directories-first --sort size'
+alias lz='eza --color always --classify --long --all --group-directories-first --no-quotes'
+alias ld='lz --only-dirs'
+alias lg='lz --git'
+alias lk='lz --sort type'
+alias ll='lz --group'
+alias lo='lz --octal-permissions'
+alias lt='lz --tree'
+alias lT='lz --sort time'
 alias ls='ls --color --classify --human-readable'
-alias lt='eza --color always --classify --long --all --tree'
+alias lS='lz --sort size'
 
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
@@ -241,11 +238,9 @@ source {{ zsh_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highli
 source {{ zsh_homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 {% elif ansible_facts['distribution'] == "Fedora" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
 {% elif ansible_facts['distribution'] == "Ubuntu" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
