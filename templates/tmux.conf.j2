@@ -1,5 +1,5 @@
 {% macro popup(key, name, path, cmd) -%}
-bind '{{ key }}' display-popup -E -w 45% -h 85% -b rounded -S "fg=colour234" "tmux -L {{ name }} -f ~/.config/tmux/minimal.conf new-session -A -s {{ name }} -c {{ path }}{% if cmd %} {{ cmd }}{% endif %}"
+bind '{{ key }}' display-popup -E -w 45% -h 85% -b rounded -S "fg=colour234" "tmux -L {{ name }} -f ~/.config/tmux/popup.conf new-session -A -s {{ name }} -c {{ path }}{% if cmd %} {{ cmd }}{% endif %}"
 {%- endmacro %}
 set -g allow-rename on
 set -g base-index 1
