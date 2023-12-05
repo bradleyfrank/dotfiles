@@ -234,11 +234,10 @@ compinit -C && bashcompinit
 zle -N edit-command-line
 
 
-{% if ansible_facts['distribution'] == "Darwin" %}
+{% if ansible_facts['distribution'] == "MacOSX" %}
 source {{ zsh_homebrew_prefix }}/opt/fzf/shell/completion.zsh
 source {{ zsh_homebrew_prefix }}/opt/fzf/shell/key-bindings.zsh
 source {{ zsh_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source {{ zsh_homebrew_prefix }}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source {{ zsh_homebrew_prefix }}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 {% elif ansible_facts['distribution'] == "Fedora" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

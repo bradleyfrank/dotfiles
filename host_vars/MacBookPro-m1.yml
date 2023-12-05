@@ -1,0 +1,5 @@
+---
+
+system_hostname: "MacBookPro-m1"
+email_address: "bradfrank@fastmail.com"
+k8s_packages: []

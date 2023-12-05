@@ -9,11 +9,11 @@ system_macos_defaults:
     type: bool
     value: 'true'
 
-  - name: Sort conversations in Mail by most recent on top
-    domain: com.apple.mail
-    key: ConversationViewSortDescending
-    type: int
-    value: '1'
+#  - name: Sort conversations in Mail by most recent on top
+#    domain: com.apple.mail
+#    key: ConversationViewSortDescending
+#    type: int
+#    value: '1'
 
   - name: Open new Terminal tabs in the default directory
     domain: com.apple.Terminal

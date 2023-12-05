@@ -1,17 +1,29 @@
 ---
 
-git_clone_repos_as_worktrees: true
-git_clone_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+git_repos_as_worktrees: true
+git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
+git_repos:
+  - url: "ssh://git@github.com/bradleyfrank/dotfiles.git"
+  - url: "ssh://git@github.com/bradleyfrank/ansible.git"
+  - url: "ssh://git@github.com/bradleyfrank/notes-etc.git"
+  - url: "ssh://git@github.com/bradleyfrank/home-servers.git"
+  - url: "ssh://git@github.com/bradleyfrank/plexex.git"
+  - url: "ssh://git@github.com/bradleyfrank/chatgpt.git"
+  - url: "ssh://git@github.com/bradleyfrank/util-containers.git"
+  - url: "ssh://git@github.com/bradleyfrank/cliday.git"
+    branch: "gh-pages"
 
-zsh_rcd: "{{ ansible_user_dir }}/.local/share/zsh/rc.d"
+zsh_rcd: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
 
 dots_post_processing:
   - name: "Install `bat` themes"
-    cmd: "bat cache --build"
+    cmd: "/opt/homebrew/bin/bat cache --build"
 
 pkgs_binaries:
   - name: "cht"
     url: "https://cht.sh/:cht.sh"
+  - name: "extract"
+    url: "https://raw.githubusercontent.com/xvoland/Extract/master/extract.sh"
 
 fonts_to_install:
   - JetBrainsMono
@@ -34,6 +46,10 @@ git_reference_repos:
     repo: python-cheatsheet
     branch: main
     file: README.md
+
+tmux_profiles:
+  - tmux
+  - popup
 
 krew_plugins:
   - cert-manager
@@ -68,12 +84,6 @@ vim_extensions:
     repo: https://github.com/ap/vim-css-color.git
 
 zsh_completions:
-  - name: kubectl
-    command: kubectl completion zsh
-  - name: stern
-    command: kubectl stern --completion=zsh
-  - name: k9s
-    command: k9s completion zsh
   - name: cht
     command: curl https://cheat.sh/:zsh
 
@@ -90,11 +100,3 @@ zsh_plugins:
   - name: zsh-vi-mode
     repo: https://github.com/jeffreytse/zsh-vi-mode.git
     source: zsh-vi-mode.plugin.zsh
-
-ssh_config:
-  all:
-    - "CanonicalizeHostname yes"
-    - "IdentityFile ~/.ssh/id_ed25519"
-    - "ServerAliveCountMax 4"
-    - "ServerAliveInterval 15"
-    - "User bfrank"
