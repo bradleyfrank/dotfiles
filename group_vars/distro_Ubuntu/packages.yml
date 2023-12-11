@@ -1,19 +1,16 @@
 ---
 
-apt_packages:
+pkgs_apt_packages:
   cli:
     - abcde
     - apt-file
-    - apt-transport-https  # gcloud
     - bash-completion
     - bat
     - bcal
     - borgbackup
-    - ca-certificates  # gcloud
     - diceware
     - dictd
     - duf
-    - eza
     - fd-find
     - fdupes
     - ffmpeg
@@ -23,10 +20,6 @@ apt_packages:
     - gh
     - ghostscript
     - glances
-    - glow
-    - gnupg  # gcloud
-    - gnupg2  # kubernetes
-    - google-cloud-sdk
     - gron
     - htop
     - httpie
@@ -34,7 +27,6 @@ apt_packages:
     - inxi
     - jq
     - keychain
-    - kubectl
     - libmp4-info-perl
     - libvirt-clients
     - mkvtoolnix
@@ -65,7 +57,6 @@ apt_packages:
     - toilet
     - trash-cli
     - tree
-    - vault
     - vim
     - wget
     - xdelta
@@ -128,4 +119,6 @@ apt_packages:
     - transmission-gtk
 
 brew_packages:
+  - eza
+  - glow
   - yq

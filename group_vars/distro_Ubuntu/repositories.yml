@@ -1,6 +1,6 @@
 ---
 
-repos:
+pkgs_apt_repos:
   - name: vscode
     repo: >
       deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg]
