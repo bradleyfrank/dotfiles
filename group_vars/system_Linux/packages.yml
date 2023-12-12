@@ -6,7 +6,7 @@ pkgs_flatpak_remotes:
   - name: "elementary"
     url: "https://flatpak.elementary.io/repo.flatpakrepo"
 
-flatpak_packages:
+pkgs_flatpak_packages:
   flathub:
     - app.drey.EarTag
     - app.drey.Warp
