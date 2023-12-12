@@ -1,8 +1,10 @@
 ---
 
-flatpak_remotes:
-  flathub: "https://flathub.org/repo/flathub.flatpakrepo"
-  elementary: "https://flatpak.elementary.io/repo.flatpakrepo"
+pkgs_flatpak_remotes:
+  - name: "flathub"
+    url: "https://flathub.org/repo/flathub.flatpakrepo"
+  - name: "elementary"
+    url: "https://flatpak.elementary.io/repo.flatpakrepo"
 
 flatpak_packages:
   flathub:
