@@ -40,7 +40,6 @@ pkgs_apt_packages:
     - par
     - perf-tools-unstable
     - pdfgrep
-    - podman
     - pwgen
     - python3
     - python3-dev
@@ -72,19 +71,14 @@ pkgs_apt_packages:
     - asciinema
     - audacious
     - calibre
-    - code
     - drawing
     - flatpak
     - fonts-noto-color-emoji
     - ghostwriter
     - google-chrome-stable
     - keepassxc
-    - kitty
     - libreoffice
-    - makemkv-bin
-    - makemkv-oss
-    - nextcloud-client
-    - nextcloud-client-nautilus
+    - nextcloud-desktop
     - picard
     - remmina
     - shutter
@@ -113,7 +107,12 @@ pkgs_apt_packages:
     - gnote
     - gpaste*
     - gthumb
-    - hydrapaper
+    - meld
+    - mpv
+    - transmission-gtk
+  x-cinnamon:
+    - celluloid
+    - gpaste*
     - meld
     - mpv
     - transmission-gtk
