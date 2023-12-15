@@ -1,9 +1,0 @@
----
-system_linux_dracut_settings:
-  - desc: "Enable bluetooth keyboard at boot"
-    line: "add_dracutmodules+=' bluetooth '"
-    path: "/etc/dracut.conf.d/ble.conf"
-
-system_type: "{{ 'cli' if 'tty' in ansible_env['XDG_SESSION_TYPE'] else 'gui' }}"
-xdg_current_desktop: "{{ (ansible_env['XDG_CURRENT_DESKTOP'] | lower) if 'gui' in system_type else 'tty' }}"
-gnome_desktop: "{{ true if 'gnome' in xdg_current_desktop else false }}"

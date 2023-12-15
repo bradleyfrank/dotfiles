@@ -1,5 +1,17 @@
 ---
 
+font_dir: "{{ ansible_user_dir }}/.local/share/fonts"
+glow_config_path: "{{ ansible_user_dir }}/.config/glow"
+k9s_config_path: "{{ ansible_user_dir }}/.config"
+krew_exec: "{{ ansible_user_dir }}/.nix-profile/bin/krew"
+path: "{{ ansible_user_dir }}/.local/bin:{{ ansible_env['PATH'] }}"
+python_user_path: "{{ ansible_user_dir }}/.local/bin"
+pip_exec: /usr/bin/pip3
+root_home: /root
+sudoers: /etc/sudoers.d/99_ansible
+user_group: "{{ ansible_user_id }}"
+zsh_exec: /usr/bin/zsh
+
 dconf_common:
   /org/gnome/calendar/follow-night-light: "false"
   /org/gnome/desktop/datetime/automatic-timezone: "true"
@@ -67,19 +79,6 @@ dconf_common:
   /org/gnome/shell/extensions/dash-to-dock/scroll-action: "'switch-workspace'"
   /org/gnome/shell/extensions/dash-to-dock/show-apps-at-top: "true"
   /org/gnome/shell/extensions/dash-to-dock/transparency-mode: "'DYNAMIC'"
-  /org/gnome/shell/extensions/system-monitor/battery-display: "false"
-  /org/gnome/shell/extensions/system-monitor/cpu-graph-width: "25"
-  /org/gnome/shell/extensions/system-monitor/cpu-show-text: "false"
-  /org/gnome/shell/extensions/system-monitor/cpu-style: "'both'"
-  /org/gnome/shell/extensions/system-monitor/icon-display: "false"
-  /org/gnome/shell/extensions/system-monitor/memory-graph-width: "25"
-  /org/gnome/shell/extensions/system-monitor/memory-show-text: "false"
-  /org/gnome/shell/extensions/system-monitor/memory-style: "'both'"
-  /org/gnome/shell/extensions/system-monitor/net-display: "false"
-  /org/gnome/shell/extensions/system-monitor/swap-display: "true"
-  /org/gnome/shell/extensions/system-monitor/swap-graph-width: "25"
-  /org/gnome/shell/extensions/system-monitor/swap-show-text: "false"
-  /org/gnome/shell/extensions/system-monitor/swap-style: "'both'"
   /org/gnome/system/location/enabled: "true"
   /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/audible-bell: "false"
   /org/gnome/terminal/legacy/profiles:/:57ec47b4-dd6d-4fa3-9434-f65de25dd9ed/background-color: "'rgb(253,246,227)'"
@@ -101,3 +100,50 @@ dconf_common:
   /org/gnome/terminal/legacy/profiles:/default: "'57ec47b4-dd6d-4fa3-9434-f65de25dd9ed'"
   /org/gnome/terminal/legacy/profiles:/list: "['57ec47b4-dd6d-4fa3-9434-f65de25dd9ed']"
   /org/gnome/terminal/legacy/theme-variant: "'system'"
+
+pkgs_flatpak_remotes:
+  - name: "flathub"
+    url: "https://flathub.org/repo/flathub.flatpakrepo"
+  - name: "elementary"
+    url: "https://flatpak.elementary.io/repo.flatpakrepo"
+
+pkgs_flatpak_packages:
+  flathub:
+    - app.drey.EarTag
+    - app.drey.Warp
+    - com.felipekinoshita.Wildcard
+    - com.github.avojak.warble
+    - com.github.fabiocolacio.marker
+    - com.github.geigi.cozy
+    - com.github.huluti.Curtail
+    - com.github.johnfactotum.Foliate
+    - com.github.junrrein.PDFSlicer
+    - com.github.liferooter.textpieces
+    - com.github.marktext.marktext
+    - com.github.rajsolai.textsnatcher
+    - com.makemkv.MakeMKV
+    - com.plexamp.Plexamp
+    - com.spotify.Client
+    - fr.romainvigier.MetadataCleaner
+    - io.bassi.Amberol
+    - io.github.diegoivan.pdf_metadata_editor
+    - io.github.seadve.Kooha
+    - io.gitlab.news_flash.NewsFlash
+    - io.posidon.Paper
+    - nl.g4d.girens.flatpak
+    - org.gnome.gitlab.somas.Apostrophe
+    - org.nickvision.tagger
+    - org.ppsspp.PPSSPP
+    - org.signal.Signal
+    - re.sonny.Junction
+    - re.sonny.Tangram
+    - sh.cider.Cider
+    - tv.plex.PlexDesktop
+    - us.zoom.Zoom
+  elementary:
+    - com.github.phase1geo.annotator
+
+system_linux_dracut_settings:
+  - desc: "Enable bluetooth keyboard at boot"
+    line: "add_dracutmodules+=' bluetooth '"
+    path: "/etc/dracut.conf.d/ble.conf"
