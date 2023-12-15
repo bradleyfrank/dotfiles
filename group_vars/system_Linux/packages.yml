@@ -18,6 +18,7 @@ pkgs_flatpak_packages:
     - com.github.johnfactotum.Foliate
     - com.github.junrrein.PDFSlicer
     - com.github.liferooter.textpieces
+    - com.github.marktext.marktext
     - com.github.rajsolai.textsnatcher
     - com.makemkv.MakeMKV
     - com.plexamp.Plexamp
@@ -28,7 +29,7 @@ pkgs_flatpak_packages:
     - io.github.seadve.Kooha
     - io.gitlab.news_flash.NewsFlash
     - io.posidon.Paper
-    - net.cozic.joplin_desktop
+    - nl.g4d.girens.flatpak
     - org.gnome.gitlab.somas.Apostrophe
     - org.nickvision.tagger
     - org.ppsspp.PPSSPP
