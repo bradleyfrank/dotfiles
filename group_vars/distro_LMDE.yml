@@ -1,5 +1,6 @@
 ---
 
+system_linux_add_dns_fallback: false
 bat_exec: /usr/bin/batcat
 
 dconf_distro:
