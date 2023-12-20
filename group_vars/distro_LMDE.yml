@@ -3,13 +3,10 @@
 system_linux_add_dns_fallback: false
 bat_exec: /usr/bin/batcat
 
-dconf_distro:
-  /org/gnome/shell/enabled-extensions: "['GPaste@gnome-shell-extensions.gnome.org']"
-  /org/gnome/shell/favorite-apps: "['org.gnome.Terminal.desktop','firefox_firefox.desktop','1password.desktop']"
+dconf_distro: {}
 
 pkgs_apt_packages:
   cli:
-    - abcde
     - apt-file
     - bash-completion
     - bat
@@ -59,7 +56,6 @@ pkgs_apt_packages:
     - strace
     - tidy
     - tlp
-    - tmux
     - toilet
     - trash-cli
     - tree

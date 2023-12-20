@@ -126,6 +126,7 @@ pkgs_flatpak_packages:
     - com.spotify.Client
     - fr.romainvigier.MetadataCleaner
     - io.bassi.Amberol
+    - io.github.alainm23.planify
     - io.github.diegoivan.pdf_metadata_editor
     - io.github.seadve.Kooha
     - io.gitlab.news_flash.NewsFlash
