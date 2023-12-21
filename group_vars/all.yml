@@ -17,7 +17,7 @@ zsh_rcd: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
 
 dots_post_processing:
   - name: "Install `bat` themes"
-    cmd: "/opt/homebrew/bin/bat cache --build"
+    cmd: "{{ bat_exec }} cache --build"
 
 pkgs_binaries:
   - name: "cht"
