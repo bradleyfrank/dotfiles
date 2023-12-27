@@ -1,9 +1,7 @@
 ---
 
 bat_exec: "{{ homebrew_prefix }}/bin/bat"
-font_dir: "{{ ansible_user_dir }}/Library/Fonts"
 glow_config_path: "{{ ansible_user_dir }}/Library/Preferences/glow"
-
 system_macos_launchd: {}
 
 system_macos_defaults:
@@ -448,6 +446,7 @@ pkgs_homebrew_formulas:
   - prettyping
   - pwgen
   - qpdf
+  - qsv
   - rdfind
   - rename
   - ripgrep

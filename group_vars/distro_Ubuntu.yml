@@ -1,28 +1,57 @@
 ---
 
-bat_exec: /usr/bin/batcat
+bat_exec: "/usr/bin/batcat"
 
-dconf_distro:
-  /org/gnome/desktop/interface/gtk-theme: "'Yaru-light'"
-  /org/gnome/shell/disabled-extensions: "[\
-    'ding@rastersoft.com',
-    'window-list@gnome-shell-extensions.gcampax.github.com',
-    'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
-    'places-menu@gnome-shell-extensions.gcampax.github.com',
-    'ubuntu-dock@ubuntu.com',
-    'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
-  /org/gnome/shell/enabled-extensions: "[\
-    'GPaste@gnome-shell-extensions.gnome.org',
-    'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
-    'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
-    'ubuntu-appindicators@ubuntu.com']"
-  /org/gnome/shell/favorite-apps: "[\
-    'org.gnome.Terminal.desktop',
-    'firefox_firefox.desktop',
-    'org.gnome.Nautilus.desktop',
-    '1password.desktop',
-    'org.gnome.gedit.desktop',
-    'org.signal.Signal.desktop']"
+system_dconf_distro:
+  - path: "/org/gnome/desktop/interface"
+    keys:
+      gtk-theme: "'Yaru-light'"
+
+  - path: "/org/gnome/shell"
+    keys:
+      disabled-extensions: "[\
+        'ding@rastersoft.com',
+        'window-list@gnome-shell-extensions.gcampax.github.com',
+        'horizontal-workspaces@gnome-shell-extensions.gcampax.github.com',
+        'places-menu@gnome-shell-extensions.gcampax.github.com',
+        'ubuntu-dock@ubuntu.com',
+        'workspace-indicator@gnome-shell-extensions.gcampax.github.com']"
+      enabled-extensions: "[\
+        'GPaste@gnome-shell-extensions.gnome.org',
+        'launch-new-instance@gnome-shell-extensions.gcampax.github.com',
+        'auto-move-windows@gnome-shell-extensions.gcampax.github.com',
+        'ubuntu-appindicators@ubuntu.com']"
+      favorite-apps: "[\
+        'org.gnome.Terminal.desktop',
+        'firefox_firefox.desktop',
+        'org.gnome.Nautilus.desktop',
+        '1password.desktop',
+        'org.gnome.gedit.desktop',
+        'org.signal.Signal.desktop']"
+
+pkgs_apt_repos:
+  - name: 1password
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
+      https://downloads.1password.com/linux/debian/amd64 stable main
+    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
+    keyring: /usr/share/keyrings/1password-archive-keyring.gpg
+
+  - name: google-chrome
+    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
+    key: https://dl.google.com/linux/linux_signing_key.pub
+
+  - name: gh-cli
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
+      https://cli.github.com/packages stable main
+    key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
+
+  - name: charm
+    repo: deb [trusted=yes] https://repo.charm.sh/apt/ /
+    key: https://apt.fury.io/charmcli/gpg.key
+    keyring: /usr/share/keyrings/charmcli.gpg
 
 pkgs_apt_packages:
   cli:
@@ -144,29 +173,5 @@ pkgs_apt_packages:
 brew_packages:
   - eza
   - glow
+  - qsv
   - yq
----
-
-pkgs_apt_repos:
-  - name: 1password
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
-      https://downloads.1password.com/linux/debian/amd64 stable main
-    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
-    keyring: /usr/share/keyrings/1password-archive-keyring.gpg
-
-  - name: google-chrome
-    repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
-    key: https://dl.google.com/linux/linux_signing_key.pub
-
-  - name: gh-cli
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
-      https://cli.github.com/packages stable main
-    key: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
-
-  - name: charm
-    repo: deb [trusted=yes] https://repo.charm.sh/apt/ /
-    key: https://apt.fury.io/charmcli/gpg.key
-    keyring: /usr/share/keyrings/charmcli.gpg
