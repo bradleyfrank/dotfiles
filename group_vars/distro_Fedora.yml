@@ -2,7 +2,7 @@
 
 bat_exec: "/usr/bin/bat"
 
-dconf_distro:
+system_linux_dconf_distro:
   - path: "/org/gnome/shell"
     keys:
       enabled-extensions: "['GPaste@gnome-shell-extensions.gnome.org','background-logo@fedorahosted.org']"

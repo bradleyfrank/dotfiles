@@ -1,6 +1,6 @@
 ---
 
-system_dconf_defaults:
+system_linux_dconf_defaults:
   - path: "/org/gnome/calendar"
     keys:
       follow-night-light: "false"
