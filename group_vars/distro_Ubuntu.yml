@@ -6,7 +6,6 @@ system_linux_dconf_distro:
   - path: "/org/gnome/desktop/interface"
     keys:
       gtk-theme: "'Yaru-light'"
-
   - path: "/org/gnome/shell"
     keys:
       disabled-extensions: "[\

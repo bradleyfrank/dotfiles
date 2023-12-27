@@ -1,10 +1,11 @@
 ---
 
 system_linux_dconf_defaults:
-  - path: "/org/gnome/calendar"
+  - path: "/org/gnome"
     keys:
-      follow-night-light: "false"
-
+      calendar/follow-night-light: "false"
+      shell/disable-user-extensions: "false"
+      system/location/enabled: "true"
   - path: "/org/gnome/nautilus"
     keys:
       list-view/default-visible-columns: "['name', 'size', 'type', 'date_modified', 'starred']"
@@ -14,7 +15,6 @@ system_linux_dconf_defaults:
       preferences/search-filter-time-type: "'last_modified'"
       preferences/show-create-link : "true"
       preferences/show-delete-permanently: "true"
-
   - path: "/org/gnome/gedit/preferences"
     keys:
       editor/auto-indent: "true"
@@ -34,7 +34,6 @@ system_linux_dconf_defaults:
       editor/wrap-last-split-mode: "'word'"
       ui/show-tabs-mode: "'auto'"
       ui/side-panel-visible: "false"
-
   - path: "/org/gnome/terminal/legacy/profiles:/:1846491d-b417-5d9b-a8ca-04fdec4403bf"
     keys:
       audible-bell: "false"
@@ -53,12 +52,10 @@ system_linux_dconf_defaults:
       use-system-font: "false"
       use-theme-colors: "false"
       visible-name: "'Solarized-Light-Profile'"
-
   - path: "/org/gnome/terminal/legacy/profiles:"
     keys:
       default: "'1846491d-b417-5d9b-a8ca-04fdec4403bf'"
       list: "['1846491d-b417-5d9b-a8ca-04fdec4403bf']"
-
   - path: "/org/gnome/desktop"
     keys:
       datetime/automatic-timezone: "true"
@@ -84,14 +81,11 @@ system_linux_dconf_defaults:
       peripherals/touchpad/two-finger-scrolling-enabled: "true"
       privacy/remove-old-temp-files: "true"
       privacy/remove-old-trash-files: "true"
-
   - path: "/org/gnome/settings-daemon/plugins/color"
     keys:
       night-light-enabled: "true"
       night-light-schedule-automatic: "true"
 
-  /org/gnome/shell/disable-user-extensions: "false"
-  /org/gnome/system/location/enabled: "true"
 
 pkgs_flatpak_remotes:
   - name: "flathub"
