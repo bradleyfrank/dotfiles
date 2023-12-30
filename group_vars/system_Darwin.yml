@@ -3,6 +3,7 @@
 bat_exec: "{{ homebrew_prefix }}/bin/bat"
 glow_config_path: "{{ ansible_user_dir }}/Library/Preferences/glow"
 system_macos_launchd: {}
+zsh_prefer_homebrew: true
 
 system_macos_defaults:
   - name: Disable prompting to use new exteral drives as Time Machine volume
