@@ -1,6 +1,6 @@
 ---
 
-email_address: bfrank@oreilly.com
+email_address: "bfrank@oreilly.com"
 
 git_clone_repos:
   - url: "git@github.com:bradleyfrank/ansible.git"
