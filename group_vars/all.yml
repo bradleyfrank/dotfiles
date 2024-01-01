@@ -21,7 +21,7 @@ dots_post_processing:
 
 pkgs_binaries:
   - name: "cht"
-    url: "https://cht.sh/:cht.sh"
+    url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
   - name: "extract"
     url: "https://raw.githubusercontent.com/xvoland/Extract/master/extract.sh"
 
