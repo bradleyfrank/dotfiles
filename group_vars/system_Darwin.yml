@@ -461,6 +461,7 @@ pkgs_homebrew_formulas:
   - tidy-html5
   - tmux
   - tree
+  - trippy
   - vim
   - watch
   - wget
