@@ -7,22 +7,8 @@
 # Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
 #
 
-xcode-select --version &> /dev/null || xcode-select --install
-
-brew update
-brew upgrade
-brew leaves --installed-as-dependency | xargs | xargs --no-run-if-empty brew uninstall
-brew autoremove
-brew cleanup
-
-bat cache --clear
-bat cache --build
-
-python3 -m pip list --outdated --format=json 2>/dev/null | jq -r ".[].name" \
-  | xargs --no-run-if-empty python3 -m pip install --user --upgrade
-
-kubectl krew update
-kubectl krew upgrade
-
-gcloud components update --quiet
-
+if ! xcode-select --version &> /dev/null; then xcode-select --install; fi
+if [[ -n $HOMEBREW_PREFIX ]]; then brew update && brew upgrade && brew autoremove && brew cleanup; fi
+if which bat &> /dev/null; then bat cache --clear && bat cache --build; fi
+if kubectl krew version &> /dev/null; then kubectl krew update && kubectl krew upgrade; fi
+if which gcloud &> /dev/null; then gcloud components update --quiet; fi
