@@ -139,7 +139,7 @@ dnf_packages:
     - mpv
     - transmission-gtk
 
-brew_packages:
+pkgs_homebrew_formulas:
   - qsv
   - yq
 

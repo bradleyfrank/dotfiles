@@ -169,7 +169,7 @@ pkgs_apt_packages:
     - mpv
     - transmission-gtk
 
-brew_packages:
+pkgs_homebrew_formulas:
   - eza
   - glow
   - qsv
