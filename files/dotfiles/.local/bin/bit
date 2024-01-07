@@ -62,7 +62,7 @@ _open_in_tmux() {
   local repo_branch_path; repo_branch_path="$1"
   if [[ -n $TMUX ]]; then
     case $TMUX_OPEN_IN in
-      window)  tmux-utils open-project -d "$repo_branch_path" ;;
+      window)  bit open-project -d "$repo_branch_path" ;;
       pane)    tmux split-window -h -c "$repo_branch_path" ;;
       session) tmux new-session -As "$(dirname "$GIT_TOPLEVEL_PATH")" ;;
     esac
