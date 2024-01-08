@@ -1,6 +1,6 @@
 ---
 
-bat_exec: "{{ homebrew_prefix }}/bin/bat"
+bat_exec: "/opt/homebrew/bin/bat"
 glow_config_path: "{{ ansible_user_dir }}/Library/Preferences/glow"
 system_macos_launchd: {}
 zsh_prefer_homebrew: true
