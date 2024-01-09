@@ -27,6 +27,16 @@ pkgs_homebrew_casks:
 
 pkgs_mas_apps: []
 
+zsh_completions:
+  - name: "kubectl"
+    command: "kubectl completion zsh"
+  - name: "stern"
+    command: "kubectl stern --completion=zsh"
+  - name: "k9s"
+    command: "k9s completion zsh"
+  - name: "cht"
+    command: "curl https://cheat.sh/:zsh"
+
 system_macos_sleep_display: -1
 system_macos_sleep_computer: -1
 

@@ -243,7 +243,7 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% for plugin in zsh_plugins %}
 source $HOME/.local/share/{{ plugin['name'] }}/{{ plugin['source'] }}
 {% endfor %}
-for rc in {{ zsh_rcd }}/*; do source "$rc"; done
+for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
 
 
 eval "$(dircolors $HOME/.dir_colors)"
