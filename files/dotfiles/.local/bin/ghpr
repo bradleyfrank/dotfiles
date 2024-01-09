@@ -9,7 +9,7 @@
 #
 
 # input: comma separated list of GitHub usernames
-members="$(while read -rd, username; do printf "author:%s " "$names"; done <<< "$1")"
+members="$(while read -rd, username; do printf "author:%s " "$username"; done <<< "$1")"
 
 gh api -X GET search/issues \
   -f q="${members} is:open draft:false created:>$(date -d "90 days ago" +%Y-%m-%d)" \

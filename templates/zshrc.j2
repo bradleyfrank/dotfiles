@@ -29,11 +29,8 @@ MANPATH="$MANPATH:{{ zsh_homebrew_prefix }}/share/man"
 {% endif %}
 MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
 
-FPATH="$HOME/.local/share/zsh/site-functions:$FPATH"
-
 export PATH
 export MANPATH
-export FPATH
 export EDITOR=vim
 export VISUAL=vim
 export CHTSH_QUERY_OPTIONS="style=vs"

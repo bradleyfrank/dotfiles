@@ -14,8 +14,6 @@ git_repos:
   - url: "ssh://git@github.com/bradleyfrank/cliday.git"
     branch: "gh-pages"
 
-zsh_rcd: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
-
 dots_post_processing:
   - name: "Install `bat` themes"
     cmd: "{{ bat_exec }} cache --build"
