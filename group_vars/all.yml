@@ -56,6 +56,8 @@ vim_extensions:
     repo: "https://github.com/idbrii/vim-searchsavvy.git"
   - name: "vim-css-color"
     repo: "https://github.com/ap/vim-css-color.git"
+  - name: "vim-markdown"
+    repo: "https://github.com/preservim/vim-markdown.git"
 
 zsh_completions:
   - name: "cht"
