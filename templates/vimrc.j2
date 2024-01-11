@@ -33,6 +33,7 @@ nnoremap <Leader>b :Buf<CR>
 nnoremap <Space> :nohlsearch<CR>
 nnoremap H :bp<CR>
 nnoremap L :bn<CR>
+nnoremap <C-i> :call InsertMdLink()<CR>
 
 set background=light
 set backspace=indent,eol,start
@@ -68,3 +69,8 @@ set tabstop=2 softtabstop=2 shiftwidth=2
 if exists('$TMUX')
   set ttymouse=xterm2
 endif
+
+function InsertMdLink()
+  let l:path = expand('%:p:h')
+  execute 'r!vimsert ' . l:path
+endfunction

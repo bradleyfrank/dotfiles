@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+searchPath="${1:-$PWD}"
+[[ ! -d "$searchPath" ]] && exit 1
+selectedFile="$(fd -t file '.md' "$searchPath" \
+  | fzf-tmux --no-multi --preview='bat {}' \
+  | tr -d '\n')"
+h1name="$(rg "^#\s(.*)$" -Nor '$1' "$selectedFile" | head -n1)"
+printf "[%s](%s)" "$h1name" "$selectedFile"
