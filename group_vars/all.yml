@@ -14,6 +14,12 @@ git_repos:
   - url: "ssh://git@github.com/bradleyfrank/cliday.git"
     branch: "gh-pages"
 
+dots_folders:
+  - "Development/Projects"
+  - "Development/Notes"
+  - "Development/Scratch"
+  - "Development/Logs"
+  - "Development/Build"
 dots_post_processing:
   - name: "Install `bat` themes"
     cmd: "{{ bat_exec }} cache --build"
@@ -61,7 +67,9 @@ vim_extensions:
 
 zsh_completions:
   - name: "cht"
-    command: "curl https://cheat.sh/:zsh"
+    command: "curl -L https://cheat.sh/:zsh"
+  - name: "nb"
+    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
 
 zsh_plugins:
   - name: "zpy"
