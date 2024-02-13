@@ -390,6 +390,7 @@ pkgs_homebrew_taps:
 
 pkgs_homebrew_formulas:
   - asciinema
+  - atuin
   - bandwhich
   - bash
   - bash-completion@2

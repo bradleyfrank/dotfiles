@@ -140,6 +140,7 @@ dnf_packages:
     - transmission-gtk
 
 pkgs_homebrew_formulas:
+  - atuin
   - nb
   - qsv
   - yq
