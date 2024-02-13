@@ -172,5 +172,6 @@ pkgs_apt_packages:
 pkgs_homebrew_formulas:
   - eza
   - glow
+  - nb
   - qsv
   - yq

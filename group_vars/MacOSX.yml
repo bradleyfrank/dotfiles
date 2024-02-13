@@ -437,6 +437,7 @@ pkgs_homebrew_formulas:
   - markdown
   - mas
   - mtr
+  - nb
   - ncdu
   - neofetch
   - nmap

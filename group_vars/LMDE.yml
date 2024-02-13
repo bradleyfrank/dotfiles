@@ -130,4 +130,5 @@ pkgs_homebrew_formulas:
   - eza
   - glow
   - qsv
+  - nb
   - yq

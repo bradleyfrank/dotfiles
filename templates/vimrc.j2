@@ -5,9 +5,6 @@ highlight GitGutterDelete cterm=bold        ctermfg=160
 highlight Search          ctermbg=DarkBlue  ctermfg=231
 highlight! link SignColumn LineNr
 
-syntax on
-colorscheme solarized8
-
 " general config
 let g:is_posix = 1
 let g:mapleader = ","
@@ -35,8 +32,8 @@ nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>i :IndentGuidesToggle<CR>
 nnoremap <Leader>s :set spell!<CR>
-nnoremap <Space> :nohlsearch<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>  " rm trailing whitespace
+nnoremap <Space> :nohlsearch<CR>
 nnoremap H :bp<CR>
 nnoremap L :bn<CR>
 
@@ -66,6 +63,9 @@ set showmatch
 set term=screen-256color
 set ttimeoutlen=10
 set updatetime=100
+
+syntax on
+colorscheme solarized8
 
 " configure tabs as spaces
 set expandtab smarttab autoindent
