@@ -25,7 +25,7 @@
 {% if 'Darwin' in ansible_system %}
   fsmonitor = true
 {% endif %}
-  untrackedCache = all
+  untrackedCache = true
 [diff]
   algorithm = histogram
 [gpg]
@@ -47,7 +47,7 @@
 [rerere]
   enabled = true
 [status]
-  showUntrackedfiles = true
+  showUntrackedfiles = all
 [user]
   name = {{ ansible_facts['user_gecos'] }}
   email = {{ email_address }}
