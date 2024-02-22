@@ -37,6 +37,7 @@ fonts_to_install:
 tmux_profiles:
   - "tmux"
   - "popup"
+  - "server"
 
 vim_extensions:
   - name: "vim-airline"
