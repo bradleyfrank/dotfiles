@@ -60,6 +60,10 @@ set -gF status-position "#{@status_position}"
 set -gF status-right "#{@status_right}"
 set -gF status-style "#{@status_style}"
 
+set -g message-command-style "fg=#002b36"
+set -g message-style "fg=#002b36"
+set -g mode-style "bg=#d33682,fg=#fdf6e3"
+
 set -g aggressive-resize off
 set -g allow-rename on
 set -g automatic-rename-format "#{b:pane_current_path}"
@@ -69,9 +73,6 @@ set -g default-terminal "tmux-256color"
 set -g terminal-overrides "alacritty:RGB,xterm-256color:RGB,gnome*:RGB"
 set -g detach-on-destroy off
 set -g history-limit 10000
-set -g message-command-style "fg=#002b36"
-set -g message-style "fg=#002b36"
-set -g mode-style "bg=default,fg=#93a1a1"
 set -g mouse on
 set -g renumber-windows on
 set -g status-interval 1
