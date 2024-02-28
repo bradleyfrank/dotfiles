@@ -38,6 +38,11 @@ usage() {
     echo "bit clone [-n <url>]"
     echo "  -n  Repository URL"
   fi
+
+  if [[ "$1" =~ (stash|all) ]]; then
+    echo "bit stash [-x]"
+    echo "  -x  Omit untracked"
+  fi
 }
 
 
@@ -158,8 +163,21 @@ bit_clone() {
 }
 
 
+bit_stash() {
+  local common_dir exclude_untracked; exclude_untracked="$1"
+  _in_git_repo || exit 1
+  common_dir="$(git rev-parse --git-common-dir)"
+  if [[ "$exclude_untracked" == "false" ]]; then
+    git --git-dir "$common_dir" --work-tree "$GIT_TOPLEVEL_PATH" stash push --include-untracked
+  else
+    git --git-dir "$common_dir" --work-tree "$GIT_TOPLEVEL_PATH" stash push
+  fi
+}
+
+
 main() {
-  local OPTIND subcommand target
+  local OPTIND subcommand target exclude_untracked
+  exclude_untracked="false"
 
   while getopts "h" opt; do
     case "$opt" in
@@ -176,6 +194,7 @@ main() {
       n) target="$OPTARG" ;;
       p) TMUX_OPEN_IN="pane" ;;
       w) TMUX_OPEN_IN="window" ;;
+      x) exclude_untracked="true" ;;
       :) echo "Must supply an argument to -$OPTARG." >&2; usage "$subcommand"; exit 1 ;;
      \?) echo "Invalid option: -$OPTARG" >&2; usage "$subcommand"; exit 1 ;;
     esac
@@ -188,6 +207,7 @@ main() {
       pull) bit_pull "$target" ;;
     delete) bit_delete ;;
      clone) bit_clone "$target" ;;
+     stash) bit_stash "$exclude_untracked" ;;
          *) usage ;;
   esac
 }
