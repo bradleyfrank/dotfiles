@@ -175,6 +175,27 @@ bit_stash() {
 }
 
 
+bit_switch() {
+  local repo_path top_dir curent_branch switch_to_branch
+  _in_git_repo || exit 1
+
+  current_branch="$(git rev-parse --abbrev-ref HEAD)"
+  top_dir="$(dirname "$GIT_TOPLEVEL_PATH")"
+
+  switch_to_branch="$(git worktree list --porcelain \
+    | grep --extended-regexp '^worktree' \
+    | awk '{print $2}' \
+    | grep "$1" \
+    | _fzf_bit --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
+  )"
+  [[ ! -d "$switch_to_branch" ]] && { echo "No branch named $switch_to_branch" >&2; exit 1; }
+
+  repo_path="$(realpath --relative-to="$GIT_TOPLEVEL_PATH" .)"
+  [[ -d "${switch_to_branch}/${repo_path}" ]] && switch_to_branch="${switch_to_branch}/${repo_path}"
+  _open_in_tmux "$switch_to_branch"
+}
+
+
 main() {
   local OPTIND subcommand target exclude_untracked
   exclude_untracked="false"
@@ -208,6 +229,7 @@ main() {
     delete) bit_delete ;;
      clone) bit_clone "$target" ;;
      stash) bit_stash "$exclude_untracked" ;;
+    switch) bit_switch "$target" ;;
          *) usage ;;
   esac
 }
