@@ -191,7 +191,12 @@ bit_switch() {
   [[ ! -d "$switch_to_branch" ]] && { echo "No branch named $switch_to_branch" >&2; exit 1; }
 
   repo_path="$(realpath --relative-to="$GIT_TOPLEVEL_PATH" .)"
-  [[ -d "${switch_to_branch}/${repo_path}" ]] && switch_to_branch="${switch_to_branch}/${repo_path}"
+  if [[ "$repo_path" != "." ]]; then
+    if [[ -d "${switch_to_branch}/${repo_path}" ]]; then
+      switch_to_branch="${switch_to_branch}/${repo_path}"
+    fi
+  fi
+
   _open_in_tmux "$switch_to_branch"
 }
 
