@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 #
 # Functions for making gcloud easier to use.
 # Author: Brad Frank
@@ -20,42 +22,43 @@ _save_and_exec() {
 }
 
 alias gpu='gcloud config unset project'
-alias gpl='gcloud projects list --format="table(name,projectId,lifecycleState)"'
+
+
+# [gpl] list gcloud projects;  usage: gpl [-c|--columns <columns>] [-f|--filter <filter>]
+gpl() {
+    local columns filter default_columns default_filter
+    default_columns="name,projectId,projectNumber"
+    default_filter="projectId !~ \"^(sys|quickstart|test|gam)-.*\""
+    zparseopts -E -D -- c:=columns -columns:=columns f:=filter -filter:=filter
+    gcloud projects list \
+      --sort-by="name" \
+      --format="value(${columns:-${default_columns}})" \
+      --filter="${filter:-${default_filter}}" \
+      | column -ts $'\t'
+}
+
 
 # [gkube] generate kubectl credentials
 gkube() {
-    local projects project cluster cluster_name cluster_region
-    projects="$(gcloud projects list --format="value(projectId)" | _fzf_g --multi)"
+    local project cluster
     mv "$HOME"/.kube/config "$HOME"/.kube/config."$(date --iso-8601=seconds | tr -d ':-')"
 
     while read -r project; do
         while read -r cluster; do
             [[ -z "$cluster" ]] && continue
-            cluster_name="$(awk '{print $2}' <<< "$cluster")"
-            cluster_region="$(awk '{print $1}' <<< "$cluster")"
-            _save_and_exec "gcloud --project $project container clusters get-credentials $cluster_name --region=$cluster_region"
-        done <<< "$(gcloud --project "$project" container clusters list --format="value[separator=' '](zone,name)" \
-                        | _fzf_g --multi --delimiter ' ' --with-nth 2)"
-    done <<< "$projects"
+            _save_and_exec "gcloud container clusters get-credentials \
+                $(awk '{print $2}' <<< "$cluster") \
+                --region=$(awk '{print $1}' <<< "$cluster") \
+                --project $project"
+        done < <(gcloud container clusters list \
+            --project "$project" \
+            --format="value[separator=' '](zone,name)" \
+            | _fzf_g --multi --delimiter ' ' --with-nth 2)
+    done < <(gpl --columns="projectId" | _fzf_g --multi)
 }
 
-# [gcreds] sets GCP project credentials via environment variables
-gcreds() {
-    local project _project service_account
-    service_account="$(find "$HOME"/.infractl/ -type f -name '*.json' -exec basename {} .json \; | _fzf_g --no-multi)"
-    export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.infractl/${service_account}.json"
-}
 
-# [gtags] show tags for docker image in GCR; usage: gtags [-p|--project] [-i|--image]
-gtags() {
-    local project _project image _image
-    zparseopts -E -D -- p:=project -project:=project i:=image -image:=image
-    _project="$(_gc_project "${project[2]}")"
-    _image="$(gcloud --project "$_project" container images list 2> /dev/null | grep -E "${image[2]:-}" | _fzf_g --no-multi)"
-    _save_and_exec "gcloud container images list-tags $_image"
-}
-
-# [gssh] allows you to ssh into a GCS instance; usage: gssh [-p|--project]
+# [gssh] allows you to ssh into a GCS instance;  usage: gssh [-p|--project]
 gssh() {
     local project _project
     zparseopts -E -D -- p:=project -project:=project
@@ -66,6 +69,7 @@ gssh() {
         | awk '{print $2}'
     )"
 }
+
 
 # [ghelp] show this help message
 ghelp() {

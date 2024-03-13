@@ -24,6 +24,8 @@ dots_post_processing:
   - name: "Install `bat` themes"
     cmd: "{{ bat_exec }} cache --build"
 
+zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
+
 pkgs_binaries:
   - name: "cht"
     url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
