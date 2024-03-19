@@ -20,13 +20,6 @@ let g:indent_guides_enable_on_vim_startup = 0
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 30
 let g:vim_markdown_folding_disabled = 1
-set backspace=indent,eol,start
-{% if 'MacOSX' in ansible_distribution -%}
-set clipboard=unnamed
-set rtp+={{ vim_homebrew_prefix }}/opt/fzf
-{% elif 'Ubuntu' in ansible_distribution -%}
-set rtp+=/usr/share/doc/fzf/examples/
-{% endif -%}
 set colorcolumn=100
 set conceallevel=0
 set cursorline
@@ -75,6 +68,13 @@ set tabstop=2
 
 
 " functionality
+set backspace=indent,eol,start
+{% if 'MacOSX' in ansible_distribution -%}
+set clipboard=unnamed
+set rtp+={{ vim_homebrew_prefix }}/opt/fzf
+{% elif 'Ubuntu' in ansible_distribution -%}
+set rtp+=/usr/share/doc/fzf/examples/
+{% endif -%}
 set laststatus=2
 set mouse=a
 set noerrorbells
@@ -89,6 +89,9 @@ endif
 " airline config
 let g:airline_skip_empty_sections = 1
 let g:airline_theme = 'solarized'
+let g:airline_solarized_normal_green = 1
+let g:airline_solarized_dark_inactive_background = 1
+let airline_solarized_enable_command_color = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
