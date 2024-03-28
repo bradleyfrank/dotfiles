@@ -387,6 +387,7 @@ system_macos_defaults:
 pkgs_homebrew_taps:
   - homebrew/bundle
   - noahgorstein/tap  # jqp
+  - charmbracelet/tap  # glow, freeze
 
 pkgs_homebrew_formulas:
   - asciinema
@@ -409,6 +410,7 @@ pkgs_homebrew_formulas:
   - fdupes
   - ffmpeg
   - findutils
+  - freeze
   - fzf
   - fx
   - gawk

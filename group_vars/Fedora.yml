@@ -36,7 +36,6 @@ dnf_packages:
     - ghostscript
     - git-delta
     - glances
-    - glow  # keefle
     - gron
     - hadolint
     - htop
@@ -141,6 +140,8 @@ dnf_packages:
 
 pkgs_homebrew_formulas:
   - atuin
+  - charmbracelet/tap/glow
+  - charmbracelet/tap/freeze
   - nb
   - qsv
   - yq
