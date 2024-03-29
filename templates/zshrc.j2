@@ -112,7 +112,6 @@ cdf() { cd $(dirs -lp | fzf --no-multi); }
 dw() { diceware -d- -n"${1:-5}"; }
 jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
 numware() { n="${1:-5}"; echo "$(dw "$n")"-"$(for _ in $(seq "$n"); do echo -n $((RANDOM % 10)); done)"; }
-show() { [[ "${${(@s/:/)$(whence -w "$1")}[2]}" =~ command ]] && bat "$(which "$1")" || whence -f "$1"; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
