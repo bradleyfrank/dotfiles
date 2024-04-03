@@ -90,6 +90,10 @@ zsh_plugins:
     repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
     source: "zsh-vi-mode.plugin.zsh"
 
+tmux_plugins:
+  - name: "tmux-resurrect"
+    repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
+
 system_linux_dconf_defaults:
   - path: "/org/gnome"
     keys:

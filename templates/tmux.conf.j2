@@ -78,9 +78,7 @@ set -g renumber-windows on
 set -g status-interval 1
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
-{%- if ansible_system == 'Darwin' %} "pbcopy"
-{% elif ansible_system == 'Linux' %} "xsel -i -p && xsel -o -p | xsel -i -b"
-{% endif -%}
+{%- if ansible_facts['distribution'] == 'MacOSX' %} pbcopy {%- else -%} wl-copy {%- endif -%}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
 
@@ -100,6 +98,8 @@ bind 'r' run-shell -b "bmux rename-window #{pane_current_path}"
 bind 'u' source-file "~/.config/tmux/{{ item }}.conf"
 bind 'y' set synchronize-panes
 
-{% if item == "tmux" %}
+{% if item == "tmux" or item == "server" %}
 bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/"
 {% endif %}
+
+run-shell {{ ansible_facts['user_dir'] }}/.local/share/tmux-resurrect/resurrect.tmux
