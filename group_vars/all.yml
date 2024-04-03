@@ -6,9 +6,8 @@ git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
 git_repos:
   - url: "ssh://git@github.com/bradleyfrank/dotfiles.git"
   - url: "ssh://git@github.com/bradleyfrank/ansible.git"
-  - url: "ssh://git@github.com/bradleyfrank/notes-etc.git"
   - url: "ssh://git@github.com/bradleyfrank/home-servers.git"
-  - url: "ssh://git@github.com/bradleyfrank/plexex.git"
+  - url: "ssh://git@github.com/bradleyfrank/plexport.git"
   - url: "ssh://git@github.com/bradleyfrank/chatgpt.git"
   - url: "ssh://git@github.com/bradleyfrank/util-containers.git"
   - url: "ssh://git@github.com/bradleyfrank/cliday.git"
@@ -23,6 +22,9 @@ dots_folders:
 dots_post_processing:
   - name: "Install `bat` themes"
     cmd: "{{ bat_exec }} cache --build"
+dots_templates:
+  - name: "atuin.zsh.j2"
+    dest: "{{ zsh_rcd_dir }}"
 
 zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
 
