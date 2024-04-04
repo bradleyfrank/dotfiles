@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+eval-ssh-agent() {
+  eval "$(ssh-agent -s | tee ~/.ssh/agent)" >/dev/null
+}
+
+gen-ssh-key-sha() {
+  ssh-keygen -lf "${HOME}/.ssh/${1}" | awk '{print $2}' > "${HOME}/.ssh/${1}.sha"
+}
+
+add-ssh-key() {
+  SSH_ASKPASS_KEY="$1" SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=op-ssh ssh-add ~/.ssh/"$1" > /dev/null
+}
+
+load-ssh-keys() {
+  local ssh_key_sha_path ssh_add_keys; ssh_add_keys="$(ssh-add -l)"
+  local -a keys; keys=("$@")
+  for key in "${keys[@]}"; do
+    ssh_key_sha_path="${HOME}/.ssh/${key}.sha"
+    [[ ! -s "$ssh_key_sha_path" ]] && gen-ssh-key-sha "$key"
+    grep -q "$(<"$ssh_key_sha_path")" <<< "$ssh_add_keys" || add-ssh-key "$key"
+  done
+}
+
+if [[ -n $SSH_AUTH_SOCK ]]; then
+  if [[ -s ~/.ssh/agent ]]; then { source "${HOME}/.ssh/agent" >/dev/null; }
+  else { killall ssh-agent; eval-ssh-agent; }
+  fi
+else
+  eval-ssh-agent
+fi
+
+load-ssh-keys "$@"
