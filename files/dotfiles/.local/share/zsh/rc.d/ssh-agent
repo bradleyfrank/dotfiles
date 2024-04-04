@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+eval-ssh-agent() { eval "$(ssh-agent -s | tee ~/.ssh/agent)" >/dev/null; }
+
+add-ssh-keys() {
+  SSH_ASKPASS_KEY=rsa SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=/tmp/op \
+    ssh-add ~/.ssh/id_rsa
+  SSH_ASKPASS_KEY=ed25519 SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=/tmp/op \
+    ssh-add ~/.ssh/id_ed25519
+  SSH_ASKPASS_KEY=google_compute_engine SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=/tmp/op \
+    ssh-add ~/.ssh/google_compute_engine 
+}
+
+if [[ -n $SSH_AUTH_SOCK ]]; then
+  if [[ -s ~/.ssh/agent ]]; then
+    source ~/.ssh/agent >/dev/null
+  else
+    killall ssh-agent
+    eval-ssh-agent
+    add-ssh-keys
+  fi
+else
+    eval-ssh-agent
+    add-ssh-keys
+fi

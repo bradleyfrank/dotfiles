@@ -174,7 +174,7 @@ for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
 
 
 eval "$(dircolors $HOME/.dir_colors)"
-eval "$(keychain --eval --ignore-missing --quiet
-{%- if ansible_facts['distribution'] == "MacOSX" %} --inherit any
-{%- endif %} id_rsa id_ed25519 id_home id_ansible google_compute_engine)"
 eval "$(atuin init zsh)"
+
+
+keychain id_rsa id_ed25519 google_compute_engine
