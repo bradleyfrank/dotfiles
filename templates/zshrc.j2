@@ -34,8 +34,10 @@ export MANPATH
 export EDITOR=vim
 export VISUAL=vim
 export CHTSH_QUERY_OPTIONS="style=vs"
+export DOCKER_CLI_HINTS=false
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
 export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:33,hl+:33:bold --reverse --height=50% --multi --info inline"
+export GH_PAGER=glow
 export KEYTIMEOUT=1
 export LESS="-R --mouse"
 export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
@@ -63,16 +65,16 @@ export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
 {% endif %}
 
 
-alias lz='eza --color always --classify --long --all --group-directories-first --no-quotes'
-alias ld='lz --only-dirs'
-alias lg='lz --git'
-alias lk='lz --sort type'
-alias ll='lz --group'
-alias lo='lz --octal-permissions'
-alias lt='lz --tree'
-alias lT='lz --sort time'
-alias ls='ls --color --classify --human-readable'
-alias lS='lz --sort size'
+alias ll='eza --color always --classify --long --all --group-directories-first --no-quotes'
+alias ld='ll --only-dirs'
+alias lg='ll --group'
+alias lG='ll --git'
+alias lk='ll --sort type'
+alias lo='ll --octal-permissions'
+alias lt='ll --tree'
+alias lT='ll --sort time'
+alias ls='ll --color --classify --human-readable'
+alias lS='ll --sort size'
 
 {% if ansible_facts['distribution'] == "Ubuntu" %}
 alias bat='batcat'

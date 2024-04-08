@@ -9,6 +9,8 @@ set -o errexit
 # Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
 #
 
+bmux save
+
 if which apt-get &> /dev/null; then
   sudo apt-get clean
   sudo apt-get update
@@ -43,5 +45,6 @@ if kubectl krew version &> /dev/null; then
 fi
 
 if [[ "$(uname -o)" == "Darwin" ]]; then
+  bmux save
   sudo softwareupdate -ia
 fi

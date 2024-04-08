@@ -24,7 +24,7 @@ load-ssh-keys() {
 
 if [[ -n $SSH_AUTH_SOCK ]]; then
   if [[ -s ~/.ssh/agent ]]; then { source "${HOME}/.ssh/agent" >/dev/null; }
-  else { killall ssh-agent; eval-ssh-agent; }
+  else { killall ssh-agent && eval-ssh-agent; }
   fi
 else
   eval-ssh-agent

@@ -44,7 +44,6 @@ dnf_packages:
     - inxi
     - jq
     - jo
-    - keychain
     - lame
     - libmp4v2
     - libvirt-client

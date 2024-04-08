@@ -59,7 +59,6 @@ pkgs_apt_packages:
     - iftop
     - inxi
     - jq
-    - keychain
     - libmp4-info-perl
     - libvirt-clients
     - mkvtoolnix

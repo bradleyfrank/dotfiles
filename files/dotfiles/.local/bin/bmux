@@ -144,6 +144,11 @@ git_branch() {
 }
 
 
+save_session() {
+  "${HOME}/.local/share/tmux-resurrect/scripts/save.sh"
+}
+
+
 main() {
   local subcommand; subcommand="$1"; shift
   case "$subcommand" in
@@ -153,6 +158,7 @@ main() {
     git-branch)     git_branch "$@" ;;
     move-windows)   move_windows "$@" ;;
     select-layout)  select_layout "$@" ;;
+    save)           save_session ;;
     *)              echo "$1 not found" >&2; exit 1 ;;
   esac
 }

@@ -432,7 +432,6 @@ pkgs_homebrew_formulas:
   - jq
   - jqp
   - jo
-  - keychain
   - kpcli
   - kube-linter
   - lame
