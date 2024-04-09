@@ -102,4 +102,7 @@ bind 'y' set synchronize-panes
 bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/"
 {% endif %}
 
-run-shell {{ ansible_facts['user_dir'] }}/.local/share/tmux-resurrect/resurrect.tmux
+{% for plugin in zsh_plugins %}
+run-shell 
+{% endfor %}
+ {{ ansible_facts['user_dir'] }}/.local/share/tmux-resurrect/resuresurrect.tmux"

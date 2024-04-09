@@ -93,6 +93,7 @@ zsh_plugins:
 tmux_plugins:
   - name: "tmux-resurrect"
     repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
+    exec: "resurrect.tmux"
 
 system_linux_dconf_defaults:
   - path: "/org/gnome"
