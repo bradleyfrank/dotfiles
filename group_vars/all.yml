@@ -1,5 +1,40 @@
 ---
 
+# ============================================================================================ #
+# role: dots
+# -------------------------------------------------------------------------------------------- #
+
+dots_folders:
+  - "Development/Projects"
+  - "Development/Notes"
+  - "Development/Scratch"
+  - "Development/Logs"
+  - "Development/Build"
+
+dots_post_processing:
+  - name: "Install `bat` themes"
+    cmd: "{{ bat_exec }} cache --build"
+
+dots_templates:
+  - name: "atuin.zsh.j2"
+    dest: "{{ zsh_rcd_dir }}"
+  - name: "op-ssh.bash.j2"
+    dest: "{{ ansible_facts['user_dir'] }}/.local/share"
+
+
+# ============================================================================================ #
+# role: fonts
+# -------------------------------------------------------------------------------------------- #
+
+fonts_to_install:
+  - "JetBrainsMono"
+  - "SourceCodePro"
+
+
+# ============================================================================================ #
+# role: git
+# -------------------------------------------------------------------------------------------- #
+
 git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
 git_repos_as_worktrees: true
 git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
@@ -13,20 +48,10 @@ git_repos:
   - url: "ssh://git@github.com/bradleyfrank/cliday.git"
     branch: "gh-pages"
 
-dots_folders:
-  - "Development/Projects"
-  - "Development/Notes"
-  - "Development/Scratch"
-  - "Development/Logs"
-  - "Development/Build"
-dots_post_processing:
-  - name: "Install `bat` themes"
-    cmd: "{{ bat_exec }} cache --build"
-dots_templates:
-  - name: "atuin.zsh.j2"
-    dest: "{{ zsh_rcd_dir }}"
 
-zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
+# ============================================================================================ #
+# role: pkgs
+# -------------------------------------------------------------------------------------------- #
 
 pkgs_binaries:
   - name: "cht"
@@ -34,66 +59,53 @@ pkgs_binaries:
   - name: "extract"
     url: "https://raw.githubusercontent.com/xvoland/Extract/master/extract.sh"
 
-fonts_to_install:
-  - "JetBrainsMono"
-  - "SourceCodePro"
+pkgs_flatpak_remotes:
+  - name: "flathub"
+    url: "https://flathub.org/repo/flathub.flatpakrepo"
+  - name: "elementary"
+    url: "https://flatpak.elementary.io/repo.flatpakrepo"
 
-tmux_profiles:
-  - "tmux"
-  - "popup"
-  - "server"
+pkgs_flatpak_packages:
+  flathub:
+    - "app.drey.EarTag"
+    - "app.drey.Warp"
+    - "com.felipekinoshita.Wildcard"
+    - "com.github.avojak.warble"
+    - "com.github.fabiocolacio.marker"
+    - "com.github.geigi.cozy"
+    - "com.github.huluti.Curtail"
+    - "com.github.johnfactotum.Foliate"
+    - "com.github.junrrein.PDFSlicer"
+    - "com.github.liferooter.textpieces"
+    - "com.github.marktext.marktext"
+    - "com.github.rajsolai.textsnatcher"
+    - "com.makemkv.MakeMKV"
+    - "com.plexamp.Plexamp"
+    - "com.spotify.Client"
+    - "fr.romainvigier.MetadataCleaner"
+    - "io.bassi.Amberol"
+    - "io.github.alainm23.planify"
+    - "io.github.diegoivan.pdf_metadata_editor"
+    - "io.github.seadve.Kooha"
+    - "io.gitlab.news_flash.NewsFlash"
+    - "io.posidon.Paper"
+    - "nl.g4d.Girens"
+    - "org.gnome.gitlab.somas.Apostrophe"
+    - "org.nickvision.tagger"
+    - "org.ppsspp.PPSSPP"
+    - "org.signal.Signal"
+    - "re.sonny.Junction"
+    - "re.sonny.Tangram"
+    - "sh.cider.Cider"
+    - "tv.plex.PlexDesktop"
+    - "us.zoom.Zoom"
+  elementary:
+    - "com.github.phase1geo.annotator"
 
-vim_extensions:
-  - name: "vim-airline"
-    repo: "https://github.com/vim-airline/vim-airline.git"
-  - name: "vim-airline-themes"
-    repo: "https://github.com/vim-airline/vim-airline-themes.git"
-  - name: "vim-gitgutter"
-    version: "main"
-    repo: "https://github.com/airblade/vim-gitgutter.git"
-  - name: "vim-indent-guides"
-    repo: "https://github.com/preservim/vim-indent-guides.git"
-  - name: "vim-terraform"
-    repo: "https://github.com/hashivim/vim-terraform.git"
-  - name: "vim-solarized8"
-    repo: "https://github.com/lifepillar/vim-solarized8.git"
-  - name: "vim-jinja2-syntax"
-    repo: "https://github.com/Glench/Vim-Jinja2-Syntax.git"
-  - name: "fzf.vim"
-    repo: "https://github.com/junegunn/fzf.vim.git"
-  - name: "vim-fugitive"
-    repo: "https://github.com/tpope/vim-fugitive.git"
-  - name: "vim-searchsavvy"
-    repo: "https://github.com/idbrii/vim-searchsavvy.git"
-  - name: "vim-css-color"
-    repo: "https://github.com/ap/vim-css-color.git"
-  - name: "vim-markdown"
-    repo: "https://github.com/preservim/vim-markdown.git"
 
-zsh_completions:
-  - name: "cht"
-    command: "curl -L https://cheat.sh/:zsh"
-  - name: "nb"
-    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
-
-zsh_plugins:
-  - name: "zpy"
-    repo: "https://github.com/AndydeCleyre/zpy.git"
-    source: "zpy.plugin.zsh"
-  - name: "zman"
-    repo: "https://github.com/mattmc3/zman"
-    source: "zman.zsh"
-  - name: "fzf-tab"
-    repo: "https://github.com/Aloxaf/fzf-tab"
-    source: "fzf-tab.plugin.zsh"
-  - name: "zsh-vi-mode"
-    repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
-    source: "zsh-vi-mode.plugin.zsh"
-
-tmux_plugins:
-  - name: "tmux-resurrect"
-    repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
-    exec: "resurrect.tmux"
+# ============================================================================================ #
+# role: system
+# -------------------------------------------------------------------------------------------- #
 
 system_linux_dconf_defaults:
   - path: "/org/gnome"
@@ -177,50 +189,81 @@ system_linux_dconf_defaults:
       privacy/remove-old-temp-files: "true"
       privacy/remove-old-trash-files: "true"
 
-pkgs_flatpak_remotes:
-  - name: "flathub"
-    url: "https://flathub.org/repo/flathub.flatpakrepo"
-  - name: "elementary"
-    url: "https://flatpak.elementary.io/repo.flatpakrepo"
-
-pkgs_flatpak_packages:
-  flathub:
-    - "app.drey.EarTag"
-    - "app.drey.Warp"
-    - "com.felipekinoshita.Wildcard"
-    - "com.github.avojak.warble"
-    - "com.github.fabiocolacio.marker"
-    - "com.github.geigi.cozy"
-    - "com.github.huluti.Curtail"
-    - "com.github.johnfactotum.Foliate"
-    - "com.github.junrrein.PDFSlicer"
-    - "com.github.liferooter.textpieces"
-    - "com.github.marktext.marktext"
-    - "com.github.rajsolai.textsnatcher"
-    - "com.makemkv.MakeMKV"
-    - "com.plexamp.Plexamp"
-    - "com.spotify.Client"
-    - "fr.romainvigier.MetadataCleaner"
-    - "io.bassi.Amberol"
-    - "io.github.alainm23.planify"
-    - "io.github.diegoivan.pdf_metadata_editor"
-    - "io.github.seadve.Kooha"
-    - "io.gitlab.news_flash.NewsFlash"
-    - "io.posidon.Paper"
-    - "nl.g4d.Girens"
-    - "org.gnome.gitlab.somas.Apostrophe"
-    - "org.nickvision.tagger"
-    - "org.ppsspp.PPSSPP"
-    - "org.signal.Signal"
-    - "re.sonny.Junction"
-    - "re.sonny.Tangram"
-    - "sh.cider.Cider"
-    - "tv.plex.PlexDesktop"
-    - "us.zoom.Zoom"
-  elementary:
-    - "com.github.phase1geo.annotator"
-
 system_linux_dracut_settings:
   - desc: "Enable bluetooth keyboard at boot"
     line: "add_dracutmodules+=' bluetooth '"
     path: "/etc/dracut.conf.d/ble.conf"
+
+
+# ============================================================================================ #
+# role: tmux
+# -------------------------------------------------------------------------------------------- #
+
+tmux_profiles:
+  - "tmux"
+  - "popup"
+  - "server"
+
+tmux_plugins:
+  - name: "tmux-resurrect"
+    repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
+    exec: "resurrect.tmux"
+
+
+# ============================================================================================ #
+# role: vim
+# -------------------------------------------------------------------------------------------- #
+
+vim_extensions:
+  - name: "vim-airline"
+    repo: "https://github.com/vim-airline/vim-airline.git"
+  - name: "vim-airline-themes"
+    repo: "https://github.com/vim-airline/vim-airline-themes.git"
+  - name: "vim-gitgutter"
+    version: "main"
+    repo: "https://github.com/airblade/vim-gitgutter.git"
+  - name: "vim-indent-guides"
+    repo: "https://github.com/preservim/vim-indent-guides.git"
+  - name: "vim-terraform"
+    repo: "https://github.com/hashivim/vim-terraform.git"
+  - name: "vim-solarized8"
+    repo: "https://github.com/lifepillar/vim-solarized8.git"
+  - name: "vim-jinja2-syntax"
+    repo: "https://github.com/Glench/Vim-Jinja2-Syntax.git"
+  - name: "fzf.vim"
+    repo: "https://github.com/junegunn/fzf.vim.git"
+  - name: "vim-fugitive"
+    repo: "https://github.com/tpope/vim-fugitive.git"
+  - name: "vim-searchsavvy"
+    repo: "https://github.com/idbrii/vim-searchsavvy.git"
+  - name: "vim-css-color"
+    repo: "https://github.com/ap/vim-css-color.git"
+  - name: "vim-markdown"
+    repo: "https://github.com/preservim/vim-markdown.git"
+
+
+# ============================================================================================ #
+# role: zsh
+# -------------------------------------------------------------------------------------------- #
+
+zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
+
+zsh_completions:
+  - name: "cht"
+    command: "curl -L https://cheat.sh/:zsh"
+  - name: "nb"
+    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
+
+zsh_plugins:
+  - name: "zpy"
+    repo: "https://github.com/AndydeCleyre/zpy.git"
+    source: "zpy.plugin.zsh"
+  - name: "zman"
+    repo: "https://github.com/mattmc3/zman"
+    source: "zman.zsh"
+  - name: "fzf-tab"
+    repo: "https://github.com/Aloxaf/fzf-tab"
+    source: "fzf-tab.plugin.zsh"
+  - name: "zsh-vi-mode"
+    repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
+    source: "zsh-vi-mode.plugin.zsh"

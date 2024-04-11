@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-op read "op://Private/$(uname -n)/${SSH_ASKPASS_KEY}" 2>/dev/null
