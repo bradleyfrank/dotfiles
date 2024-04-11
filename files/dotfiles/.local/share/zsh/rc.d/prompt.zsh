@@ -42,13 +42,19 @@ precmd() {
 
     if [[ "${hook_com[subdir]}" == "." ]]; then
       hook_com[subdir]=""
+      export GIT_TOPLEVEL="."
     else
-      local subdirs subpath numdirs i
+      local subdirs subpath git_toplevel numdirs i
       subdirs=( ${(@s:/:)hook_com[subdir]} )
       numdirs=$(( ${#subdirs} - 1 ))
-      [[ $numdirs -ge 1 ]] && for i in {1..${numdirs}}; do subpath+="/${subdirs[i][1]}"; done
-      subpath+="/${subdirs[-1]}"
-      hook_com[subdir]="${subpath}"
+      if [[ $numdirs -ge 1 ]]; then
+        for i in {1..${numdirs}}; do
+          subpath+="/${subdirs[i][1]}"
+          git_toplevel+="../"
+        done
+      fi
+      hook_com[subdir]="${subpath}/${subdirs[-1]}"
+      export GIT_TOPLEVEL="${git_toplevel}.."
     fi
 
     if [[ -n ${hook_com[staged]} || -n ${hook_com[unstaged]} ]]; then
@@ -58,18 +64,19 @@ precmd() {
 
   vcs_info
 
-  lprompt_order=( venv lbrak cwd host rbrak rc )
+  lprompt_order=( venv node lbrak cwd host rbrak rc )
   rprompt_order=( )
 
   prompt_segments=(
-    [venv]=""
-    [lbrak]="${base03}[${reset}"
+    [clock]=""
     [cwd]="${bold}${blue}%~${reset}"
     [host]=""
+    [lbrak]="${base03}[${reset}"
+    [node]=""
     [rbrak]="${base03}]${reset}"
     [rc]=""
-    [clock]=""
     [timer]=""
+    [venv]=""
   )
 
   if [[ -n $TMUX ]]; then
@@ -86,6 +93,10 @@ precmd() {
 
   if [[ -n $VIRTUAL_ENV ]]; then
     prompt_segments[venv]="(${bold}${cyan}$(python --version | grep -Po '\d+\.\d+')${reset}) "
+  fi
+
+  if jq '.engines.node' "${GIT_TOPLEVEL}/package.json" >/dev/null 2>&1; then
+    prompt_segments[node]="(${bold}${cyan}$(node --version | grep -Po '(\d\.{0,1})+')${reset}) "
   fi
 
   case "$_rc" in
