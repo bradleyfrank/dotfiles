@@ -1,9 +1,5 @@
-preexec() {
-  timer=$(print -P %D{%s%3.})
-}
-
 precmd() {
-  local    _rc=$? prompt_color duration_ms duration_s ms s m h
+  local    _rc=$? prompt_color
   local -a lprompt_order rprompt_order
   local -A prompt_segments
   local -r base03="%F{234}" \
@@ -20,9 +16,7 @@ precmd() {
            eol=$'\n'
 
   +vi-format() {
-    if [[ -s $(git rev-parse --git-common-dir)/refs/stash ]]; then
-      hook_com[staged]+="$"
-    fi
+    local vcs_stash_count vcs_dir_color; vcs_dir_color="$violet"
 
     if [[ -n ${hook_com[staged]} ]]; then
       hook_com[staged]="${bold}${yellow}${hook_com[staged]}${reset}"
@@ -36,9 +30,17 @@ precmd() {
       hook_com[action]="${base03}:${reset}${bold}${red}${hook_com[action]:u}${reset}"
     fi
 
-    hook_com[base-name]="${green}${hook_com[base-name]}${reset}"
+    if [[ vcs_stash_count="$(git --no-pager stash list | wc -l)" -gt 0 ]]; then
+      hook_com[misc]="${base03}:${reset}${bold}${yellow}s${vcs_stash_count}${reset}"
+    fi
 
-    if [[ ${hook_com[subdir]} == "." ]]; then
+    if [[ "$(pwd -P)" == */Development/Projects* ]]; then
+      vcs_dir_color="$green"
+    fi
+
+    hook_com[base-name]="${bold}${vcs_dir_color}${hook_com[base-name]}${reset}"
+
+    if [[ "${hook_com[subdir]}" == "." ]]; then
       hook_com[subdir]=""
     else
       local subdirs subpath numdirs i
@@ -57,7 +59,7 @@ precmd() {
   vcs_info
 
   lprompt_order=( venv lbrak cwd host rbrak rc )
-  rprompt_order=( clock timer )
+  rprompt_order=( )
 
   prompt_segments=(
     [venv]=""
@@ -66,7 +68,7 @@ precmd() {
     [host]=""
     [rbrak]="${base03}]${reset}"
     [rc]=""
-    [clock]="$(date +%r)"
+    [clock]=""
     [timer]=""
   )
 
@@ -94,26 +96,6 @@ precmd() {
 
   prompt_segments[rc]="${bold}${prompt_color}%#${reset} "
 
-  if [[ -n $timer ]]; then
-    now="$(print -P %D{%s%3.})"
-    duration_ms="$(($now - $timer))"
-    duration_s="$((duration_ms / 1000))"
-    ms="$((duration_ms % 1000))"
-    s="$((duration_s % 60))"
-    m="$(((duration_s / 60) % 60))"
-    h="$((duration_s / 3600))"
-
-    if   [[ $h -gt 0 ]]; then elapsed="${h}h${m}m${s}s"
-    elif [[ $m -gt 0 ]]; then elapsed="${m}m${s}.$(printf $(($ms / 100)))s"
-    elif [[ $s -gt 9 ]]; then elapsed="${s}.$(printf %02d $(($ms / 10)))s"
-    elif [[ $s -gt 0 ]]; then elapsed="${s}.$(printf %03d $ms)s"
-    else elapsed="${ms}ms"
-    fi
-
-    prompt_segments[timer]=" [${bold}${yellow}${elapsed}${reset}]"
-    unset timer
-  fi
-
   PROMPT=""
   for segment in "${lprompt_order[@]}"; do
     PROMPT+="${prompt_segments[${segment}]}"
@@ -127,6 +109,6 @@ precmd() {
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' actionformats '%r%S%c%u%a'
-zstyle ':vcs_info:git*' formats '%r%S%c%u'
+zstyle ':vcs_info:git*' actionformats '%r%S%c%u%a%m'
+zstyle ':vcs_info:git*' formats '%r%S%c%u%m'
 zstyle ':vcs_info:git*+set-message:*' hooks format
