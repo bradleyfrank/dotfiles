@@ -1,7 +1,8 @@
 ---
 
-system_linux_add_dns_fallback: false
 bat_exec: "/usr/bin/batcat"
+system_linux_add_dns_fallback: false
+tmux_clipboard: "xsel --clipboard --input"
 
 system_linux_dconf_distro:
   - path: "/org/cinnamon"

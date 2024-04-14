@@ -84,7 +84,7 @@ unalias run-help
 {% endif %}
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
-alias dotfiles='ansible-playbook --vault-password-file =(op read op://{{ op_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) playbooks/site.yml --skip-tags become'
+alias dotfiles='ansible-playbook --vault-password-file =(op read op://{{ op_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) playbooks/site.yml --skip-tags become,homebrew'
 alias e='extract'
 alias glances='glances --theme-white'
 alias glow='glow --config ~/.config/glow.yml'

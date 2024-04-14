@@ -77,8 +77,7 @@ set -g mouse on
 set -g renumber-windows on
 set -g status-interval 1
 
-bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe
-{%- if ansible_facts['distribution'] == 'MacOSX' %} pbcopy {% else %} wl-copy {% endif %}
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
 

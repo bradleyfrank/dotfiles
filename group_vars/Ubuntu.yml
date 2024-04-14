@@ -1,6 +1,7 @@
 ---
 
 bat_exec: "/usr/bin/batcat"
+tmux_clipboard: "wl-copy"
 
 system_linux_dconf_distro:
   - path: "/org/gnome/desktop/interface"
