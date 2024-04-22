@@ -13,44 +13,51 @@ PROJECTS_DIR="$HOME/Development/Projects"
 TMUX_OPEN_IN="window"
 
 
-usage() {
-  if [[ "$1" =~ (branch|all) ]]; then
-    echo "bit branch [-n <name>] [-p|-w]"
-    echo "  -n  Name of the new branch"
-    echo "  -p  Opens the branch in a tmux pane in the same window (default)"
-    echo "  -w  Opens the branch in a new tmux window"
-    echo "  -s  Opens the branch in a new tmux session"
-  fi
-
-  if [[ "$1" =~ (pull|all) ]]; then
-    echo "bit pull [-n <name>] [-p|-w]"
-    echo "  -n  Name of branch to pull"
-    echo "  -p  Opens the branch in a tmux pane in the same window (default)"
-    echo "  -w  Opens the branch in a new tmux window"
-    echo "  -s  Opens the branch in a new tmux session"
-  fi
-
-  if [[ "$1" =~ (delete|all) ]]; then
-    echo "bit delete"
-  fi
-
-  if [[ "$1" =~ (clone|all) ]]; then
-    echo "bit clone [-n <url>]"
-    echo "  -n  Repository URL"
-  fi
-
-  if [[ "$1" =~ (stash|all) ]]; then
-    echo "bit stash [-x]"
-    echo "  -x  Omit untracked"
-  fi
-}
-
-
-_in_git_repo() {
-  if [[ "$GIT_TOPLEVEL_PATH" == "null" ]]; then
-    echo "Must be in a Git repo" >&2
-    return 1
-  fi
+bit_usage() {
+  case "$1" in
+    branch)
+      echo "bit branch [-n <name>] [-p|-w|-s]"
+      echo "  -n  Name of the new branch"
+      ;;
+    clone)
+      echo "bit clone [-n <url>]"
+      echo "  -n  Repository URL"
+      ;;
+    delete)
+      echo "bit delete|rm [-n <branch>]"
+      echo "  -n  Branch name to delete"
+      ;;
+    pull)
+      echo "bit pull [-n <name>] [-p|-w|-s]"
+      echo "  -n  Branch name to pull"
+      ;;
+    stash)
+      echo "bit stash [-x]"
+      echo "  -x  Exclude untracked files"
+      ;;
+    switch)
+      echo "bit switch|co [-n <branch>]"
+      echo "  -n  Branch name to open"
+      ;;
+    *)
+      echo "Commands for working with Git in a worktree environment."
+      echo
+      echo "USAGE:"
+      echo "  bit [-h] [-p|-w|-s] <subcommand> [-h | <flags>]"
+      echo "    -h  Display this help message"
+      echo "    -p  Branches are opened in a new tmux pane (default)"
+      echo "    -w  Branches are opened in a new tmux window"
+      echo "    -s  Branches are opened in a new tmux session"
+      echo
+      echo "SUBCOMMANDS:"
+      echo "  branch      Create a new branch as a new worktree"
+      echo "  clone       Clone a Git repo by URL or interactively"
+      echo "  delete (rm) Delete branch and associated worktree"
+      echo "  pull        Pull a remote branch as a new worktree"
+      echo "  stash       Stash changes in a worktree-supported way"
+      echo "  switch (co) Open another branch"
+      ;;
+  esac
 }
 
 
@@ -63,110 +70,194 @@ _fzf_bit() {
 }
 
 
+_in_git_repo() {
+  if [[ "$GIT_TOPLEVEL_PATH" == "null" ]]; then
+    _error "Must be in a Git repo"
+    return 1
+  fi
+}
+
+
+_error() {
+  printf "\033[0;31m%s\033[0m\n" "$1" >&2
+}
+
+
 _open_in_tmux() {
-  local repo_branch_path; repo_branch_path="$1"
+  local branch_path; branch_path="$1"
   if [[ -n $TMUX ]]; then
     case $TMUX_OPEN_IN in
-      window)  bmux open-project -d "$repo_branch_path" ;;
-      pane)    tmux split-window -h -c "$repo_branch_path" ;;
-      session) tmux new-session -As "$(dirname "$GIT_TOPLEVEL_PATH")" ;;
+      window)  bmux open-project -d "$branch_path" ;;
+      pane)    tmux split-window -h -c "$branch_path" ;;
+      session) tmux new-session -As "$(dirname "$GIT_TOPLEVEL_PATH")" -c "$branch_path" ;;
     esac
   fi
 }
 
 
+_worktree_list() {
+  local branch_name; branch_name="$1"
+  git worktree list --porcelain \
+    | grep --extended-regexp '^worktree' \
+    | grep --invert-match "$GIT_TOPLEVEL_PATH" \
+    | grep "$branch_name" \
+    | awk '{print $2}' \
+    | _fzf_bit --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
+}
+
+
+_gh_org_repo_list() {
+  local preview; preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
+
+  #shellcheck disable=SC2016
+  gh api graphql --paginate --field owner="$1" --raw-field query='
+    query ($owner: String!, $endCursor: String) {
+      repositoryOwner(login: $owner) {
+        repositories(first: 30, after: $endCursor) {
+          pageInfo { hasNextPage, endCursor }
+          nodes { nameWithOwner }
+        }
+      }
+    }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
+  | _fzf_bit --preview="$preview" --no-multi
+}
+
+
 bit_branch() {
-  local new_branch_name repo_branch_path; new_branch_name="$1"
+  local OPTIND branch_name branch_path
   _in_git_repo || exit 1
+
+  while getopts ':hn:' flag; do
+    case "$flag" in
+      h) bit_usage "branch"; exit 0 ;;
+      n) branch_name="$OPTARG" ;;
+      :) echo "Must supply an argument to -${OPTARG}." >&2; bit_usage "branch"; exit 1 ;;
+     \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "branch"; exit 1 ;;
+    esac
+  done
+
+  [[ -z $branch_name ]] && branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$GIT_TOPLEVEL_PATH")"
+  repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/${branch_name}"
+
   cd "$GIT_TOPLEVEL_PATH" || exit 1
-  [[ -z $new_branch_name ]] && new_branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$GIT_TOPLEVEL_PATH")"
-  repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$new_branch_name"
   git worktree add "$repo_branch_path"
+
   _open_in_tmux "$repo_branch_path"
-}
-
-
-bit_pull() {
-  local new_branch_name repo_branch_path; new_branch_name="$1"
-  _in_git_repo || exit 1
-  git fetch origin --prune
-  new_branch_name="$(
-    git for-each-ref --format='%(refname:short)' refs/remotes \
-      | cut --delimiter / --fields 2- \
-      | grep --extended-regexp --invert-match '^(HEAD|main|master)$' \
-      | grep "$new_branch_name" \
-      | _fzf_bit --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
-  )"
-  [[ -z $new_branch_name ]] && exit 0
-  repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$new_branch_name"
-  git worktree add "$repo_branch_path"
-  cd "$repo_branch_path" || exit 1
-  git branch --set-upstream-to origin/"$new_branch_name" "$new_branch_name"
-  git pull
-  git reset --hard origin/"$new_branch_name"
-  _open_in_tmux "$repo_branch_path"
-}
-
-
-bit_delete() {
-  local worktree
-  _in_git_repo || exit 1
-  while read -r worktree; do
-    [[ -z $worktree ]] && { echo "No worktree(s) selected." >&2; exit 1; }
-    [[ "$worktree" == "$GIT_TOPLEVEL_PATH" ]] && { echo "Cannot delete active worktree." >&2; exit 1; }
-    git worktree remove --force "$worktree"
-    git branch --delete --force "$(basename "$worktree")"
-  done <<< "$(
-    git worktree list --porcelain \
-      | grep --extended-regexp '^worktree' \
-      | awk '{print $2}' \
-      | _fzf_bit --multi --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
-  )"
 }
 
 
 bit_clone() {
-  local gh_repo repo_url tmp_repo org_name gh_repo repo_branch_path; repo_url="$1"
+  local OPTIND gh_repo repo_url tmpdir org_name branch_path
+
+  while getopts ':ho:' flag; do
+    case "$flag" in
+      h) bit_usage "clone"; exit 0 ;;
+      o) org_name="$OPTARG" ;;
+      :) echo "Must supply an argument to -${OPTARG}." >&2; bit_usage "clone"; exit 1 ;;
+     \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "clone"; exit 1 ;;
+    esac
+  done
+
+  shift $((OPTIND-1)); repo_url="$1"; shift
 
   if [[ -z $repo_url ]]; then
-    org_name="$( { gh api user/orgs --jq '.[].login' && gh api user --jq '.login'; } | _fzf_bit --no-multi)"
-    #shellcheck disable=SC2016
-    gh_repo="$(
-      gh api graphql --paginate --field owner="$org_name" --raw-field query='
-        query ($owner: String!, $endCursor: String) {
-          repositoryOwner(login: $owner) {
-            repositories(first: 30, after: $endCursor) {
-              pageInfo { hasNextPage, endCursor }
-              nodes { nameWithOwner }
-            }
-          }
-        }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-        | _fzf_bit --no-multi --preview='GLAMOUR_STYLE=light GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {1}'
+    org_name="$(printf "%s\n%s" \
+      "$(GH_PAGER="cat" gh api user --jq '.login')" \
+      "$(GH_PAGER="cat" gh api user/orgs --jq '.[].login')" \
+      | grep "$org_name" \
+      | _fzf_bit --no-multi
     )"
+    [[ -z $org_name ]] && exit 0
+
+    gh_repo="$(_gh_org_repo_list "$org_name")"
     [[ -z $gh_repo ]] && exit 0
+
     repo_url="git@github.com:${gh_repo}.git"
     repo_name="$(basename "$gh_repo")"
-  elif git ls-remote --quiet "$1" 2> /dev/null; then
+  elif git ls-remote --quiet "$repo_url" 2> /dev/null; then
     repo_name="$(basename "${repo_url/.git/}")"
   else
-    echo "No valid repository url provided." >&2
+    _error "Unable to find repository"
     exit 1
   fi
 
-  mkdir --parents "$PROJECTS_DIR/$repo_name" || exit 1
-  tmp_repo="$(mktemp --directory)"
-  git clone "$repo_url" "$tmp_repo/$repo_name"
-  cd "$tmp_repo/$repo_name" || exit 1
-  repo_branch_path="$PROJECTS_DIR/$repo_name/$(git branch --show-current)"
-  mv --no-target-directory "$tmp_repo/$repo_name" "$repo_branch_path"
-  _open_in_tmux "$repo_branch_path"
+  mkdir --parents "${PROJECTS_DIR}/${repo_name}" || exit 1
+
+  tmpdir="$(mktemp --directory)"
+  git clone --branch "$branch_name" --single-branch "$repo_url" "${tmpdir}/${repo_name}"
+
+  cd "${tmpdir}/${repo_name}" || exit 1
+  branch_path="${PROJECTS_DIR}/${repo_name}/$(git branch --show-current)"
+  mv --no-target-directory "${tmpdir}/${repo_name}" "$branch_path"
+
+  _open_in_tmux "$branch_path"
+}
+
+
+bit_delete() {
+  local OPTIND worktree branch_name
+  _in_git_repo || exit 1
+
+  while getopts ':hn:' flag; do
+    case "$flag" in
+      h) bit_usage "delete"; exit 0 ;;
+      n) branch_name="$OPTARG" ;;
+      :) echo "Must supply an argument to -${OPTARG}." >&2; bit_usage "delete"; exit 1 ;;
+     \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "delete"; exit 1 ;;
+    esac
+  done
+
+  while read -r worktree; do
+    [[ -z $worktree ]] && exit 0
+    git worktree remove --force "$worktree"
+    git branch --delete --force "$(basename "$worktree")"
+  done <<< "$(_worktree_list "$branch_name")"
+}
+
+
+bit_pull() {
+  local OPTIND branch_name branch_path
+  _in_git_repo || exit 1
+
+  while getopts ':hn:' flag; do
+    case "$flag" in
+      h) bit_usage "pull"; exit 0 ;;
+      n) branch_name="$OPTARG" ;;
+      :) echo "Must supply an argument to -${OPTARG}." >&2; bit_usage "pull"; exit 1 ;;
+     \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "pull"; exit 1 ;;
+    esac
+  done
+
+  git fetch origin --prune
+
+  branch_name="$(_worktree_list "$branch_name")"
+  [[ -z $branch_name ]] && exit 0
+
+  branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$branch_name"
+  git worktree add "$branch_path"
+  cd "$branch_path" || exit 1
+
+  git branch --set-upstream-to origin/"$branch_name" "$branch_name"
+  git pull
+  git reset --hard origin/"$branch_name"
+  _open_in_tmux "$branch_path"
 }
 
 
 bit_stash() {
-  local common_dir exclude_untracked; exclude_untracked="$1"
+  local OPTIND common_dir exclude_untracked; exclude_untracked="false"
   _in_git_repo || exit 1
+
+  while getopts ':hx' flag; do
+    case "$flag" in
+      h) bit_usage "stash"; exit 0 ;;
+      x) exclude_untracked="true" ;;
+      *) echo "Invalid option: -${OPTARG}" >&2; bit_usage "stash"; exit 1 ;;
+    esac
+  done
+
   common_dir="$(git rev-parse --git-common-dir)"
+
   if [[ "$exclude_untracked" == "false" ]]; then
     git --git-dir "$common_dir" --work-tree "$GIT_TOPLEVEL_PATH" stash push --include-untracked
   else
@@ -176,25 +267,23 @@ bit_stash() {
 
 
 bit_switch() {
-  local repo_path top_dir curent_branch switch_to_branch
+  local OPTIND switch_to_branch
   _in_git_repo || exit 1
 
-  current_branch="$(git rev-parse --abbrev-ref HEAD)"
-  top_dir="$(dirname "$GIT_TOPLEVEL_PATH")"
+  while getopts ':hn:' flag; do
+    case "$flag" in
+      h) bit_usage "switch"; exit 0 ;;
+      n) branch_name="$OPTARG" ;;
+      :) echo "Must supply an argument to -${OPTARG}." >&2; bit_usage "switch"; exit 1 ;;
+     \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "switch"; exit 1 ;;
+    esac
+  done
 
-  switch_to_branch="$(git worktree list --porcelain \
-    | grep --extended-regexp '^worktree' \
-    | awk '{print $2}' \
-    | grep "$1" \
-    | _fzf_bit --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
-  )"
-  [[ ! -d "$switch_to_branch" ]] && { echo "No branch named $switch_to_branch" >&2; exit 1; }
+  switch_to_branch="$(_worktree_list "$branch_name")"
 
-  repo_path="$(realpath --relative-to="$GIT_TOPLEVEL_PATH" .)"
-  if [[ "$repo_path" != "." ]]; then
-    if [[ -d "${switch_to_branch}/${repo_path}" ]]; then
-      switch_to_branch="${switch_to_branch}/${repo_path}"
-    fi
+  if [[ ! -d "$switch_to_branch" ]]; then
+    _error "Branch ${switch_to_branch} not found"
+    exit 1
   fi
 
   _open_in_tmux "$switch_to_branch"
@@ -202,40 +291,30 @@ bit_switch() {
 
 
 main() {
-  local OPTIND subcommand target exclude_untracked
-  exclude_untracked="false"
+  local OPTIND subcommand
 
-  while getopts "h" opt; do
+  while getopts ":hpsw" opt; do
     case "$opt" in
-      h) usage "all"; exit 0 ;;
-      *) echo "Invalid option: $OPTARG" >&2; usage "all"; exit 1 ;;
+      h) bit_usage "$@"; exit 0 ;;
+      p) TMUX_OPEN_IN="pane" ;;
+      s) TMUX_OPEN_IN="session" ;;
+      w) TMUX_OPEN_IN="window" ;;
+      *) echo "Invalid option: -${OPTARG}" >&2; echo >&2; bit_usage "$@"; exit 1 ;;
     esac
   done
 
   shift $((OPTIND-1)); subcommand="$1"; shift
 
-  while getopts ':hn:pw' flag; do
-    case "$flag" in
-      h) usage "$subcommand"; exit 0 ;;
-      n) target="$OPTARG" ;;
-      p) TMUX_OPEN_IN="pane" ;;
-      w) TMUX_OPEN_IN="window" ;;
-      x) exclude_untracked="true" ;;
-      :) echo "Must supply an argument to -$OPTARG." >&2; usage "$subcommand"; exit 1 ;;
-     \?) echo "Invalid option: -$OPTARG" >&2; usage "$subcommand"; exit 1 ;;
-    esac
-  done
-
   GIT_TOPLEVEL_PATH="$(git rev-parse --show-toplevel 2> /dev/null || echo "null")"
 
   case "$subcommand" in
-    branch) bit_branch "$target" ;;
-      pull) bit_pull "$target" ;;
-    delete) bit_delete ;;
-     clone) bit_clone "$target" ;;
-     stash) bit_stash "$exclude_untracked" ;;
-    switch) bit_switch "$target" ;;
-         *) usage ;;
+        branch) bit_branch "$@" ;;
+          pull) bit_pull "$@"   ;;
+     delete|rm) bit_delete "$@" ;;
+         clone) bit_clone "$@"  ;;
+         stash) bit_stash "$@"  ;;
+     switch|co) bit_switch "$@" ;;
+             *) bit_usage "$@"  ;;
   esac
 }
 
