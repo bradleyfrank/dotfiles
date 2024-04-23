@@ -90,7 +90,7 @@ _error() {
 
 
 _open_in_tmux() {
-  local branch_path session; branch_path="$1"
+  local branch_path cmd; branch_path="$1"
   [[ -z $TMUX ]] && return 0
   case $TMUX_OPEN_IN in
        pane)  tmux split-window -c "$branch_path" -h ;;
@@ -225,6 +225,15 @@ bit_delete() {
 }
 
 
+bit_lazy() {
+  local OPTIND
+  _in_git_repo || exit 1
+  tmux resize-pane -Z
+  lazygit
+  tmux resize-pane -Z
+}
+
+
 bit_pull() {
   local OPTIND branch_name branch_path
   _in_git_repo || exit 1
@@ -311,9 +320,9 @@ main() {
   while getopts ":hpsw" opt; do
     case "$opt" in
       h) bit_usage "$@"; exit 0 ;;
-      p) TMUX_OPEN_IN="pane" ;;
+      p) TMUX_OPEN_IN="pane"    ;;
       s) TMUX_OPEN_IN="session" ;;
-      w) TMUX_OPEN_IN="window" ;;
+      w) TMUX_OPEN_IN="window"  ;;
       *) echo "Invalid option: -${OPTARG}" >&2; echo >&2; bit_usage "$@"; exit 1 ;;
     esac
   done
@@ -322,9 +331,10 @@ main() {
 
   case "$subcommand" in
         branch) bit_branch "$@" ;;
-          pull) bit_pull "$@"   ;;
-     delete|rm) bit_delete "$@" ;;
          clone) bit_clone "$@"  ;;
+     delete|rm) bit_delete "$@" ;;
+          lazy) bit_lazy "$@"   ;;
+          pull) bit_pull "$@"   ;;
          stash) bit_stash "$@"  ;;
      switch|co) bit_switch "$@" ;;
              *) bit_usage "$@"  ;;
