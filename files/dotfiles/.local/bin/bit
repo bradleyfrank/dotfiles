@@ -94,22 +94,20 @@ _error() {
 
 
 _open_in_tmux() {
-  local branch_path cmd; branch_path="$1"
   [[ -z $TMUX ]] && return 0
   case $TMUX_OPEN_IN in
-       pane)  tmux split-window -c "$branch_path" -h ;;
-     window)  bmux open-project -d "$branch_path"    ;;
-    session)  bmux open-project -d "$branch_path" -s ;;
+       pane)  tmux split-window -c "$1" -h ;;
+     window)  bmux open-project -d "$1"    ;;
+    session)  bmux open-project -d "$1" -s ;;
   esac
 }
 
 
 _worktree_list() {
-  local branch_name; branch_name="$1"
   git worktree list --porcelain \
     | grep --extended-regexp '^worktree' \
     | grep --invert-match "$GIT_TOPLEVEL_PATH" \
-    | grep "$branch_name" \
+    | grep "$1" \
     | awk '{print $2}' \
     | _fzf_bit --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
 }
@@ -139,7 +137,6 @@ _github_repo_list() {
 
 bit_branch() {
   local OPTIND branch_name branch_path
-  _in_git_repo || exit 1
 
   while getopts ':hn:' flag; do
     case "$flag" in
@@ -150,13 +147,15 @@ bit_branch() {
     esac
   done
 
+  _in_git_repo || exit 1
+
   [[ -z $branch_name ]] && branch_name="$(date +%Y-%b-%d-%H%M)-$(basename "$GIT_TOPLEVEL_PATH")"
-  repo_branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/${branch_name}"
+  branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/${branch_name}"
 
   cd "$GIT_TOPLEVEL_PATH" || exit 1
-  git worktree add "$repo_branch_path"
+  git worktree add "$branch_path"
 
-  _open_in_tmux "$repo_branch_path"
+  _open_in_tmux "$branch_path"
 }
 
 
@@ -210,7 +209,6 @@ bit_clone() {
 
 bit_delete() {
   local OPTIND worktree branch_name
-  _in_git_repo || exit 1
 
   while getopts ':hn:' flag; do
     case "$flag" in
@@ -220,6 +218,8 @@ bit_delete() {
      \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "delete"; exit 1 ;;
     esac
   done
+
+  _in_git_repo || exit 1
 
   while read -r worktree; do
     [[ -z $worktree ]] && exit 0
@@ -239,7 +239,6 @@ bit_lazy() {
 
 bit_pull() {
   local OPTIND branch_name branch_path
-  _in_git_repo || exit 1
 
   while getopts ':hn:' flag; do
     case "$flag" in
@@ -249,6 +248,8 @@ bit_pull() {
      \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "pull"; exit 1 ;;
     esac
   done
+
+  _in_git_repo || exit 1
 
   git fetch origin --prune
 
@@ -268,7 +269,6 @@ bit_pull() {
 
 bit_stash() {
   local OPTIND common_dir exclude_untracked; exclude_untracked="false"
-  _in_git_repo || exit 1
 
   while getopts ':hx' flag; do
     case "$flag" in
@@ -277,6 +277,8 @@ bit_stash() {
       *) echo "Invalid option: -${OPTARG}" >&2; bit_usage "stash"; exit 1 ;;
     esac
   done
+
+  _in_git_repo || exit 1
 
   common_dir="$(git rev-parse --git-common-dir)"
 
@@ -290,7 +292,6 @@ bit_stash() {
 
 bit_switch() {
   local OPTIND switch_to_branch
-  _in_git_repo || exit 1
 
   while getopts ':hn:' flag; do
     case "$flag" in
@@ -300,6 +301,8 @@ bit_switch() {
      \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "switch"; exit 1 ;;
     esac
   done
+
+  _in_git_repo || exit 1
 
   switch_to_branch="$(_worktree_list "$branch_name")"
 
