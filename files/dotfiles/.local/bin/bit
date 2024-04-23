@@ -32,6 +32,9 @@ bit_usage() {
       echo "bit delete|rm [-n <branch>]"
       echo "  -n  Branch name to delete"
       ;;
+    lazy)
+      echo "bit lazy|z"
+      ;;
     pull)
       echo "bit pull [-n <name>] [-p|-w|-s]"
       echo "  -n  Branch name to pull"
@@ -58,6 +61,7 @@ bit_usage() {
       echo "  branch      Create a new branch as a new worktree"
       echo "  clone       Clone a Git repo by URL or interactively"
       echo "  delete (rm) Delete branch and associated worktree"
+      echo "  lazy (z)    Launch 'lazygit' in a zoomed tmux window"
       echo "  pull        Pull a remote branch as a new worktree"
       echo "  stash       Stash changes in a worktree-supported way"
       echo "  switch (co) Open another branch"
@@ -226,7 +230,6 @@ bit_delete() {
 
 
 bit_lazy() {
-  local OPTIND
   _in_git_repo || exit 1
   tmux resize-pane -Z
   lazygit
@@ -333,7 +336,7 @@ main() {
         branch) bit_branch "$@" ;;
          clone) bit_clone "$@"  ;;
      delete|rm) bit_delete "$@" ;;
-          lazy) bit_lazy "$@"   ;;
+        lazy|z) bit_lazy "$@"   ;;
           pull) bit_pull "$@"   ;;
          stash) bit_stash "$@"  ;;
      switch|co) bit_switch "$@" ;;
