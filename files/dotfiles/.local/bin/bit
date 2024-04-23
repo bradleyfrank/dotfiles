@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 
 #
-# Branches a Git repo as a worktree within tmux.
+# Wrappers around `git` to support worktrees in a tmux session.
 # Author: Brad Frank
-# Date: May 2021, July 2022
-# Tested: GNU bash, version 5.1.12(1)-release (x86_64-apple-darwin21.1.0)
+# Date: May 2021, July 2022, April 2024
+# Tested: GNU bash, version 5.2.26(1)-release (aarch64-apple-darwin23.2.0)
 # Requires: tmux, git, fzf, gh
 #
 
 
 PROJECTS_DIR="$HOME/Development/Projects"
 TMUX_OPEN_IN="window"
+
+
+## ==============================================================================================
+## Usage functions
+## ----------------------------------------------------------------------------------------------
 
 
 bit_usage() {
@@ -61,17 +66,18 @@ bit_usage() {
 }
 
 
+## ==============================================================================================
+## Helper functions
+## ----------------------------------------------------------------------------------------------
+
+
 _fzf_bit() {
-  if [[ -n $TMUX ]]; then
     fzf-tmux -p --select-1 --ansi -i --height=50% --reverse --exit-0 --inline-info --border "$@"
-  else
-    fzf --select-1 --ansi -i --height=50% --reverse --exit-0 --inline-info --border "$@"
-  fi
 }
 
 
 _in_git_repo() {
-  if [[ "$GIT_TOPLEVEL_PATH" == "null" ]]; then
+  if ! GIT_TOPLEVEL_PATH="$(git rev-parse --show-toplevel 2> /dev/null)"; then
     _error "Must be in a Git repo"
     return 1
   fi
@@ -84,14 +90,13 @@ _error() {
 
 
 _open_in_tmux() {
-  local branch_path; branch_path="$1"
-  if [[ -n $TMUX ]]; then
-    case $TMUX_OPEN_IN in
-      window)  bmux open-project -d "$branch_path" ;;
-      pane)    tmux split-window -h -c "$branch_path" ;;
-      session) tmux new-session -As "$(dirname "$GIT_TOPLEVEL_PATH")" -c "$branch_path" ;;
-    esac
-  fi
+  local branch_path session; branch_path="$1"
+  [[ -z $TMUX ]] && return 0
+  case $TMUX_OPEN_IN in
+       pane)  tmux split-window -c "$branch_path" -h ;;
+     window)  bmux open-project -d "$branch_path"    ;;
+    session)  bmux open-project -d "$branch_path" -s ;;
+  esac
 }
 
 
@@ -106,7 +111,7 @@ _worktree_list() {
 }
 
 
-_gh_org_repo_list() {
+_github_repo_list() {
   local preview; preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
 
   #shellcheck disable=SC2016
@@ -121,6 +126,11 @@ _gh_org_repo_list() {
     }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
   | _fzf_bit --preview="$preview" --no-multi
 }
+
+
+## ==============================================================================================
+## Feature functions
+## ----------------------------------------------------------------------------------------------
 
 
 bit_branch() {
@@ -169,7 +179,7 @@ bit_clone() {
     )"
     [[ -z $org_name ]] && exit 0
 
-    gh_repo="$(_gh_org_repo_list "$org_name")"
+    gh_repo="$(_github_repo_list "$org_name")"
     [[ -z $gh_repo ]] && exit 0
 
     repo_url="git@github.com:${gh_repo}.git"
@@ -290,6 +300,11 @@ bit_switch() {
 }
 
 
+## ==============================================================================================
+## Main program
+## ----------------------------------------------------------------------------------------------
+
+
 main() {
   local OPTIND subcommand
 
@@ -304,8 +319,6 @@ main() {
   done
 
   shift $((OPTIND-1)); subcommand="$1"; shift
-
-  GIT_TOPLEVEL_PATH="$(git rev-parse --show-toplevel 2> /dev/null || echo "null")"
 
   case "$subcommand" in
         branch) bit_branch "$@" ;;
