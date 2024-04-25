@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+#
+# Updates various package managers and components.
+# Author: Brad Frank
+# Date: Sept 2021; Jan 2024
+# Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
+#
+
+bmux save
+
+if which apt-get &> /dev/null; then
+  sudo apt-get clean
+  sudo apt-get update
+  sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade
+fi
+
+if which dnf &> /dev/null; then
+  sudo dnf clean all
+  sudo dnf makecache
+  sudo dnf upgrade
+fi
+
+if [[ -n $HOMEBREW_PREFIX ]]; then
+  brew update
+  brew upgrade
+  brew autoremove
+  brew cleanup
+fi
+
+if which bat &> /dev/null; then
+  bat cache --clear
+  bat cache --build
+fi
+
+if which gcloud &> /dev/null; then
+  gcloud components update --quiet
+fi
+
+if kubectl krew version &> /dev/null; then
+  kubectl krew update
+  kubectl krew upgrade
+fi
+
+if [[ "$(uname -o)" == "Darwin" ]]; then
+  bmux save
+  sudo softwareupdate -ia
+fi

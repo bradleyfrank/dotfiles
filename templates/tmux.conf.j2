@@ -1,0 +1,106 @@
+{% if item == "tmux" %}
+set -s @status_position         "top"
+set -s @status_style            "fg=default,bg=default"
+set -s @status_right            "#[fg=#6c71c4,bg=default,bold]#{session_name}"
+set -s @pane_border_regular     "fg=#268bd2,bg=default"
+set -s @pane_border_sync        "fg=#2aa198,bg=default"
+set -s @pane_border_zoom        "fg=#6c71c4,bg=default"
+set -s @pane_border_lines       "heavy"
+set -s @pane_border_status      "top"
+set -s @window_format_fg        "#[fg=#268bd2,bg=#fdf6e3]"
+set -s @window_format_bg        "#[fg=#fdf6e3,bg=#268bd2]"
+set -s @window_status           "#[bold] [#I] #W #[nobold]"
+set -s @window_status_activity  "fg=#d33682,bg=default"
+set -s @window_status_current   "fg=#859900,bg=default"
+{% elif item == "popup" %}
+set -s @status_position         "top"
+set -s @status_style            "fg=default,bg=default"
+set -s @status_right            "#[fg=#6c71c4,bg=default,bold]#{session_name}"
+set -s @pane_border_regular     "fg=#b58900,bg=default"
+set -s @pane_border_sync        "fg=#2aa198,bg=default"
+set -s @pane_border_zoom        "fg=#6c71c4,bg=default"
+set -s @pane_border_lines       "simple"
+set -s @pane_border_status      "top"
+set -s @window_format_fg        "#[fg=#b58900,bg=#fdf6e3]"
+set -s @window_format_bg        "#[fg=#fdf6e3,bg=#b58900]"
+set -s @window_status           "#[bold] #I #[nobold]"
+set -s @window_status_activity  "fg=#d33682,bg=default"
+set -s @window_status_current   "fg=#859900,bg=default"
+{% elif item == "server" %}
+set -s @status_position         "top"
+set -s @status_style            "fg=default,bg=default"
+set -s @status_right            "#[fg=#6c71c4,bg=default,bold]#{session_name}"
+set -s @pane_border_regular     "fg=#dc322f,bg=default"
+set -s @pane_border_sync        "fg=#2aa198,bg=default"
+set -s @pane_border_zoom        "fg=#6c71c4,bg=default"
+set -s @pane_border_lines       "simple"
+set -s @pane_border_status      "top"
+set -s @window_format_fg        "#[fg=#dc322f,bg=#fdf6e3]"
+set -s @window_format_bg        "#[fg=#fdf6e3,bg=#dc322f]"
+set -s @window_status           "#[bold] #I #[nobold]"
+set -s @window_status_activity  "fg=#d33682,bg=default"
+set -s @window_status_current   "fg=#859900,bg=default"
+{% endif %}
+
+set -gF pane-border-status "#{@pane_border_status}"
+set -gF pane-border-lines "#{@pane_border_lines}"
+set -gF pane-border-style "bg=default,#{?pane_synchronized,#{@pane_border_sync}}"
+set -gF pane-active-border-style "#{?window_zoomed_flag,#{@pane_border_zoom},#{?pane_synchronized,#{@pane_border_sync},#{@pane_border_regular}}}"
+set -gF pane-border-format "#[#{?window_zoomed_flag,#{@pane_border_zoom},#{?pane_synchronized,#{@pane_border_sync},#{?pane_active,fg=#{@pane_border_regular}}}]#{?window_zoomed_flag, ZOOM ,}"
+
+set -gF window-status-current-format "#{@window_format_bg}#{@window_status}"
+set -gF window-status-format "#{@window_format_fg}#{@window_status}"
+set -gF window-status-activity-style "#{window_status_activity}"
+set -gF window-status-current-style "#{window_status_current}"
+
+set -gF status on
+set -gF status-justify left
+set -gF status-left ""
+set -gF status-position "#{@status_position}"
+set -gF status-right "#{@status_right}"
+set -gF status-style "#{@status_style}"
+
+set -g message-command-style "fg=#002b36"
+set -g message-style "fg=#002b36"
+set -g mode-style "bg=#657b83,fg=#fdf6e3"
+
+set -g aggressive-resize off
+set -g allow-rename on
+set -g automatic-rename-format "#{b:pane_current_path}"
+set -g base-index 1
+set -g default-command "${SHELL}"
+set -g default-terminal "tmux-256color"
+set -g terminal-overrides "alacritty:RGB,xterm-256color:RGB,gnome*:RGB"
+set -g detach-on-destroy off
+set -g history-limit 10000
+set -g mouse on
+set -g renumber-windows on
+set -g status-interval 1
+
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
+bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
+bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
+
+bind '%' split-window -h -c "#{pane_current_path}"
+bind '"' split-window -c "#{pane_current_path}"
+bind 'C' new-window -c "#{pane_current_path}"
+bind 'D' run-shell -b "bmux dump-pane"
+bind 'G' run-shell -b "bmux move-windows #{session_name}"
+bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
+bind 'M' choose-tree -Z "move-pane -t %%"
+bind 'O' run-shell -b "bmux open-project"
+bind 'S' run-shell -b "bmux open-project -s"
+bind 'T' run-shell -b "bmux select-layout"
+bind 'W' choose-tree -Zs "move-window -t %%"
+bind 'c' new-window -c "~/"
+bind 'r' run-shell -b "bmux rename-window #{pane_current_path}"
+bind 'u' source-file "~/.config/tmux/{{ item }}.conf"
+bind 'y' set synchronize-panes
+
+{% if item == "tmux" or item == "server" %}
+bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/"
+{% endif %}
+
+{% for plugin in tmux_plugins %}
+run-shell {{ ansible_facts['user_dir'] }}/.local/share/{{ plugin['name'] }}/{{ plugin['exec'] }}
+{% endfor %}

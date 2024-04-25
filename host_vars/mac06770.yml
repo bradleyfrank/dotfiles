@@ -1,0 +1,42 @@
+---
+
+email_address: "bfrank@oreilly.com"
+op_vault: "Private"
+
+git_clone_repos:
+  - url: "git@github.com:bradleyfrank/ansible.git"
+  - url: "git@github.com:bradleyfrank/notes-etc.git"
+  - url: "git@github.com:bradleyfrank/util-containers.git"
+  - url: "git@github.com:bradleyfrank/cliday.git"
+
+pkgs_homebrew_casks:
+  - 1password
+  - 1password-cli
+  - alacritty
+  - appcleaner
+  - google-cloud-sdk
+  - itsycal
+  - keepingyouawake
+  - maccy
+  - multipass
+  - rectangle
+  - utm
+  - vlc
+  - zoom
+
+pkgs_mas_apps: []
+
+zsh_completions:
+  - name: "kubectl"
+    command: "kubectl completion zsh"
+  - name: "stern"
+    command: "kubectl stern --completion=zsh"
+  - name: "k9s"
+    command: "k9s completion zsh"
+  - name: "cht"
+    command: "curl -L https://cheat.sh/:zsh"
+  - name: "nb"
+    command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
+
+system_macos_sleep_display: -1
+system_macos_sleep_computer: -1
