@@ -20,6 +20,8 @@ dots_templates:
     dest: "{{ zsh_rcd_dir }}"
   - name: "op-ssh.bash.j2"
     dest: "{{ ansible_facts['user_dir'] }}/.local/share"
+  - name: "dotfiles.zsh.j2"
+    dest: "{{ zsh_rcd_dir }}"
 
 
 # ============================================================================================ #
