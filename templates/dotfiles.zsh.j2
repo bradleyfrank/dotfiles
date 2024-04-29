@@ -1,0 +1,57 @@
+dotfiles() {
+  local help repo branch tags skip_tags pull update
+
+  zparseopts -E -D -- \
+    h=help        -help=help \
+    b:=branch     -branch:=branch \
+    t:=tags       -tags:=tags \
+    s:=skip_tags  -skip-tags:=skip_tags \
+    p=pull        -pull=pull \
+    u=update      -update=update
+
+  if [[ -n $help ]]
+  then
+    echo "dotfiles [-h|--help] | [-b|--branch] [-t|--tags] [-s|--skip-tags] [-p|--pull] [-u|--update]"
+    echo "  -h|--help       Show help"
+    echo "  -b|--branch     Branch of Ansible repo to run playbook from"
+    echo "  -t|--tags       Playbook tags to run"
+    echo "  -s|--skip-tags  Playbook tags to skip"
+    echo "  -p|--pull       Do a 'git pull' first"
+    echo "  -u|--update     Update venv before running"
+    return 0
+  fi
+
+  git_branch="${branch[2]:-main}"
+  repo="${HOME}/Development/Projects/ansible/${git_branch}"
+
+  if [[ ! -d "$repo" ]]
+  then
+    echo "No Ansible branch '${git_branch}'" >&2
+    return 1
+  fi
+
+  pushd "$repo"
+
+  if [[ -n $pull ]]
+  then
+    bit stash
+    git pull
+    git stash pop
+  fi
+
+  if ! zpy venvs_path >/dev/null 2>&1
+  then
+    zpy envin
+  else
+    zpy activate
+    [[ -n $pull || -n $update ]] && zpy pipup
+  fi
+
+  ansible-playbook playbooks/site.yml \
+    --vault-password-file =(op read op://{{ op_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) \
+    --tags "${tags[2]:-all}" \
+    --skip-tags "${skip_tags[2]:-become,homebrew}"
+
+  zpy deactivate
+  popd
+}
