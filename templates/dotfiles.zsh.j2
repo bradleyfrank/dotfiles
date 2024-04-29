@@ -1,13 +1,15 @@
 dotfiles() {
-  local help repo branch tags skip_tags pull update
+  local help repo branch tags skip_tags pull update debug verbose
 
   zparseopts -E -D -- \
-    h=help        -help=help \
-    b:=branch     -branch:=branch \
-    t:=tags       -tags:=tags \
-    s:=skip_tags  -skip-tags:=skip_tags \
-    p=pull        -pull=pull \
-    u=update      -update=update
+    {b,-branch}:=branch \
+    {t,-tags}:=tags \
+    {s,-skip-tags}:=skip_tags \
+    {p,-pull}=pull \
+    {u,-update}=update \
+    {h,-help}=help \
+    {d,-debug}=debug \
+    {v,-verbose}=verbose
 
   if [[ -n $help ]]
   then
@@ -18,6 +20,8 @@ dotfiles() {
     echo "  -s|--skip-tags  Playbook tags to skip"
     echo "  -p|--pull       Do a 'git pull' first"
     echo "  -u|--update     Update venv before running"
+    echo "  -d|--debug      Switch Ansible output to default"
+    echo "  -v|--verbose    Make Ansible output verbose"
     return 0
   fi
 
@@ -30,28 +34,52 @@ dotfiles() {
     return 1
   fi
 
-  pushd "$repo"
+  if [[ ! -f "${HOME}/.ansible/inventory/inventory.yml" ]]
+  then
+    echo "No 'inventory.yml' file" >&2
+    return 1
+  fi
+
+  if [[ ! -L "${HOME}/.ansible/inventory/host_vars/localhost.yml" ]]
+  then
+    echo "No 'localhost.yml' host vars file" >&2
+    return 1
+  fi
+
+  pushd "$repo" >/dev/null
 
   if [[ -n $pull ]]
   then
     bit stash
-    git pull
+    git pull || return 1
     git stash pop
   fi
 
   if ! zpy venvs_path >/dev/null 2>&1
   then
     zpy envin
+  elif [[ -n $pull || -n $update ]]
+  then
+    zpy activate
+    zpy pipup
   else
     zpy activate
-    [[ -n $pull || -n $update ]] && zpy pipup
   fi
 
+  if [[ -n $debug || -n $verbose ]]
+  then
+    callback="ansible.builtin.default"
+  else
+    callback="ansible.builtin.unixy"
+  fi
+
+  ANSIBLE_STDOUT_CALLBACK="$callback" \
   ansible-playbook playbooks/site.yml \
     --vault-password-file =(op read op://{{ op_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) \
     --tags "${tags[2]:-all}" \
-    --skip-tags "${skip_tags[2]:-become,homebrew}"
+    --skip-tags "${skip_tags[2]:-become,homebrew}" \
+    ${verbose:+-vvv}
 
   zpy deactivate
-  popd
+  popd >/dev/null
 }
