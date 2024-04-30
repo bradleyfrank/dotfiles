@@ -172,7 +172,7 @@ source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
 for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
-source $HOME/.local/share/keychain id_rsa id_ed25519 google_compute_engine
+source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
 
 
 eval "$(dircolors $HOME/.dir_colors)"

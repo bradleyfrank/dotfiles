@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+export KEYCHAIN_DIR="${HOME}/.local/share/keychain"
 
 _keychain_load_agent() {
-  if [[ -s ~/.ssh/agent ]]; then
-    source "${HOME}/.ssh/agent" >/dev/null
+  if [[ -s "${KEYCHAIN_DIR}/agent" ]]; then
+    source "${KEYCHAIN_DIR}/agent" >/dev/null
   else
     killall ssh-agent >/dev/null 2>&1
     _keychain_eval_ssh_agent
@@ -11,7 +11,7 @@ _keychain_load_agent() {
 
 
 _keychain_eval_ssh_agent() {
-  eval "$(ssh-agent -s | tee "${HOME}/.ssh/agent")" >/dev/null
+  eval "$(ssh-agent -s | tee "${KEYCHAIN_DIR}/agent")" >/dev/null
 }
 
 
@@ -42,7 +42,7 @@ _keychain_init() {
       continue
     fi
 
-    ssh_key_hash_file="${ssh_key_file}.sha"
+    ssh_key_hash_file="${KEYCHAIN_DIR}/$(tr '/' '_' <<< "$ssh_key_file")"
 
     if [[ -s "$ssh_key_hash_file" ]]; then
       ssh_key_hash="$(<"$ssh_key_hash_file")"
