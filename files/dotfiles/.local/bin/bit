@@ -113,6 +113,15 @@ _worktree_list() {
 }
 
 
+_github_branch_list() {
+  git for-each-ref --format='%(refname:short)' refs/remotes \
+    | grep --extended-regexp --invert-match '(HEAD|main|master|origin)$' \
+    | awk -F '/' '{print $2}' \
+    | grep "$1" \
+    | _fzf_bit --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
+}
+
+
 _github_repo_list() {
   local preview; preview="GLAMOUR_STYLE=light GH_FORCE_TTY=\$FZF_PREVIEW_COLUMNS gh repo view {1}"
 
@@ -253,7 +262,7 @@ bit_pull() {
 
   git fetch origin --prune
 
-  branch_name="$(_worktree_list "$branch_name")"
+  branch_name="$(_github_branch_list "$branch_name")"
   [[ -z $branch_name ]] && exit 0
 
   branch_path="$(dirname "$GIT_TOPLEVEL_PATH")/$branch_name"
@@ -263,6 +272,7 @@ bit_pull() {
   git branch --set-upstream-to origin/"$branch_name" "$branch_name"
   git pull
   git reset --hard origin/"$branch_name"
+
   _open_in_tmux "$branch_path"
 }
 
