@@ -80,6 +80,6 @@ dotfiles() {
     --skip-tags "${skip_tags[2]:-become,homebrew}" \
     ${verbose:+-vvv}
 
-  zpy deactivate
+  deactivate
   popd >/dev/null
 }
