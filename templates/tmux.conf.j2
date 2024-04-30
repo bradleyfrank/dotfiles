@@ -77,6 +77,8 @@ set -g mouse on
 set -g renumber-windows on
 set -g status-interval 1
 
+set-hook -g after-copy-mode 'set -p cursor-style underline'  # make cursor visible in copy-mode
+
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
