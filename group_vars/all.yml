@@ -19,7 +19,9 @@ dots_templates:
   - name: "atuin.zsh.j2"
     dest: "{{ zsh_rcd_dir }}"
   - name: "op-ssh.bash.j2"
-    dest: "{{ ansible_facts['user_dir'] }}/.local/share"
+    dest: "{{ dots_local_bin }}"
+    rename: "op-ssh"
+    mode: "0755"
   - name: "dotfiles.zsh.j2"
     dest: "{{ zsh_rcd_dir }}"
 
