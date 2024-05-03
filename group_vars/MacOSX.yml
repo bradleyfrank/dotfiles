@@ -436,6 +436,7 @@ pkgs_homebrew_formulas:
   - kpcli
   - kube-linter
   - lame
+  - lazygit
   - less
   - markdown
   - mas

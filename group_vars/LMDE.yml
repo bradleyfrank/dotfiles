@@ -128,10 +128,11 @@ pkgs_apt_packages:
 
 pkgs_homebrew_formulas:
   - atuin
-  - charmbracelet/tap/glow
   - charmbracelet/tap/freeze
+  - charmbracelet/tap/glow
   - eza
   - glow
-  - qsv
+  - lazygit
   - nb
+  - qsv
   - yq
