@@ -171,6 +171,7 @@ pkgs_apt_packages:
 
 pkgs_homebrew_formulas:
   - atuin
+  - csvlens
   - charmbracelet/tap/freeze
   - charmbracelet/tap/glow
   - eza

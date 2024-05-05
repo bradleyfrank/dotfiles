@@ -130,6 +130,7 @@ pkgs_homebrew_formulas:
   - atuin
   - charmbracelet/tap/freeze
   - charmbracelet/tap/glow
+  - csvlens
   - eza
   - glow
   - lazygit
