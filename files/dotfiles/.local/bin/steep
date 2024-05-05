@@ -11,13 +11,13 @@ set -o errexit
 
 bmux save
 
-if which apt-get &> /dev/null; then
+if which apt-get >/dev/null 2>&1; then
   sudo apt-get clean
   sudo apt-get update
   sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade
 fi
 
-if which dnf &> /dev/null; then
+if which dnf >/dev/null 2>&1; then
   sudo dnf clean all
   sudo dnf makecache
   sudo dnf upgrade
@@ -30,18 +30,26 @@ if [[ -n $HOMEBREW_PREFIX ]]; then
   brew cleanup
 fi
 
-if which bat &> /dev/null; then
+if which bat >/dev/null 2>&1; then
   bat cache --clear
   bat cache --build
 fi
 
-if which gcloud &> /dev/null; then
+if which gcloud >/dev/null 2>&1; then
   gcloud components update --quiet
 fi
 
-if kubectl krew version &> /dev/null; then
+if kubectl krew version >/dev/null 2>&1; then
   kubectl krew update
   kubectl krew upgrade
+fi
+
+if [[ -d "${HOME}/.local/share/zpy" ]]; then
+  source ~/.local/share/zpy/zpy.plugin.zsh
+  zpy prunevenvs -y
+  while read -r venv; do
+    [[ ! -e "$(realpath "$venv")" ]] && rm -rf "$venv"
+  done < <(fd --type l --exact-depth 2 . "${HOME}/.local/share/venvs")
 fi
 
 if [[ "$(uname -o)" == "Darwin" ]]; then
