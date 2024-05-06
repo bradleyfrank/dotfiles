@@ -138,11 +138,14 @@ dnf_packages:
     - mpv
     - transmission-gtk
 
+pkgs_homebrew_taps:
+  - charmbracelet/tap
+
 pkgs_homebrew_formulas:
   - atuin
-  - charmbracelet/tap/glow
-  - charmbracelet/tap/freeze
   - csvlens
+  - freeze
+  - glow
   - lazygit
   - nb
   - qsv

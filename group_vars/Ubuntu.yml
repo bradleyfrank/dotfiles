@@ -169,12 +169,15 @@ pkgs_apt_packages:
     - mpv
     - transmission-gtk
 
+pkgs_homebrew_taps:
+  - charmbracelet/tap
+
 pkgs_homebrew_formulas:
   - atuin
   - csvlens
-  - charmbracelet/tap/freeze
-  - charmbracelet/tap/glow
   - eza
+  - freeze
+  - glow
   - glow
   - lazygit
   - nb
