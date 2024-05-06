@@ -25,8 +25,8 @@ bit_usage() {
       echo "  -n  Name of the new branch"
       ;;
     clone)
-      echo "bit clone [-n <url>]"
-      echo "  -n  Repository URL"
+      echo "bit clone [-n <branch>] <url>"
+      echo "  -n  Branch to clone"
       ;;
     delete)
       echo "bit delete|rm [-n <branch>]"
@@ -169,12 +169,12 @@ bit_branch() {
 
 
 bit_clone() {
-  local OPTIND gh_repo repo_url tmpdir org_name branch_path
+  local OPTIND gh_repo repo_url tmpdir org_name branch_name branch_path
 
-  while getopts ':ho:' flag; do
+  while getopts ':hn:' flag; do
     case "$flag" in
       h) bit_usage "clone"; exit 0 ;;
-      o) org_name="$OPTARG" ;;
+      n) branch_name="$OPTARG" ;;
       :) echo "Must supply an argument to -${OPTARG}." >&2; bit_usage "clone"; exit 1 ;;
      \?) echo "Invalid option: -${OPTARG}" >&2; bit_usage "clone"; exit 1 ;;
     esac
@@ -203,12 +203,17 @@ bit_clone() {
     exit 1
   fi
 
-  mkdir --parents "${PROJECTS_DIR}/${repo_name}" || exit 1
-
   tmpdir="$(mktemp --directory)"
-  git clone --branch "$branch_name" --single-branch "$repo_url" "${tmpdir}/${repo_name}"
+
+  if [[ -n $branch_name ]]; then
+    git clone --branch "$branch_name" --single-branch "$repo_url" "${tmpdir}/${repo_name}"
+  else
+    git clone --single-branch "$repo_url" "${tmpdir}/${repo_name}"
+  fi
 
   cd "${tmpdir}/${repo_name}" || exit 1
+
+  mkdir --parents "${PROJECTS_DIR}/${repo_name}" || exit 1
   branch_path="${PROJECTS_DIR}/${repo_name}/$(git branch --show-current)"
   mv --no-target-directory "${tmpdir}/${repo_name}" "$branch_path"
 
