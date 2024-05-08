@@ -1,0 +1,113 @@
+#!/usr/bin/env zsh
+
+bfetch_battery() {
+  local profile charge_info state_of_charge state_of_battery charge batt_icon
+
+  profile="$(system_profiler SPPowerDataType -json)"
+  charge_info="$(jq -M 'try (.SPPowerDataType[0].sppower_battery_charge_info)' <<< "$profile")"
+
+  if [[ "$charge_info" == "null" ]]; then
+    print -P "\ueb2d  ${bold}${green}AC Power${reset}"
+    return
+  fi
+
+  state_of_charge="$(jq -r '.sppower_battery_state_of_charge' <<< "$charge_info")"
+
+  if (( state_of_charge >= 75 )); then
+    charge="${bold}${green}${state_of_charge}%%${reset}"
+    batt_icon="\uf240"
+  elif (( state_of_charge >= 50 )); then
+    charge="${bold}${yellow}${state_of_charge}%%${reset}"
+    batt_icon="\uf241"
+  elif (( state_of_charge >= 25 )); then
+    charge="${bold}${orange}${state_of_charge}%%${reset}"
+    batt_icon="\uf242"
+  else
+    charge="${bold}${red}${state_of_charge}%%${reset}"
+    batt_icon="\uf243"
+  fi
+
+  if [[ "$(jq -r '.sppower_battery_fully_charged' <<< "$charge_info")" == "TRUE" ]]; then
+    state_of_battery="\e[3mcharged\e[0m"
+  elif [[ "$(jq -r '.sppower_battery_is_charging' <<< "$charge_info")" == "TRUE" ]]; then
+    state_of_battery="\e[3m${green}charging\e[0m"
+  elif [[ "$(jq -r '.sppower_battery_is_charging' <<< "$charge_info")" == "FALSE" ]]; then
+    state_of_battery="\e[3m${yellow}discharging\e[0m"
+  else
+    state_of_battery="\e[3m${red}unknown\e[0m"
+  fi
+
+  print "${batt_icon}  ${charge} ${state_of_battery}"
+}
+
+
+bfetch_tmux() {
+  local zsh_version tmux_version tmux_socket
+
+  zsh_version="${bold}zsh $(zsh --version | awk '{print $2}')${reset}"
+  tmux_version="${bold}$(tmux -V)${reset}"
+
+  if [[ -z $TMUX ]]; then
+    print -P "\uebc8  ${zsh_version}"
+    return
+  fi
+
+  tmux_socket="$(tmux display-message -p "#{b:socket_path}")"
+  tmux_socket="${magenta}${tmux_socket}${reset}"
+
+  print -P "\uebc8  ${zsh_version} | ${tmux_version} (${tmux_socket})"
+}
+
+
+bfetch_uptime() {
+  local uptime
+  uptime="$(system_profiler SPSoftwareDataType -json | jq -r '.SPSoftwareDataType[0].uptime')"
+  print -P "\uf017  ${bold}${uptime}${reset}"
+}
+
+
+bfetch_sys() {
+  print -P "\uf4bc  ${bold}${violet}$(sw_vers | awk '{print $2}' | xargs)${reset}"
+}
+
+
+bfetch_ssh() {
+  if [[ -z $SSH_AUTH_SOCK ]]; then
+    print -P "\uf43d  \e[3mNo agent running\e[0m"
+    return
+  fi
+
+  print -P "\uf43d  ${bold}${yellow}$(ssh-add -l | wc -l)${unbold} (${SSH_AUTH_SOCK:t})${reset}"
+}
+
+
+main() {
+  local -r blue="%F{33}" \
+           cyan="%F{37}" \
+           green="%F{64}" \
+           magenta="%F{125}" \
+           orange="%F{166}" \
+           red="%F{160}" \
+           violet="%F{61}" \
+           yellow="%F{136}" \
+           bold="%B" \
+           unbold="%b" \
+           reset="%b%f"
+  local -A fetch
+  local -a segment_order
+
+  segment_order=(sys uptime battery tmux ssh)
+
+  fetch[battery]="$(bfetch_battery)"
+  fetch[tmux]="$(bfetch_tmux)"
+  fetch[uptime]="$(bfetch_uptime)"
+  fetch[sys]="$(bfetch_sys)"
+  fetch[ssh]="$(bfetch_ssh)"
+
+  for segment in "${segment_order[@]}"; do
+    print -DP "  ${fetch[$segment]}"
+  done
+  print
+}
+
+main
