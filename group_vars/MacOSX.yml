@@ -450,6 +450,7 @@ pkgs_homebrew_formulas:
   - p7zip
   - par
   - pdfgrep
+  - pipx
   - prettyping
   - pwgen
   - qpdf

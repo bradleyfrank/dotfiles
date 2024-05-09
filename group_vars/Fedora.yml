@@ -61,6 +61,7 @@ dnf_packages:
     - par
     - perf
     - pdfgrep
+    - pipx
     - podman
     - pwgen
     - python3

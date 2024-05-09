@@ -73,6 +73,7 @@ pkgs_apt_packages:
     - par
     - perf-tools-unstable
     - pdfgrep
+    - pipx
     - pwgen
     - python3
     - python3-dev
