@@ -28,56 +28,54 @@ bfetch_battery() {
   fi
 
   if [[ "$(jq -r '.sppower_battery_fully_charged' <<< "$charge_info")" == "TRUE" ]]; then
-    state_of_battery="\e[3mcharged\e[0m"
+    state_of_battery="charged"
   elif [[ "$(jq -r '.sppower_battery_is_charging' <<< "$charge_info")" == "TRUE" ]]; then
-    state_of_battery="\e[3m${green}charging\e[0m"
+    state_of_battery="${green}charging${reset}"
   elif [[ "$(jq -r '.sppower_battery_is_charging' <<< "$charge_info")" == "FALSE" ]]; then
-    state_of_battery="\e[3m${yellow}discharging\e[0m"
+    state_of_battery="${yellow}discharging${reset}"
   else
     state_of_battery="\e[3m${red}unknown\e[0m"
   fi
 
-  print "${batt_icon}  ${charge} ${state_of_battery}"
+  print "${blue}${batt_icon}${reset}  ${charge} ${state_of_battery}"
 }
 
 
 bfetch_tmux() {
-  local zsh_version tmux_version tmux_socket
+  local zsh_version tmux_version
 
   zsh_version="${bold}zsh $(zsh --version | awk '{print $2}')${reset}"
-  tmux_version="${bold}$(tmux -V)${reset}"
+  [[ -n $TMUX ]] && tmux_version="[${bold}$(tmux -V)${reset}]"
 
-  if [[ -z $TMUX ]]; then
-    print -P "\uebc8  ${zsh_version}"
-    return
-  fi
-
-  tmux_socket="$(tmux display-message -p "#{b:socket_path}")"
-  tmux_socket="${magenta}${tmux_socket}${reset}"
-
-  print -P "\uebc8  ${zsh_version} | ${tmux_version} (${tmux_socket})"
+  print -P "${blue}\uebc8${reset}  ${zsh_version} ${tmux_version}"
 }
 
 
 bfetch_uptime() {
   local uptime
-  uptime="$(system_profiler SPSoftwareDataType -json | jq -r '.SPSoftwareDataType[0].uptime')"
-  print -P "\uf017  ${bold}${uptime}${reset}"
+  uptime="$(system_profiler SPSoftwareDataType | sed -rn "s/^\s+Time since boot:\s(.*)$/\1/p")"
+  print -P "${blue}\uf017${reset}  ${bold}${uptime}${reset}"
 }
 
 
 bfetch_sys() {
-  print -P "\uf4bc  ${bold}${violet}$(sw_vers | awk '{print $2}' | xargs)${reset}"
+  local os_version
+  os_version="$(system_profiler SPSoftwareDataType -json \
+    | jq -r '.SPSoftwareDataType[0].os_version')"
+  print -P "${blue}\uf4bc${reset}  ${bold}${os_version}${reset}"
 }
 
 
 bfetch_ssh() {
+  local ssh_keys
+
   if [[ -z $SSH_AUTH_SOCK ]]; then
-    print -P "\uf43d  \e[3mNo agent running\e[0m"
+    print -P "${blue}\uf43d${reset}  \e[3mNo agent running\e[0m"
     return
   fi
 
-  print -P "\uf43d  ${bold}${yellow}$(ssh-add -l | wc -l)${unbold} (${SSH_AUTH_SOCK:t})${reset}"
+  ssh_keys="$(ssh-add -l | wc -l)"
+  print -P "${blue}\uf43d${reset}  ${bold}${ssh_keys}${unbold} loaded (${SSH_AUTH_SOCK:t})${reset}"
 }
 
 
@@ -96,8 +94,9 @@ main() {
   local -A fetch
   local -a segment_order
 
-  segment_order=(sys uptime battery tmux ssh)
+  segment_order=(sys uptime battery tmux ssh blank)
 
+  fetch[blank]=""
   fetch[battery]="$(bfetch_battery)"
   fetch[tmux]="$(bfetch_tmux)"
   fetch[uptime]="$(bfetch_uptime)"
@@ -107,7 +106,6 @@ main() {
   for segment in "${segment_order[@]}"; do
     print -DP "  ${fetch[$segment]}"
   done
-  print
 }
 
 main
