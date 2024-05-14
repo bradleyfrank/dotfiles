@@ -1,5 +1,5 @@
 precmd() {
-  local    _rc=$? prompt_color
+  local    _rc=$? rc_color
   local -a lprompt_order rprompt_order
   local -A prompt_segments
   local -r base03="%F{234}" \
@@ -64,17 +64,18 @@ precmd() {
 
   vcs_info
 
-  lprompt_order=( venv node lbrak cwd host rbrak rc )
+  lprompt_order=( prefix venv node lbrak cwd host rbrak prompt )
   rprompt_order=( )
 
   prompt_segments=(
+    [prefix]=""
     [clock]=""
     [cwd]="${bold}${blue}%~${reset}"
     [host]=""
     [lbrak]="${base03}[${reset}"
     [node]=""
+    [prompt]="${bold}%#${reset} "
     [rbrak]="${base03}]${reset}"
-    [rc]=""
     [timer]=""
     [venv]=""
   )
@@ -100,12 +101,12 @@ precmd() {
   fi
 
   case "$_rc" in
-    0) prompt_color="${green}"   ;;
-    1) prompt_color="${red}"     ;;
-    *) prompt_color="${magenta}" ;;
+    0) rc_color="${green}"   ;;
+    1) rc_color="${red}"     ;;
+    *) rc_color="${violet}" ;;
   esac
 
-  prompt_segments[rc]="${bold}${prompt_color}%#${reset} "
+  prompt_segments[prefix]="${rc_color}$(print "\uea71")${reset} "
 
   PROMPT=""
   for segment in "${lprompt_order[@]}"; do
@@ -120,6 +121,6 @@ precmd() {
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' actionformats '%r%S%c%u%a%m'
-zstyle ':vcs_info:git*' formats '%r%S%c%u%m'
+zstyle ':vcs_info:git*' actionformats '%r%S%c%u%a'
+zstyle ':vcs_info:git*' formats '%r%S%c%u'
 zstyle ':vcs_info:git*+set-message:*' hooks format
