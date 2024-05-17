@@ -120,6 +120,6 @@ precmd() {
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git*' check-for-changes true
-zstyle ':vcs_info:git*' actionformats '%r%S%c%u%a%m'
-zstyle ':vcs_info:git*' formats '%r%S%c%u%m'
+zstyle ':vcs_info:git*' actionformats '%r%S%c%u%a'
+zstyle ':vcs_info:git*' formats '%r%S%c%u'
 zstyle ':vcs_info:git*+set-message:*' hooks format
