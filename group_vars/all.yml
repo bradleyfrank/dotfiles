@@ -248,8 +248,6 @@ vim_extensions:
 # role: zsh
 # -------------------------------------------------------------------------------------------- #
 
-zsh_rcd_dir: "{{ ansible_facts['user_dir'] }}/.local/share/zsh/rc.d"
-
 zsh_completions:
   - name: "cht"
     command: "curl -L https://cheat.sh/:zsh"
