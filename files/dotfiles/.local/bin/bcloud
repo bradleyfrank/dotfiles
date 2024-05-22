@@ -41,7 +41,10 @@ bcloud_usage() {
 
 
 bcloud_kubeconfig () {
-  local OPTIND projects project cluster append_config temp; append_config=1 temp="$(mktemp)"
+  local OPTIND projects project projectId cluster append_config temp
+
+  append_config=1
+  temp="$(mktemp)"
 
   while getopts ':hrp:' flag; do
     case "$flag" in
@@ -79,10 +82,9 @@ bcloud_kubeconfig () {
   done <<< "$projects"
 
   while read -r cluster; do
-    name="$(awk '{print $2}' <<< "$cluster")"
-    project="$(awk '{print $3}' <<< "$cluster")"
-    location="$(awk '{print $4}' <<< "$cluster")"
-    gcloud container clusters get-credentials "$name" --project "$project" --region "$location"
+    gcloud container clusters get-credentials "$(awk '{print $2}' <<< "$cluster")" \
+      --project "$(awk '{print $3}' <<< "$cluster")" \
+      --region "$(awk '{print $4}' <<< "$cluster")"
   done < <(fzf --multi --with-nth 2,1 < "$temp")
 
   rm "$temp"
