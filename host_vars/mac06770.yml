@@ -3,6 +3,10 @@
 email_address: "bfrank@oreilly.com"
 op_vault: "Employee"
 
+icons_app_paths:
+  - "/Applications"
+  - "{{ ansible_facts['user_dir'] }}/Applications/Chrome Apps.localized"
+
 git_clone_repos:
   - url: "git@github.com:bradleyfrank/ansible.git"
   - url: "git@github.com:bradleyfrank/notes-etc.git"
