@@ -112,11 +112,10 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 cdf() { cd $(dirs -lp | fzf --no-multi); }
 jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-tim() { tmux split-window -h -c "$(pwd)" "vim $1"; }
+tim() { tmux split-window -h -c "$(pwd)" "vim $@"; }
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
 numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")"; }
 random() { pwgen -1Anr "$(echo {a..z})" "${1:-5}"; }
-
 zvm_after_init() { bindkey -M viins '^R' atuin-search; }  # rebind after zsh-vi-mode loads
 
 
