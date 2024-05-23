@@ -67,7 +67,6 @@ pkgs_apt_packages:
     - msmtp
     - mtr
     - ncdu
-    - neofetch
     - nmap
     - p7zip-*
     - par
@@ -134,6 +133,7 @@ pkgs_homebrew_formulas:
   - atuin
   - csvlens
   - eza
+  - fastfetch
   - freeze
   - glow
   - glow

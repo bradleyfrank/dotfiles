@@ -25,6 +25,7 @@ dnf_packages:
     - dua-cli
     - duf
     - eza
+    - fastfetch
     - fd-find
     - fdkaac
     - fdupes
@@ -53,7 +54,6 @@ dnf_packages:
     - msmtp
     - mtr
     - ncdu
-    - neofetch
     - nmap
     - ocrmypdf
     - p7zip

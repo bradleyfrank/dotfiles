@@ -408,6 +408,7 @@ pkgs_homebrew_formulas:
   - dust
   - eye-d3
   - eza
+  - fastfetch
   - fd
   - fdupes
   - ffmpeg
@@ -444,7 +445,6 @@ pkgs_homebrew_formulas:
   - mtr
   - nb
   - ncdu
-  - neofetch
   - nmap
   - ocrmypdf
   - p7zip
