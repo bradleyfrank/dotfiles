@@ -75,11 +75,6 @@ bit_usage() {
 ## ----------------------------------------------------------------------------------------------
 
 
-_fzf_bit() {
-    fzf-tmux -p --select-1 --ansi -i --height=50% --reverse --exit-0 --inline-info --border "$@"
-}
-
-
 _in_git_repo() {
   if ! GIT_TOPLEVEL_PATH="$(git rev-parse --show-toplevel 2> /dev/null)"; then
     _error "Must be in a Git repo"
@@ -109,16 +104,15 @@ _worktree_list() {
     | grep --invert-match "$GIT_TOPLEVEL_PATH" \
     | grep "$1" \
     | awk '{print $2}' \
-    | _fzf_bit --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
+    | fzf-tmux --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
 }
 
 
 _github_branch_list() {
-  git for-each-ref --format='%(refname:short)' refs/remotes \
-    | grep --extended-regexp --invert-match '(HEAD|main|master|origin)$' \
-    | awk -F '/' '{print $2}' \
+  git ls-remote --heads --quiet \
+    | sed -rn 's|[a-z0-9]+\s+refs/heads/(.*)$|\1|p' \
     | grep "$1" \
-    | _fzf_bit --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
+    | fzf-tmux --no-multi --preview='git log --oneline --decorate --color origin/{-1} --'
 }
 
 
@@ -135,7 +129,7 @@ _github_repo_list() {
         }
       }
     }' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' \
-  | _fzf_bit --preview="$preview" --no-multi
+  | fzf-tmux --preview="$preview" --no-multi
 }
 
 
@@ -187,7 +181,7 @@ bit_clone() {
       "$(GH_PAGER="cat" gh api user --jq '.login')" \
       "$(GH_PAGER="cat" gh api user/orgs --jq '.[].login')" \
       | grep "$org_name" \
-      | _fzf_bit --no-multi
+      | fzf-tmux --no-multi
     )"
     [[ -z $org_name ]] && exit 0
 
@@ -320,6 +314,7 @@ bit_switch() {
   _in_git_repo || exit 1
 
   switch_to_branch="$(_worktree_list "$branch_name")"
+  [[ -z $switch_to_branch ]] && exit 0  # handles repos with only a single branch
 
   if [[ ! -d "$switch_to_branch" ]]; then
     _error "Branch ${switch_to_branch} not found"
