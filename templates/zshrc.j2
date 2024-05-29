@@ -1,33 +1,34 @@
-PATH="$HOME/.local/bin:/opt/bin"
-PATH="$PATH:$HOME/.krew/bin"
-{% if 'Darwin' in ansible_facts['system'] %}
-PATH="$PATH:/opt/homebrew/opt/coreutils/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/gnu-tar/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/grep/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/gnu-sed/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/gsed/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/gawk/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/findutils/libexec/gnubin"
-PATH="$PATH:/opt/homebrew/opt/gnu-which/libexec/gnubin"
-PATH="$PATH:{{ zsh_homebrew_prefix }}/bin:{{ zsh_homebrew_prefix }}/sbin"
-{% else %}
-PATH="$PATH:/snap/bin"
+PATH="${HOME}/.local/bin:/opt/bin"
+PATH="${PATH}:${HOME}/.krew/bin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/bin:{{ zsh_homebrew_prefix }}/sbin"
+{% if ansible_facts['distribution'] == "MacOSX" %}
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/coreutils/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-tar/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/grep/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-sed/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gsed/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gawk/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/findutils/libexec/gnubin"
+PATH="${PATH}:{{ zsh_homebrew_prefix }}/opt/gnu-which/libexec/gnubin"
 {% endif %}
-PATH="$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+{% if ansible_facts['distribution'] == "Ubuntu" %}
+PATH="${PATH}:/snap/bin"
+{% endif %}
+PATH="${PATH}:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
-MANPATH="$HOME/.local/share/man"
-{% if 'MacOSX' in ansible_facts['distribution'] %}
-MANPATH="$MANPATH:/opt/homebrew/opt/coreutils/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/gnu-tar/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/grep/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/gnu-sed/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/gsed/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/gawk/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/findutils/libexec/gnuman"
-MANPATH="$MANPATH:/opt/homebrew/opt/gnu-which/libexec/gnuman"
-MANPATH="$MANPATH:{{ zsh_homebrew_prefix }}/share/man"
+MANPATH="${HOME}/.local/share/man"
+{% if ansible_facts['distribution'] == "MacOSX" %}
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/coreutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-tar/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/grep/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-sed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gsed/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gawk/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/findutils/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/opt/gnu-which/libexec/gnuman"
+MANPATH="${MANPATH}:{{ zsh_homebrew_prefix }}/share/man"
 {% endif %}
-MANPATH="$MANPATH:/usr/local/share/man:/usr/share/man"
+MANPATH="${MANPATH}:/usr/local/share/man:/usr/share/man"
 
 export PATH
 export MANPATH
@@ -60,7 +61,8 @@ export HOMEBREW_NO_INSTALL_UPGRADE=1
 export HOMEBREW_PREFIX={{ zsh_homebrew_prefix }}
 export HOMEBREW_REPOSITORY={{ zsh_homebrew_prefix }}/Homebrew
 export INFOPATH={{ zsh_homebrew_prefix }}/share/info:"${INFOPATH:-}"
-{% elif ansible_facts['distribution'] == "Fedora" %}
+{% endif %}
+{% if ansible_facts['distribution'] == "Fedora" %}
 export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
 {% endif %}
 
@@ -173,6 +175,7 @@ source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
 for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
+
 source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
 
 
