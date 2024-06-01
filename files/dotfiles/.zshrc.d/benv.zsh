@@ -1,72 +1,19 @@
-venv_get_project_dir() {
-  local git_toplevel md5 venv_project; venv_project="$(pwd)"
-  git_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)" && venv_project="$git_toplevel"
-  md5="$(md5sum <<< "$venv_project" | awk '{print $1}')"
-  print "${HOME}/.local/share/venvs/${md5}"
-}
+#
+# Wrappers around `virtualenv` to keep venvs centralized
+# Author: Brad Frank
+# Date: June 2024
+# Tested: zsh 5.9 (arm-apple-darwin23.0.0)
+# Requires: virtualenv, git, fzf, md5sum
+#
 
 
-venv_msg() {
-  local -r base03="%F{234}" cyan="%F{37}" yellow="%F{136}" blue="%F{33}" reset="%f"
-  local msg venv project; msg="$1" venv="$2" project="$3"
-  venv="$(dirname "$venv")/$(basename "$venv" | cut -b 1-4)…"
-  print -P \
-    "${base03}==>${yellow} ${msg}${reset} -> ${cyan}${venv/$HOME/~}${reset} :: ${blue}${project/$HOME/~}"
-}
+## ==============================================================================================
+## Usage functions
+## ----------------------------------------------------------------------------------------------
 
-
-venv_activate() {
-  [[ -z $VIRTUAL_ENV_PROJECT ]] && export "$(venv_get_project_dir)"
-  [[ ! -d "$VIRTUAL_ENV_PROJECT" ]] && venv_create "$@"
-  venv_msg "activating" "$VIRTUAL_ENV_PROJECT"
-  source "${VIRTUAL_ENV_PROJECT}/venv/bin/activate"
-}
-
-
-venv_create() {
-  [[ -z $VIRTUAL_ENV_PROJECT ]] && export "$(venv_get_project_dir)"
-  if [[ ! -e "$VIRTUAL_ENV_PROJECT" ]]; then
-    mkdir --parents "${VIRTUAL_ENV_PROJECT}/venv"
-    pushd "$VIRTUAL_ENV_PROJECT" > /dev/null || return 1
-    ln -s "$(dirs -lp | tail -n1)" project
-    popd > /dev/null || return 1
-    venv_msg "creating" "$VIRTUAL_ENV_PROJECT"
-    virtualenv --quiet "${VIRTUAL_ENV_PROJECT}/venv" "$@"
-  fi
-}
-
-
-venv_sync() {
-  local requirements
-  [[ -z $VIRTUAL_ENV ]] && venv_activate "$@"
-  requirements="$(find . -maxdepth 2 -type f -name 'requirements.txt' -print -quit)"
-  venv_msg "syncing" "$VIRTUAL_ENV_PROJECT"
-  [[ -z $requirements ]] && return 0
-  pip install -r "$requirements" > /dev/null
-}
-
-
-venv_cleanup() {
-  local project
-  for project in "$HOME"/.local/share/venvs/*; do
-    if [[ ! -L "${project}/project" || ! -d "$(realpath -P "${project}/project")" ]]; then
-      venv_msg "removing" "${project}" "(missing project)"
-      rm -rf "$project"
-    fi
-  done
-}
-
-
-venv_info() {
-  local venv_dir
-  venv_dir="$(venv_get_project_dir)"
-  [[ ! -d "$venv_dir" ]] && return 1
-  venv_msg "virtualenv" "$VIRTUAL_ENV_PROJECT" "$(realpath -P "${VIRTUAL_ENV_PROJECT}/project")"
-}
-
-
-venv_help() {
+benv_usage() {
   local -A options
+
   options=(
     ['activate|a8']="Activate the virtualenv for the current directory"
     ['deactivate|da8']="Deactivate the virtualenv"
@@ -75,27 +22,145 @@ venv_help() {
     ['info']=""
     ['help']="Show this help message"
   )
+
   for option desc in "${(@kv)options}"; do
     print "  ${option};${desc}"
   done | column -ts ';'
 }
 
 
-venv() {
-  local subcmd; subcmd="$1"
-  [[ "$#" -ge 1 ]] && shift
-  case "$subcmd" in
-    a8|activate) venv_activate "$@" ;;
-    da8|deactivate) deactivate ;;
-    sync|update) venv_sync "$@" ;;
-    clean|cleanup) venv_cleanup ;;
-    info) venv_info ;;
-    *) venv_help ;;
-  esac
+## ==============================================================================================
+## Helper functions
+## ----------------------------------------------------------------------------------------------
+
+alias a8='benv_activate'
+alias da8='deactivate'
+alias envin='benv_sync'
+alias envout='deactivate'
+
+
+benv_get_venv_dir() {
+  local git_toplevel md5 benv_project; benv_project="$(pwd)"
+  git_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)" && benv_project="$git_toplevel"
+  md5="$(md5sum <<< "$benv_project" | awk '{print $1}')"
+  print "${HOME}/.local/share/venvs/${md5}"
 }
 
 
-alias a8='venv_activate'
-alias da8='deactivate'
-alias envin='venv_sync'
-alias envout='deactivate'
+benv_get_project_dir() {
+  realpath -P "${1:-$VIRTUAL_ENV_PROJECT}/project"
+}
+
+
+benv_get_all_venvs() {
+  find "${HOME}/.local/share/venvs/" -maxdepth 1 -mindepth 1 -type d | sort
+}
+
+
+benv_msg() {
+  local -A output
+  local -r base03="%F{234}" cyan="%F{37}" yellow="%F{136}" blue="%F{33}" reset="%f"
+  local msg venv project; msg="$1" venv="$2" project="$3"
+
+  venv="$(dirname "$venv")/$(basename "$venv" | cut -b 1-4)…"
+  output[prefix]="${base03}==>${yellow} ${msg}${reset}"
+  output[venv]="${cyan}${venv/$HOME/~}${reset}"
+  output[project]="${blue}${project/$HOME/~}${reset}"
+
+  print -P "${output[prefix]} -> ${output[venv]} :: ${output[project]}"
+}
+
+
+## ==============================================================================================
+## Feature functions
+## ----------------------------------------------------------------------------------------------
+
+benv_activate() {
+  [[ -z $VIRTUAL_ENV_PROJECT ]] && export "$(benv_get_venv_dir)"
+  [[ ! -d "$VIRTUAL_ENV_PROJECT" ]] && benv_create "$@"
+  benv_msg "activating" "$VIRTUAL_ENV_PROJECT"
+  source "${VIRTUAL_ENV_PROJECT}/venv/bin/activate"
+}
+
+
+benv_create() {
+  [[ -z $VIRTUAL_ENV_PROJECT ]] && export "$(benv_get_venv_dir)"
+  if [[ ! -e "$VIRTUAL_ENV_PROJECT" ]]; then
+    mkdir --parents "${VIRTUAL_ENV_PROJECT}/venv"
+    pushd "$VIRTUAL_ENV_PROJECT" > /dev/null || return 1
+    ln -s "$(dirs -lp | tail -n1)" project
+    popd > /dev/null || return 1
+    benv_msg "creating" "$VIRTUAL_ENV_PROJECT"
+    virtualenv --quiet "${VIRTUAL_ENV_PROJECT}/venv" "$@"
+  fi
+}
+
+
+benv_sync() {
+  local requirements
+  [[ -z $VIRTUAL_ENV ]] && benv_activate "$@"
+  requirements="$(find . -maxdepth 2 -type f -name 'requirements.txt' -print -quit)"
+  benv_msg "syncing" "$VIRTUAL_ENV_PROJECT"
+  [[ -z $requirements ]] && return 0
+  pip install -r "$requirements" > /dev/null
+}
+
+
+benv_cleanup() {
+  local project
+  while read -r project; do
+    if [[ ! -L "${project}/project" || ! -d "$(realpath -P "${project}/project")" ]]; then
+      benv_msg "removing" "${project}" "(missing project)"
+      rm -rf "$project"
+    fi
+  done <<< "$(benv_get_all_venvs)"
+}
+
+
+benv_info() {
+  local benv_dir
+  benv_dir="$(benv_get_venv_dir)"
+  [[ ! -d "$benv_dir" ]] && { print "No virtualenv for this project." >&2; return 1; }
+  benv_msg "virtualenv" "$VIRTUAL_ENV_PROJECT" "$(benv_get_project_dir)"
+}
+
+
+benv_list() {
+  local project
+  while read -r project; do
+    [[ ! -L "${project}/project" ]] && continue
+    benv_msg "virtualenv" "${project}" "$(benv_get_project_dir "$project")"
+  done <<< "$(benv_get_all_venvs)"
+}
+
+
+benv_remove() {
+  local project
+  project="$(benv_get_all_venvs \
+    | grep "$1" \
+    | fzf-tmux -p --delimiter / --with-nth -1 --preview='realpath -P {}/project' --preview-window 'down'
+  )"
+  [[ -z $project ]] && return 0
+  benv_msg "removing" "${project}" "$(benv_get_project_dir "$project")"
+  rm -rf "$project"
+}
+
+
+## ==============================================================================================
+## Main program
+## ----------------------------------------------------------------------------------------------
+
+benv() {
+  local subcmd; subcmd="$1"
+  [[ "$#" -ge 1 ]] && shift
+  case "$subcmd" in
+    a8|activate) benv_activate "$@" ;;
+    da8|deactivate) deactivate ;;
+    sync|update) benv_sync "$@" ;;
+    clean|cleanup) benv_cleanup ;;
+    info|show) benv_info ;;
+    list|ls) benv_list ;;
+    delete|remove|rm) benv_remove "$@" ;;
+    *) benv_usage ;;
+  esac
+}
