@@ -104,7 +104,10 @@ _worktree_list() {
     | grep --invert-match "$GIT_TOPLEVEL_PATH" \
     | grep "$1" \
     | awk '{print $2}' \
-    | fzf-tmux --preview='git log --oneline --decorate --color {-1} --' --delimiter / --with-nth -1
+    | fzf-tmux -p \
+      --multi \
+      --preview='git log --oneline --decorate --color {-1} --' \
+      --delimiter / --with-nth -1
 }
 
 
@@ -300,7 +303,7 @@ bit_stash() {
 
 
 bit_switch() {
-  local OPTIND switch_to_branch
+  local OPTIND selected_branches
 
   while getopts ':hn:' flag; do
     case "$flag" in
@@ -313,15 +316,13 @@ bit_switch() {
 
   _in_git_repo || exit 1
 
-  switch_to_branch="$(_worktree_list "$branch_name")"
-  [[ -z $switch_to_branch ]] && exit 0  # handles repos with only a single branch
+  selected_branches="$(_worktree_list "$branch_name")"
+  [[ -z $selected_branches ]] && exit 0  # handles repos with only a single branch
 
-  if [[ ! -d "$switch_to_branch" ]]; then
-    _error "Branch ${switch_to_branch} not found"
-    exit 1
-  fi
-
-  _open_in_tmux "$switch_to_branch"
+  while read -r branch; do
+    [[ ! -d "$branch" ]] && { _error "Branch ${branch} not found"; continue; }
+    _open_in_tmux "$branch"
+  done <<< "$selected_branches"
 }
 
 
