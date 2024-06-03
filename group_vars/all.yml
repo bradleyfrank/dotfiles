@@ -262,9 +262,6 @@ zsh_completions:
     command: "curl -L https://raw.githubusercontent.com/xwmx/nb/master/etc/nb-completion.zsh"
 
 zsh_plugins:
-  - name: "zpy"
-    repo: "https://github.com/AndydeCleyre/zpy.git"
-    source: "zpy.plugin.zsh"
   - name: "fzf-tab"
     repo: "https://github.com/Aloxaf/fzf-tab"
     source: "fzf-tab.plugin.zsh"
