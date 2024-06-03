@@ -16,13 +16,16 @@ benv_usage() {
 
   options=(
     ['activate|a8']="Activate the virtualenv for the current directory"
-    ['deactivate|da8']="Deactivate the virtualenv"
-    ['sync|update']=""
-    ['clean|cleanup']=""
-    ['info']=""
+    ['deactivate|da8|envout']="Deactivate the virtualenv"
+    ['sync|update|envin']="Activate and install packages from 'requirements.txt'"
+    ['clean|cleanup']="Remove broken/abandonded virtualenvs"
+    ['info|show']="Show path to virtualenv"
+    ['list|ls']="List all virtualenvs"
+    ['delete|remove|rm']="Remove one or more virtualenvs"
     ['help']="Show this help message"
   )
 
+  print "benv: Manage virtualenvs for Python"
   for option desc in "${(@kv)options}"; do
     print "  ${option};${desc}"
   done | column -ts ';'
@@ -62,7 +65,9 @@ benv_msg() {
   local -r base03="%F{234}" cyan="%F{37}" yellow="%F{136}" blue="%F{33}" reset="%f"
   local msg venv project; msg="$1" venv="$2" project="$3"
 
+  [[ -z $project ]] && project="$(benv_get_project_dir)"
   venv="$(dirname "$venv")/$(basename "$venv" | cut -b 1-4)…"
+
   output[prefix]="${base03}==>${yellow} ${msg}${reset}"
   output[venv]="${cyan}${venv/$HOME/~}${reset}"
   output[project]="${blue}${project/$HOME/~}${reset}"
@@ -76,7 +81,7 @@ benv_msg() {
 ## ----------------------------------------------------------------------------------------------
 
 benv_activate() {
-  [[ -z $VIRTUAL_ENV_PROJECT ]] && export "$(benv_get_venv_dir)"
+  [[ -z $VIRTUAL_ENV_PROJECT ]] && export VIRTUAL_ENV_PROJECT="$(benv_get_venv_dir)"
   [[ ! -d "$VIRTUAL_ENV_PROJECT" ]] && benv_create "$@"
   benv_msg "activating" "$VIRTUAL_ENV_PROJECT"
   source "${VIRTUAL_ENV_PROJECT}/venv/bin/activate"
@@ -84,7 +89,7 @@ benv_activate() {
 
 
 benv_create() {
-  [[ -z $VIRTUAL_ENV_PROJECT ]] && export "$(benv_get_venv_dir)"
+  [[ -z $VIRTUAL_ENV_PROJECT ]] && export VIRTUAL_ENV_PROJECT="$(benv_get_venv_dir)"
   if [[ ! -e "$VIRTUAL_ENV_PROJECT" ]]; then
     mkdir --parents "${VIRTUAL_ENV_PROJECT}/venv"
     pushd "$VIRTUAL_ENV_PROJECT" > /dev/null || return 1
@@ -121,7 +126,7 @@ benv_info() {
   local benv_dir
   benv_dir="$(benv_get_venv_dir)"
   [[ ! -d "$benv_dir" ]] && { print "No virtualenv for this project." >&2; return 1; }
-  benv_msg "virtualenv" "$VIRTUAL_ENV_PROJECT" "$(benv_get_project_dir)"
+  benv_msg "virtualenv" "$VIRTUAL_ENV_PROJECT"
 }
 
 
@@ -135,14 +140,18 @@ benv_list() {
 
 
 benv_remove() {
-  local project
-  project="$(benv_get_all_venvs \
+  local projects project
+  projects="$(benv_get_all_venvs \
     | grep "$1" \
-    | fzf-tmux -p --delimiter / --with-nth -1 --preview='realpath -P {}/project' --preview-window 'down'
+    | fzf-tmux -p --multi \
+      --delimiter / --with-nth -1 \
+      --preview='realpath -P {}/project' --preview-window 'down'
   )"
-  [[ -z $project ]] && return 0
-  benv_msg "removing" "${project}" "$(benv_get_project_dir "$project")"
-  rm -rf "$project"
+  [[ -z $projects ]] && return 0
+  while read -r project; do
+    benv_msg "removing" "${project}" "$(benv_get_project_dir "$project")"
+    rm -rf "$project"
+  done <<< "$projects"
 }
 
 
