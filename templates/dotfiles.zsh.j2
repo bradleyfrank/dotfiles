@@ -55,16 +55,9 @@ dotfiles() {
     git stash pop
   fi
 
-  if ! zpy venvs_path >/dev/null 2>&1
-  then
-    zpy envin
-  elif [[ -n $pull || -n $update ]]
-  then
-    zpy activate
-    zpy pipup
-  else
-    zpy activate
-  fi
+
+  source "${HOME}/.zshrc.d/benv.zsh"
+  benv activate
 
   if [[ -n $debug || -n $verbose ]]
   then
