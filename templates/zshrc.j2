@@ -37,7 +37,7 @@ export VISUAL=vim
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DOCKER_CLI_HINTS=false
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
-export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:33,hl+:33:bold --info=inline --select-1 --exit-0 --reverse"
+export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinner:33,fg:240,fg+:241,bg+:255,hl:33,hl+:33:bold --info=inline --select-1 --exit-0 --reverse --height=~100%"
 export GH_PAGER=glow
 export KEYTIMEOUT=1
 export LESS="-R --mouse"
@@ -121,9 +121,10 @@ random() { pwgen -1Anr "$(echo {a..z})" "${1:-5}"; }
 zvm_after_init() { bindkey -M viins '^R' atuin-search; }  # rebind after zsh-vi-mode loads
 
 
+zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' default-color $'\033[38;5;240m'
-zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1Fl --group-directories-first $realpath'
+zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold' --border='rounded' --height='~100%'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -Alo --group-directories-first --color=always --smart-group --no-permissions --no-filesize --time-style=relative $realpath'
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
 zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
