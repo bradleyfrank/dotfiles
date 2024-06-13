@@ -37,9 +37,9 @@ benv_usage() {
 ## ----------------------------------------------------------------------------------------------
 
 alias a8='benv_activate'
-alias da8='deactivate'
+alias da8='benv_deactivate'
 alias envin='benv_sync'
-alias envout='deactivate'
+alias envout='benv_deactivate'
 
 export VENVS_HOME="${HOME}/.local/share/venvs"
 
@@ -81,6 +81,12 @@ benv_msg() {
 ## ==============================================================================================
 ## Feature functions
 ## ----------------------------------------------------------------------------------------------
+
+benv_deactivate() {
+  unset VIRTUAL_ENV_PROJECT
+  deactivate
+}
+
 
 benv_activate() {
   [[ -z $VIRTUAL_ENV_PROJECT ]] && export VIRTUAL_ENV_PROJECT="$(benv_get_venv_dir)"
@@ -174,7 +180,7 @@ benv() {
   [[ "$#" -ge 1 ]] && shift
   case "$subcmd" in
     a8|activate) benv_activate "$@" ;;
-    da8|deactivate) deactivate ;;
+    da8|deactivate) benv_deactivate ;;
     sync|update) benv_sync "$@" ;;
     clean|cleanup) benv_cleanup ;;
     info|show) benv_info ;;
