@@ -385,6 +385,36 @@ system_macos_defaults:
     type: bool
     value: 'true'
 
+  - name: "[Maccy] Set ignored apps"
+    domain: org.p0deje.Maccy
+    key: ignoredApps
+    type: array
+    value: '["com.1password.1password"]'
+
+  - name: "[Maccy] Set menubar icon"
+    domain: org.p0deje.Maccy
+    key: menuIcon
+    type: string
+    value: 'scissors'
+
+  - name: "[Maccy] Set popup position"
+    domain: org.p0deje.Maccy
+    key: popupPosition
+    type: string
+    value: 'statusItem'
+
+  - name: "[Maccy] Set max menu items"
+    domain: org.p0deje.Maccy
+    key: maxMenuItems
+    type: int
+    value: '25'
+
+  - name: "[Maccy] Remove formatting from items"
+    domain: org.p0deje.Maccy
+    key: removeFormattingByDefault
+    type: bool
+    value: 'true'
+
 pkgs_homebrew_taps:
   - homebrew/bundle
   - noahgorstein/tap  # jqp
