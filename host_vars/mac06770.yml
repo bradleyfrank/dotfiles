@@ -14,19 +14,19 @@ git_clone_repos:
   - url: "git@github.com:bradleyfrank/cliday.git"
 
 pkgs_homebrew_casks:
-  - 1password
-  - 1password-cli
-  - alacritty
-  - appcleaner
-  - google-cloud-sdk
-  - itsycal
-  - keepingyouawake
-  - maccy
-  - multipass
-  - rectangle
-  - utm
-  - vlc
-  - zoom
+  - "1password"
+  - "1password-cli"
+  - "alacritty"
+  - "appcleaner"
+  - "google-cloud-sdk"
+  - "itsycal"
+  - "keepingyouawake"
+  - "maccy"
+  - "multipass"
+  - "rectangle"
+  - "utm"
+  - "vlc"
+  - "zoom"
 
 pkgs_mas_apps: []
 
