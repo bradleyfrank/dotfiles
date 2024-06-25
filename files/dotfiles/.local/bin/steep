@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 set -o errexit
 
@@ -6,21 +6,19 @@ set -o errexit
 # Updates various package managers and components.
 # Author: Brad Frank
 # Date: Sept 2021; Jan 2024
-# Tested: GNU bash, version 5.1.8(1)-release (x86_64-apple-darwin20.3.0)
+# Tested: zsh 5.9 (arm-apple-darwin23.0.0)
 #
-
-bmux save
 
 if which apt-get >/dev/null 2>&1; then
   sudo apt-get clean
-  sudo apt-get update
+  sudo apt-get update -y
   sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade
 fi
 
 if which dnf >/dev/null 2>&1; then
   sudo dnf clean all
   sudo dnf makecache
-  sudo dnf upgrade
+  sudo dnf upgrade -y
 fi
 
 if [[ -n $HOMEBREW_PREFIX ]]; then
@@ -44,15 +42,16 @@ if kubectl krew version >/dev/null 2>&1; then
   kubectl krew upgrade
 fi
 
-if [[ -d "${HOME}/.local/share/zpy" ]]; then
-  source ~/.local/share/zpy/zpy.plugin.zsh
-  zpy prunevenvs -y
-  while read -r venv; do
-    [[ ! -e "$(realpath "$venv")" ]] && rm -rf "$venv"
-  done < <(fd --type l --exact-depth 2 . "${HOME}/.local/share/venvs")
+if which multipass >/dev/null 2>&1; then
+  multipass purge
 fi
 
+source ~/.zshrc.d/benv.zsh
+benv cleanup
+atuin sync
+bmux save
+
 if [[ "$(uname -o)" == "Darwin" ]]; then
-  bmux save
-  sudo softwareupdate -ia
+  sudo softwareupdate --install --all --agree-to-license --verbose
+  sudo softwareupdate --list 2>&1 | sed -En "s|\s+(Title.*)$|\1|p"
 fi
