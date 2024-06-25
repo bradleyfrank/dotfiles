@@ -70,6 +70,8 @@ pkgs_binaries:
   - name: "extract"
     url: "https://raw.githubusercontent.com/xvoland/Extract/master/extract.sh"
 
+pkgs_install_flatpak: "{{ system_has_desktop }}"
+
 pkgs_flatpak_remotes:
   - name: "flathub"
     url: "https://flathub.org/repo/flathub.flatpakrepo"
