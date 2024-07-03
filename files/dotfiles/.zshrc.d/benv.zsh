@@ -3,7 +3,7 @@
 # Author: Brad Frank
 # Date: June 2024
 # Tested: zsh 5.9 (arm-apple-darwin23.0.0)
-# Requires: virtualenv, git, fzf, md5sum
+# Requires: virtualenv, git, fzf, md5sum, trurl
 #
 
 
@@ -36,12 +36,12 @@ benv_usage() {
 ## Helper functions
 ## ----------------------------------------------------------------------------------------------
 
-alias a8='benv_activate'
-alias da8='benv_deactivate'
-alias envin='benv_sync'
-alias envout='benv_deactivate'
-
 export VENVS_HOME="${HOME}/.local/share/venvs"
+
+a8() { benv_activate; }
+da8() { benv_deactivate; }
+envin() { benv_activate; benv_sync; }
+envout() { benv_deactivate; }
 
 
 benv_get_venv_dir() {
@@ -78,6 +78,25 @@ benv_msg() {
 }
 
 
+benv_gar_auth() {
+  local domain backends
+
+  domain="$(python3 -m pip config get "global.index-url" | trurl --get "{host}" --url-file -)"
+  grep --quiet "pkg.dev" <<< "$domain" || return 0
+
+  benv_msg "authenticating" "$VIRTUAL_ENV_PROJECT"
+  pip install keyring keyrings.google-artifactregistry-auth \
+    --index-url https://pypi.org/simple \
+    --disable-pip-version-check \
+    --require-virtualenv \
+    --quiet
+
+  backends="$(keyring --list-backends \
+    | grep --extended-regex --count '(ChainerBackend|GooglePythonAuth)')"
+  case "$backends" in (2) return 0 ;; (*) return 1 ;; esac
+}
+
+
 ## ==============================================================================================
 ## Feature functions
 ## ----------------------------------------------------------------------------------------------
@@ -93,6 +112,7 @@ benv_activate() {
   [[ ! -d "$VIRTUAL_ENV_PROJECT" ]] && benv_create "$@"
   benv_msg "activating" "$VIRTUAL_ENV_PROJECT"
   source "${VIRTUAL_ENV_PROJECT}/venv/bin/activate"
+  benv_gar_auth
 }
 
 
@@ -111,7 +131,7 @@ benv_create() {
 
 benv_sync() {
   local requirements
-  [[ -z $VIRTUAL_ENV ]] && benv_activate "$@"
+  [[ -z $VIRTUAL_ENV ]] && return 1
   requirements="$(find . -maxdepth 2 -type f -name 'requirements.txt' -print -quit)"
   benv_msg "syncing" "$VIRTUAL_ENV_PROJECT"
   [[ -z $requirements ]] && return 0
