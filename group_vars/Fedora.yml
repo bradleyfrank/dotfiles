@@ -9,7 +9,7 @@ system_linux_dconf_distro:
       enabled-extensions: "['GPaste@gnome-shell-extensions.gnome.org','background-logo@fedorahosted.org']"
       favorite-apps: "['org.gnome.Terminal.desktop','firefox.desktop','org.gnome.Nautilus.desktop','1password.desktop','org.gnome.gedit.desktop','signal-desktop.desktop']"
 
-dnf_packages:
+pkgs_dnf_packages:
   cli:
     - abcde
     - bash-completion
@@ -151,7 +151,7 @@ pkgs_homebrew_formulas:
   - qsv
   - yq
 
-repos:
+pkgs_dnf_repos:
   - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
     description: 1Password GUI
     baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
