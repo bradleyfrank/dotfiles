@@ -55,7 +55,6 @@ pkgs_apt_repos:
 
 pkgs_apt_packages:
   cli:
-    - abcde
     - apt-file
     - bash-completion
     - bat
@@ -106,12 +105,10 @@ pkgs_apt_packages:
     - tlp
     - tmux
     - toilet
-    - trash-cli
     - tree
     - vim
     - wget
     - xdelta
-    - xsel
     - xz-utils
     - yt-dlp
     - zsh
@@ -124,7 +121,6 @@ pkgs_apt_packages:
     - audacious
     - calibre
     - drawing
-    - flatpak
     - fonts-noto-color-emoji
     - ghostwriter
     - google-chrome-stable
@@ -178,7 +174,6 @@ pkgs_homebrew_formulas:
   - eza
   - fastfetch
   - freeze
-  - glow
   - glow
   - lazygit
   - nb

@@ -94,7 +94,6 @@ dnf_packages:
     - audacious
     - calibre
     - distrobox
-    - flatpak
     - fragments
     - ghostwriter
     - google-chrome-stable  # google-chrome
