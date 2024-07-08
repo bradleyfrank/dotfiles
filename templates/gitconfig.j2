@@ -50,7 +50,7 @@
   showUntrackedfiles = all
 [user]
   name = {{ ansible_facts['user_gecos'] }}
-  email = {{ email_address }}
+  email = {{ git_email_address }}
   signingkey = {{ key_contents[0] }} {{ key_contents[1] }}
 [include]
   path = ~/.gitconfig.d/config
