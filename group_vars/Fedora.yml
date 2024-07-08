@@ -13,7 +13,6 @@ pkgs_dnf_packages:
   cli:
     - abcde
     - bash-completion
-    - bandwhich  # atim
     - bat
     - bcal
     - borgbackup
@@ -143,6 +142,7 @@ pkgs_homebrew_taps:
 
 pkgs_homebrew_formulas:
   - atuin
+  - bandwhich
   - csvlens
   - freeze
   - glow
