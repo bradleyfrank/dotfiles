@@ -11,12 +11,11 @@ system_linux_dconf_distro:
 
 pkgs_dnf_packages:
   cli:
-    - abcde
+    - atool
     - bash-completion
     - bat
     - bcal
     - borgbackup
-    - bottom  # atim
     - diceware
     - dictd
     - dnf-plugin-system-upgrade
@@ -77,7 +76,8 @@ pkgs_dnf_packages:
     - toilet
     - trash-cli
     - tree
-    - vagrant
+    - trurl
+    - virtualenv
     - vim
     - wget
     - xsel
@@ -125,7 +125,6 @@ pkgs_dnf_packages:
     - gnome-connections
     - gnome-extensions-app
     - gnome-games
-    - gnome-shell-extension-dash-to-dock
     - gnome-shell-extension-gpaste
     - gnome-tweaks
     - gnote
@@ -152,11 +151,6 @@ pkgs_homebrew_formulas:
   - yq
 
 pkgs_dnf_repos:
-  - name: 1password-gui  # Avoid name conflict with repo packaged with rpm: 1password.repo
-    description: 1Password GUI
-    baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
-    gpgkey: https://downloads.1password.com/linux/keys/1password.asc
-    cleanup: ["1password.repo"]
   - name: gh-cli
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm

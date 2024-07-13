@@ -372,6 +372,7 @@ pkgs_homebrew_taps:
 pkgs_homebrew_formulas:
   - "asciinema"
   - "atuin"
+  - "atool"
   - "bandwhich"
   - "bash"
   - "bash-completion@2"
@@ -473,8 +474,6 @@ pkgs_homebrew_casks:
   - "kindle"
   - "libreoffice"
   - "maccy"
-  - "microsoft-auto-update"
-  - "microsoft-office"
   - "multipass"
   - "mullvadvpn"
   - "musicbrainz-picard"
@@ -491,7 +490,6 @@ pkgs_homebrew_casks:
   - "transmit"
   - "utm"
   - "vlc"
-  - "waterfox"
   - "zoom"
 
 pkgs_mas_apps:
@@ -504,6 +502,3 @@ pkgs_mas_apps:
   - 1569813296  # 1Password Safari extension
   - 408981434   # iMovie
   - 425424353   # Unarchiver
-  - 462054704   # Microsoft Word
-  - 462058435   # Microsoft Excel
-  - 823766827   # OneDrive

@@ -38,6 +38,7 @@ pkgs_apt_repos:
 pkgs_apt_packages:
   cli:
     - apt-file
+    - atool
     - bash-completion
     - bat
     - bcal

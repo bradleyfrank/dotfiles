@@ -30,13 +30,6 @@ system_linux_dconf_distro:
         'org.signal.Signal.desktop']"
 
 pkgs_apt_repos:
-  - name: 1password
-    repo: >
-      deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
-      https://downloads.1password.com/linux/debian/amd64 stable main
-    key: https://onepassword.s3.amazonaws.com/linux/keys/1password.asc
-    keyring: /usr/share/keyrings/1password-archive-keyring.gpg
-
   - name: google-chrome
     repo: deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main
     key: https://dl.google.com/linux/linux_signing_key.pub
@@ -56,6 +49,7 @@ pkgs_apt_repos:
 pkgs_apt_packages:
   cli:
     - apt-file
+    - atool
     - bash-completion
     - bat
     - bcal
@@ -103,10 +97,11 @@ pkgs_apt_packages:
     - strace
     - tidy
     - tlp
-    - tmux
     - toilet
     - tree
+    - trurl
     - vim
+    - virtualenv
     - wget
     - xdelta
     - xz-utils

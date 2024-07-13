@@ -47,7 +47,7 @@ fonts_to_install:
 # -------------------------------------------------------------------------------------------- #
 
 git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
-git_repos_as_worktrees: true
+git_repos_as_worktrees: True
 git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
 git_repos:
   - url: "ssh://git@github.com/bradleyfrank/dotfiles.git"
@@ -67,8 +67,6 @@ git_repos:
 pkgs_binaries:
   - name: "cht"
     url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
-  - name: "extract"
-    url: "https://raw.githubusercontent.com/xvoland/Extract/master/extract.sh"
 
 pkgs_install_flatpak: "{{ system_has_desktop }}"
 
