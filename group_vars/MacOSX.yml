@@ -116,11 +116,6 @@ system_macos_defaults:
     key: "tilesize"
     type: "int"
     value: "43"
-  - name: "[Dock] Unpin all apps"
-    domain: "com.apple.dock"
-    key: "persistent-apps"
-    type: "array"
-    value: "[]"
 
   - name: "[Window Manager] Disable automatic Spaces rearranging"
     domain: "com.apple.dock"
