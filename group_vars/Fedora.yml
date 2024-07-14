@@ -9,7 +9,7 @@ system_linux_dconf_distro:
       enabled-extensions: "['GPaste@gnome-shell-extensions.gnome.org','background-logo@fedorahosted.org']"
       favorite-apps: "['org.gnome.Terminal.desktop','firefox.desktop','org.gnome.Nautilus.desktop','1password.desktop','org.gnome.gedit.desktop','signal-desktop.desktop']"
 
-pkgs_dnf_packages:
+packages_dnf_packages:
   cli:
     - atool
     - bash-completion
@@ -136,10 +136,10 @@ pkgs_dnf_packages:
     - mpv
     - transmission-gtk
 
-pkgs_homebrew_taps:
+packages_homebrew_taps:
   - charmbracelet/tap
 
-pkgs_homebrew_formulas:
+packages_homebrew_formulas:
   - atuin
   - bandwhich
   - csvlens
@@ -150,7 +150,7 @@ pkgs_homebrew_formulas:
   - qsv
   - yq
 
-pkgs_dnf_repos:
+packages_dnf_repos:
   - name: gh-cli
     description: packages for the GitHub CLI
     baseurl: https://cli.github.com/packages/rpm
@@ -163,7 +163,7 @@ pkgs_dnf_repos:
     description: negativo17 - Multimedia
     baseurl: https://negativo17.org/repos/multimedia/fedora-$releasever/$basearch
     gpgkey: https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-    includepkgs: ['*nvidia*']  # https://negativo17.org/nvidia-driver
+    includepackages: ['*nvidia*']  # https://negativo17.org/nvidia-driver
   - name: rpmfusion-free
     description: RPM Fusion for Fedora - Free
     metalink: https://mirrors.rpmfusion.org/metalink?repo=free-fedora-$releasever&arch=$basearch

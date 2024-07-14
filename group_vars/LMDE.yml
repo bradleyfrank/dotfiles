@@ -14,7 +14,7 @@ system_linux_dconf_distro:
     keys:
       show-welcome-page: "false"
 
-pkgs_apt_repos:
+packages_apt_repos:
   - name: "1password"
     repo: >
       deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg]
@@ -35,7 +35,7 @@ pkgs_apt_repos:
     key: "https://apt.fury.io/charmcli/gpg.key"
     keyring: "/usr/share/keyrings/charmcli.gpg"
 
-pkgs_apt_packages:
+packages_apt_packages:
   cli:
     - apt-file
     - atool
@@ -120,17 +120,17 @@ pkgs_apt_packages:
     - timeshift
     - torbrowser-launcher
     - vlc
-  x-cinnamon:
+  cinnamon:
     - celluloid
     - gpaste*
     - meld
     - mpv
     - transmission-gtk
 
-pkgs_homebrew_taps:
+packages_homebrew_taps:
   - charmbracelet/tap
 
-pkgs_homebrew_formulas:
+packages_homebrew_formulas:
   - atuin
   - csvlens
   - eza

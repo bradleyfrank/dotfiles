@@ -8,25 +8,25 @@ op_vault: "Personal"
 
 
 # ============================================================================================ #
-# role: dots
+# role: dotfiles
 # -------------------------------------------------------------------------------------------- #
 
-dots_folders:
+dotfiles_folders:
   - "Development/Projects"
   - "Development/Notes"
   - "Development/Scratch"
   - "Development/Logs"
   - "Development/Build"
 
-dots_post_processing:
+dotfiles_post_processing:
   - name: "Install `bat` themes"
     cmd: "{{ bat_exec }} cache --build"
 
-dots_templates:
+dotfiles_templates:
   - name: "atuin.zsh.j2"
     dest: "{{ zsh_rcd_dir }}"
   - name: "op-ssh.bash.j2"
-    dest: "{{ dots_local_bin }}"
+    dest: "{{ dotfiles_local_bin }}"
     rename: "op-ssh"
     mode: "0755"
   - name: "dotfiles.zsh.j2"
@@ -61,22 +61,22 @@ git_repos:
 
 
 # ============================================================================================ #
-# role: pkgs
+# role: packages
 # -------------------------------------------------------------------------------------------- #
 
-pkgs_binaries:
+packages_binaries:
   - name: "cht"
     url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
 
-pkgs_install_flatpak: "{{ system_has_desktop }}"
+packages_install_flatpak: "{{ system_has_desktop }}"
 
-pkgs_flatpak_remotes:
+packages_flatpak_remotes:
   - name: "flathub"
     url: "https://flathub.org/repo/flathub.flatpakrepo"
   - name: "elementary"
     url: "https://flatpak.elementary.io/repo.flatpakrepo"
 
-pkgs_flatpak_packages:
+packages_flatpak_packages:
   flathub:
     - "app.drey.EarTag"
     - "app.drey.Warp"

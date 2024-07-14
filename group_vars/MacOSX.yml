@@ -364,12 +364,12 @@ system_macos_defaults:
     type: "bool"
     value: "true"
 
-pkgs_homebrew_taps:
+packages_homebrew_taps:
   - "homebrew/bundle"
   - "noahgorstein/tap"  # jqp
   - "charmbracelet/tap"  # glow, freeze
 
-pkgs_homebrew_formulas:
+packages_homebrew_formulas:
   - "asciinema"
   - "atuin"
   - "atool"
@@ -457,7 +457,7 @@ pkgs_homebrew_formulas:
   - "zsh-autosuggestions"
   - "zsh-syntax-highlighting"
 
-pkgs_homebrew_casks:
+packages_homebrew_casks:
   - "1password"
   - "1password-cli"
   - "alacritty"
@@ -492,7 +492,7 @@ pkgs_homebrew_casks:
   - "vlc"
   - "zoom"
 
-pkgs_mas_apps:
+packages_mas_apps:
   - 1303222628  # Paprika Recipe Manager 3
   - 1320666476  # Wipr
   - 1516894961  # Codye
