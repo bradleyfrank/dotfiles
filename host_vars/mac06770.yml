@@ -1,9 +1,25 @@
 ---
 
-email_address: "bfrank@oreilly.com"
-op_vault: "Employee"
+host_email_address: "bfrank@oreilly.com"
+onepassword_vault: "Employee"
 
-icons_app_paths:
+dock_macos_items:
+  - item: "/Applications/Cisco/Cisco%20Secure%20Client.app"
+  - item: "/Applications/Alacritty.app"
+  - item: "/Applications/Slack.app"
+  - item: "/Applications/NetNewsWire.app"
+  - item: "SPACER"
+  - item: "/Applications/Google%20Chrome.app"
+  - item: "/Users/bfrank/Applications/Chrome%20Apps.localized/Gmail.app"
+  - item: "/Users/bfrank/Applications/Chrome%20Apps.localized/Google%20Calendar.app"
+  - item: "/Users/bfrank/Applications/Chrome%20Apps.localized/Google%20Drive.app"
+  - item: "/Users/bfrank/Applications/Chrome%20Apps.localized/JIRA.app"
+  - item: "/Users/bfrank/Applications/Chrome%20Apps.localized/Google%20Meet.app"
+  - item: "/Applications/1Password.app"
+  - item: "/Applications"
+    section: "others"
+
+dock_app_paths:
   - "/Applications"
   - "{{ ansible_facts['user_dir'] }}/Applications/Chrome Apps.localized"
 
@@ -13,7 +29,7 @@ git_clone_repos:
   - url: "git@github.com:bradleyfrank/util-containers.git"
   - url: "git@github.com:bradleyfrank/cliday.git"
 
-pkgs_homebrew_casks:
+packages_homebrew_casks:
   - "1password"
   - "1password-cli"
   - "alacritty"
@@ -28,7 +44,7 @@ pkgs_homebrew_casks:
   - "vlc"
   - "zoom"
 
-pkgs_mas_apps: []
+packages_mas_apps: []
 
 zsh_completions:
   - name: "kubectl"
