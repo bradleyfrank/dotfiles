@@ -32,8 +32,8 @@ MANPATH="${MANPATH}:/usr/local/share/man:/usr/share/man"
 
 export PATH
 export MANPATH
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DOCKER_CLI_HINTS=false
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
@@ -84,6 +84,7 @@ alias bat='batcat'
 unalias run-help
 
 {% endif %}
+alias bess='{{ "batcat" if ansible_facts['distribution'] == "Ubuntu" else "bat" }}'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dirdiff='git diff --no-index'
@@ -93,14 +94,15 @@ alias glances='glances --theme-white'
 alias glow='glow --config ~/.config/glow.yml'
 alias help='run-help'  # help topics path set via $HELPDIR
 alias isodate='date --iso-8601=seconds'
-alias las='{{ "batcat" if ansible_facts['distribution'] == "Ubuntu" else "bat" }}'
 alias mkpasswd='pwgen -1y'
 alias mp='multipass'
-alias mux='tmux new-session -A -s main -c ~/Development'
+alias mux='tmux new-session -A -s main -c ~/Downloads'
 alias psync='rsync -a --info=progress2'
 alias pubip='dig myip.opendns.com @resolver1.opendns.com'
 alias scp='rsync -va'
 alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
+alias view='nvim -R'
+alias vimdiff='nvim -d'
 {% if ansible_facts['system'] == "Linux" %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
