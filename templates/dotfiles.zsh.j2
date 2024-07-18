@@ -68,7 +68,7 @@ dotfiles() {
 
   ANSIBLE_STDOUT_CALLBACK="$callback" \
   ansible-playbook playbooks/site.yml \
-    --vault-password-file =(op read op://{{ op_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) \
+    --vault-password-file =(op read op://{{ onepassword_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) \
     --tags "${tags[2]:-all}" \
     --skip-tags "${skip_tags[2]:-become,homebrew}" \
     ${verbose:+-vvv}
