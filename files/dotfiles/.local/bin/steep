@@ -39,6 +39,8 @@ linux_update() {
 			;;
 	esac
 	[[ -n $HOMEBREW_PREFIX ]] && homebrew_update
+	pkg_installed flatpak && flatpak update
+	pkg_installed fwupd && { sudo fwupdmgr refresh; sudo fwupdmgr update; }
 }
 
 
@@ -53,6 +55,7 @@ homebrew_update() {
 
 
 INSTALLED_PACKAGES="$(mktemp)"
+
 bmux save
 
 case "$(uname -s)" in
@@ -66,5 +69,7 @@ pkg_installed google-cloud-sdk && gcloud components update --quiet
 pkg_installed krew && { kubectl krew update; kubectl krew upgrade; }
 pkg_installed multipass && multipass purge
 pkg_installed atuin && atuin sync
+
+[[ -n $RESTART_NEEDED ]] && toilet --font future --filter border --gay RESTART NEEDED
 
 rm -rf "$INSTALLED_PACKAGES"
