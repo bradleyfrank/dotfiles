@@ -16,8 +16,8 @@ dotfiles() {
     echo "dotfiles [-h] | [-b BRANCH] [-t TAGS] [-s SKIP-TAGS] [-p] [-u] [-d] [-v]"
     echo "  -h|--help       Show help"
     echo "  -b|--branch     Branch of Ansible repo to run playbook from"
-    echo "  -t|--tags       Playbook tags to run"
-    echo "  -s|--skip-tags  Playbook tags to skip"
+    echo "  -t|--tags       Playbook tags to run (default: dotfiles)"
+    echo "  -s|--skip-tags  Playbook tags to skip (default: install,become)"
     echo "  -p|--pull       Do a 'git pull' first"
     echo "  -u|--update     Update venv before running"
     echo "  -d|--debug      Switch Ansible output to default"
@@ -69,8 +69,8 @@ dotfiles() {
   ANSIBLE_STDOUT_CALLBACK="$callback" \
   ansible-playbook playbooks/site.yml \
     --vault-password-file =(op read op://{{ onepassword_vault }}/{{ ansible_facts['hostname'] }}/ansible-vault) \
-    --tags "${tags[2]:-all}" \
-    --skip-tags "${skip_tags[2]:-become,homebrew}" \
+    --tags "${tags[2]:-dotfiles}" \
+    --skip-tags "${skip_tags[2]:-become,install}" \
     ${verbose:+-vvv}
 
   deactivate
