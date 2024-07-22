@@ -9,49 +9,62 @@ set -o errexit
 # Tested: zsh 5.9 (arm-apple-darwin23.0.0)
 #
 
-if which apt-get >/dev/null 2>&1; then
-  sudo apt-get clean
-  sudo apt-get update -y
-  sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade
-fi
+pkg_installed() { grep -q "$1" "$INSTALLED_PACKAGES"; }
 
-if which dnf >/dev/null 2>&1; then
-  sudo dnf clean all
-  sudo dnf makecache
-  sudo dnf upgrade -y
-fi
 
-if [[ -n $HOMEBREW_PREFIX ]]; then
+macos_update() {
+	sudo softwareupdate --list | grep -q 'Action: restart' && RESTART_NEEDED=1
+  sudo softwareupdate --install --all --agree-to-license
+	homebrew_update
+}
+
+
+linux_update() {
+	sudo systemctl stop packagekit
+	source /etc/os-release
+	case "$ID" in
+		fedora)
+			sudo dnf clean all
+			sudo dnf makecache
+			sudo dnf upgrade -y
+			sudo dnf list installed >> "$INSTALLED_PACKAGES"
+			sudo dnf needs-restarting -r || RESTART_NEEDED=1
+			;;
+		debian|ubuntu|linuxmint|pop)
+			sudo apt-get clean
+			sudo apt-get update -y
+			sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade
+			sudo dpkg --list | grep -E "^ii" | awk '{print $2}' >> "$INSTALLED_PACKAGES"
+			[[ -e /var/run/reboot-required ]] && RESTART_NEEDED=1
+			;;
+	esac
+	[[ -n $HOMEBREW_PREFIX ]] && homebrew_update
+}
+
+
+homebrew_update() {
   brew update
   brew upgrade
   brew autoremove
   brew cleanup
-fi
+	brew list --cask -1 >> "$INSTALLED_PACKAGES"
+	brew list --formula -1 >> "$INSTALLED_PACKAGES"
+}
 
-if which bat >/dev/null 2>&1; then
-  bat cache --clear
-  bat cache --build
-fi
 
-if which gcloud >/dev/null 2>&1; then
-  gcloud components update --quiet
-fi
-
-if kubectl krew version >/dev/null 2>&1; then
-  kubectl krew update
-  kubectl krew upgrade
-fi
-
-if which multipass >/dev/null 2>&1; then
-  multipass purge
-fi
-
-source ~/.zshrc.d/benv.zsh
-benv cleanup
-atuin sync
+INSTALLED_PACKAGES="$(mktemp)"
 bmux save
 
-if [[ "$(uname -o)" == "Darwin" ]]; then
-  sudo softwareupdate --install --all --agree-to-license --verbose
-  sudo softwareupdate --list 2>&1 | sed -En "s|\s+(Title.*)$|\1|p"
-fi
+case "$(uname -s)" in
+	Darwin) macos_update ;;
+	 Linux) linux_update ;;
+esac
+
+[[ -f ~/.zshrc.d/benv.zsh ]] && { source ~/.zshrc.d/benv.zsh; benv cleanup; }
+pkg_installed bat && { bat cache --clear; bat cache --build; }
+pkg_installed google-cloud-sdk && gcloud components update --quiet
+pkg_installed krew && { kubectl krew update; kubectl krew upgrade; }
+pkg_installed multipass && multipass purge
+pkg_installed atuin && atuin sync
+
+rm -rf "$INSTALLED_PACKAGES"
