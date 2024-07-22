@@ -84,11 +84,11 @@ alias bat='batcat'
 unalias run-help
 
 {% endif %}
-alias bess='{{ "batcat" if ansible_facts['distribution'] == "Ubuntu" else "bat" }}'
+alias bess='{{ "batcat" if ansible_facts['os_family'] == "Debian" else "bat" }}'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dirdiff='git diff --no-index'
-alias e='extract'
+alias e='aunpack'
 alias ff='fastfetch'
 alias glances='glances --theme-white'
 alias glow='glow --config ~/.config/glow.yml'
@@ -116,7 +116,7 @@ alias proc='ps -e --forest -o pid,ppid,user,time,cmd'
 cdf() { cd $(dirs -lp | fzf --no-multi); }
 jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-4000}:4000" jekyll/jekyll jekyll serve; }
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
-tim() { tmux split-window -h -c "$(pwd)" "vim $@"; }
+tim() { tmux split-window -h -c "$(pwd)" "nvim $@"; }
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
 mkmv() { mkdir --parents "$(dirname "$2")" && mv "$1" "$2"; }
 numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")"; }
