@@ -58,6 +58,14 @@ export INFOPATH={{ zsh_homebrew_prefix }}/share/info:"${INFOPATH:-}"
 {% if ansible_facts['distribution'] == "Fedora" %}
 export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
 {% endif %}
+{% if ansible_facts['distribution'] == "MacOSX" %}
+# Set XDG environment variables for MacOS
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_STATE_HOME="${HOME}/.local/state"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_RUNTIME_DIR="${HOME}/Library/Caches/TemporaryItems"
+{% endif %}
 
 
 alias leza='eza --color always --classify --long --all --group-directories-first --no-quotes'
@@ -167,7 +175,7 @@ source {{ zsh_homebrew_prefix }}/share/zsh-syntax-highlighting/zsh-syntax-highli
 {% elif ansible_facts['distribution'] == "Fedora" %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/fzf/shell/key-bindings.zsh
-{% elif ansible_facts['distribution'] == "Ubuntu" %}
+{% else %}
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
