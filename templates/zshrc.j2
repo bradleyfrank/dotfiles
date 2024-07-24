@@ -67,6 +67,17 @@ export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_RUNTIME_DIR="${HOME}/Library/Caches/TemporaryItems"
 {% endif %}
 
+# Set app XDG environment variables
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
+export GOPATH="${XDG_DATA_HOME}/go"
+export MINIKUBE_HOME="${XDG_DATA_HOME}/minikube"
+export NVM_DIR="${XDG_DATA_HOME}/nvm"
+export TERMINFO="${XDG_DATA_HOME}/terminfo"
+export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+export SQLITE_HISTORY="${XDG_CACHE_HOME}/sqlite_history"
+export W3M_DIR="${XDG_DATA_HOME}/w3m"
+
 
 alias leza='eza --color always --classify --long --all --group-directories-first --no-quotes'
 alias ld='leza --only-dirs'
@@ -106,6 +117,7 @@ alias timestamp='date +%F_%T | tr -d ":-" | tr "_" "-"'
 alias view='nvim -R'
 alias vim='nvim'
 alias vimdiff='nvim -d'
+alias wget='wget --hsts-file="${XDG_DATA_HOME}/wget-hsts"'
 {% if ansible_facts['system'] == "Linux" %}
 alias iowatch='watch -n 1 iostat -xy --human 1 1'
 alias ipa='ip -c a'
