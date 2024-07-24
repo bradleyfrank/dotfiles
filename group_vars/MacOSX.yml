@@ -372,6 +372,7 @@ packages_homebrew_formulas:
   - "bash"
   - "bash-completion@2"
   - "bat"
+  - "bat-extras"
   - "bcal"
   - "cabextract"
   - "coreutils"

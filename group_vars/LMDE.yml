@@ -132,6 +132,7 @@ packages_homebrew_taps:
 
 packages_homebrew_formulas:
   - atuin
+  - bat-extras
   - csvlens
   - eza
   - fastfetch

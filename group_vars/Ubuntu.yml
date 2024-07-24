@@ -50,6 +50,7 @@ packages_apt_packages:
     - atool
     - bash-completion
     - bat
+    - bat-extras
     - bcal
     - borgbackup
     - diceware

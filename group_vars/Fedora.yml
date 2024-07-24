@@ -142,6 +142,7 @@ packages_homebrew_taps:
 packages_homebrew_formulas:
   - atuin
   - bandwhich
+  - bat-extras
   - csvlens
   - freeze
   - glow

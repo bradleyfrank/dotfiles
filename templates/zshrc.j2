@@ -41,13 +41,6 @@ export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinne
 export GH_PAGER=glow
 export KEYTIMEOUT=1
 export LESS="-R --mouse"
-export LESS_TERMCAP_mb=$'\E[01;32m'     # Add colors to manpages
-export LESS_TERMCAP_md=$'\E[01;32m'     # "
-export LESS_TERMCAP_me=$'\E[0m'         # "
-export LESS_TERMCAP_se=$'\E[0m'         # "
-export LESS_TERMCAP_so=$'\E[01;104;97m' # "
-export LESS_TERMCAP_ue=$'\E[0m'         # "
-export LESS_TERMCAP_us=$'\E[01;36m'     # "
 export PRE_COMMIT_COLOR=never  # Colors are incompatible with solarized-light
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 {% if (ansible_facts['distribution'] == "MacOSX") or (zsh_prefer_homebrew) %}
@@ -78,13 +71,13 @@ alias lT='leza --sort time'
 alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
 alias lS='leza --sort size'
 
-{% if ansible_facts['distribution'] == "Ubuntu" %}
+{% if ansible_facts['os_family'] == "Debian" %}
 alias bat='batcat'
 {% else %}
 unalias run-help
 
 {% endif %}
-alias bess='{{ "batcat" if ansible_facts['os_family'] == "Debian" else "bat" }}'
+alias bwatch='batwatch'
 alias condense='grep -Erv "(^#|^$)"'
 alias cp='cp -i'
 alias dirdiff='git diff --no-index'
@@ -94,6 +87,7 @@ alias glances='glances --theme-white'
 alias glow='glow --config ~/.config/glow.yml'
 alias help='run-help'  # help topics path set via $HELPDIR
 alias isodate='date --iso-8601=seconds'
+alias man='batman'
 alias mkpasswd='pwgen -1y'
 alias mp='multipass'
 alias mux='tmux new-session -A -s main -c ~/Downloads'
@@ -183,5 +177,6 @@ for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
 source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
 
 
+eval "$(batman --export-env)"
 eval "$(dircolors $HOME/.dir_colors)"
 eval "$(atuin init zsh)"
