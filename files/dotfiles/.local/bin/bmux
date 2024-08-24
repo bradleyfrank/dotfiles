@@ -4,7 +4,6 @@
 # @meta author Brad Frank
 # @meta require-tools tmux,fzf
 # @meta combine-shorts
-#
 
 
 _get_window_name() {
@@ -37,29 +36,20 @@ _get_project_dir() {
 }
 
 
-_get_layouts() {
-  tmux list-keys | sed -rn "s/^bind-key.*M-[0-9]\s+select-layout\s(.*)/\1/p"
-}
-
-
 _select_session() {
   tmux list-session -F "#{session_name}" \
     | fzf-tmux --no-multi -p --preview="tmux list-windows -t {} -F '#{window_name}' --"
 }
 
 
-# @cmd Rename elements
-# @flag -w --window window
-# @flag -s --session session
+# @cmd Rename window with Git branch info
 # @arg dir!
 rename() {
-  local window_name; window_name="$(_get_window_name "$argc_dir")"
-  [[ -n $argc_window ]] && tmux rename-window "$window_name"
-  [[ -n $argc_session ]] && tmux rename-session "$(awk '{print $1}' <<< "$window_name")"
+  rename-window "$(_get_window_name "$argc_dir")"
 }
 
 
-# @cmd Open a project in a new window
+# @cmd Open a project in a new window or session
 # @option -d --directory Project directory
 # @option -c --command Command to run in new window
 # @flag -s --new-session Open the window in a new session
@@ -88,51 +78,6 @@ open() {
 }
 
 
-# @cmd Move a window or pane from one session to another
-move() { :; }
-
-
-# @cmd Move a window from one session to another
-move::window() {
-  local session_name window_name session_index session_window \
-    window_to_move target_session target_index
-  local -A tmux_windows
-
-  # Create a list of each window in every session
-  while read -r session_name; do
-    while read -r window_name; do
-      session_index="$(awk -F ':' '{print $1}' <<< "$window_name")"
-      session_window="$(awk -F ':' '{print $2}' <<< "$window_name")"
-      tmux_windows["${session_name}: ${session_window}"]="${session_name}:${session_index}"
-    done < <(tmux list-windows -F "#{window_index}:#{window_name}" -t "$session_name")
-  done < <(tmux list-sessions -F "#{session_name}")
-
-  [[ ${#tmux_windows[@]} -eq 0 ]] && return 1
-
-  while read -r window_to_move; do
-    target_session="$(_select_session)"
-    target_index="$(tmux list-windows -F "#{window_index}" -t "$target_session" | tail -n1)"
-    tmux move-window \
-      -s "${tmux_windows["$window_to_move"]}" -t "${target_session}:${target_index}" -da
-  done < <(printf "%s\n" "${!tmux_windows[@]}" | sort | fzf-tmux -p --multi)
-}
-
-
-# @cmd Move a pane from one session to another
-move::pane() {
-  [[ -z $argc_session ]] && argc_session="$(_select_session)"
-}
-
-
-# @cmd Rearrange tmux panes into new layout
-# @arg layout[`_get_layouts`]
-layout() {
-  [[ -z $argc_layout ]] && argc_layout="$(_get_layouts | fzf-tmux -p --no-multi -1)"
-  [[ -z $argc_layout ]] && return 0
-  tmux select-layout "$argc_layout"
-}
-
-
 # @cmd Save pane output to file
 # @option -o --output <FILE> Output file
 dump() {
@@ -158,22 +103,6 @@ dump() {
   tmux new-window -n "${window_name}" -c "$output_dir" -d
   tmux switch-client -t "${session_name}:${window_name}"
   tmux send-keys -t "${session_name}:${window_name}" "vim ${argc_output}; clear" Enter
-}
-
-
-_pwd() { pwd; }
-
-
-# @cmd Print Git branch of a Git repo
-# @option -d --dir=`_pwd` Path to Git repo
-branch() {
-  local git_branch
-  cd "$1" || exit
-  if git_branch="$(git branch --show-current 2>/dev/null)"; then
-    echo -e "#[fg=colour64]${git_branch}#[fg=default]"
-  else
-    echo -e "#[fg=colour64]n/a#[fg=default]"
-  fi
 }
 
 

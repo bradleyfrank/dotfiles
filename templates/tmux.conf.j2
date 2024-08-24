@@ -77,8 +77,6 @@ set -g mouse on
 set -g renumber-windows on
 set -g status-interval 1
 
-set-hook -g after-copy-mode 'set -p cursor-style underline'  # make cursor visible in copy-mode
-
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
 bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling speed
@@ -86,22 +84,19 @@ bind -T copy-mode-vi WheelUpPane send -N2 -X scroll-up      # fix scrolling spee
 bind '%' split-window -h -c "#{pane_current_path}"
 bind '"' split-window -c "#{pane_current_path}"
 bind 'C' new-window -c "#{pane_current_path}"
-bind 'D' run-shell -b "bmux dump-pane"
-bind 'G' run-shell -b "bmux move-windows #{session_name}"
-bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
-bind 'M' choose-tree -Z "move-pane -t %%"
-bind 'O' run-shell -b "bmux open-project"
-bind 'S' run-shell -b "bmux open-project -s"
-bind 'T' run-shell -b "bmux select-layout"
-bind 'W' choose-tree -Zs "move-window -t %%"
 bind 'c' new-window -c "~/"
-bind 'r' run-shell -b "bmux rename-window #{pane_current_path}"
-bind 'u' source-file "~/.config/tmux/{{ item }}.conf"
-bind 'y' set synchronize-panes
-
-{% if item == "tmux" or item == "server" %}
+bind 'D' run-shell -b "bmux dump"
+bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
+bind 'M' choose-tree -Zs "move-window -t %%"
+bind 'm' choose-tree -Z "move-pane -t %%"
+bind 'O' run-shell -b "bmux open"
+{% if item != "popup" %}
 bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/"
 {% endif %}
+bind 'r' run-shell -b "bmux rename #{pane_current_path}"
+bind 'S' run-shell -b "bmux open --new-session"
+bind 'u' source-file "~/.config/tmux/{{ item }}.conf"
+bind 'y' set synchronize-panes
 
 {% for plugin in tmux_plugins %}
 run-shell {{ ansible_facts['user_dir'] }}/.local/share/{{ plugin['name'] }}/{{ plugin['exec'] }}
