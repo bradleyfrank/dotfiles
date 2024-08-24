@@ -1,39 +1,28 @@
 #!/usr/bin/env bash
 
-#
-# Collection of tmux scripts.
-# Author: Brad Frank
-# Date: Feb 2022
-# Tested: GNU bash, version 5.1.16(1)-release (x86_64-apple-darwin20.6.0)
-# Requires: tmux, fzf
-#
-
-
-_tmux_fzf() {
-   fzf-tmux -p --ansi -i --height=50% --exit-0 --inline-info --border rounded "$@"
-}
+# @meta describe Utility scripts for tmux
+# @meta author Brad Frank
+# @meta require-tools tmux,fzf
+# @meta combine-shorts
 
 
 _get_window_name() {
-  local cwd base_cwd username branch_name
-  cwd="$1" base_cwd="$(basename "$cwd")"
+  local cwd base_cwd username branch_name repo_name
+
+  cwd="$1"
+  base_cwd="$(basename "$cwd")"
+  repo_name="$base_cwd"
+  username="$(id --user --name)"
 
   pushd "$cwd" &> /dev/null || exit 1
 
   if branch_name="$(git branch --show-current 2>/dev/null)"; then
-    if [[ "$base_cwd" == "$branch_name" ]]; then
-      repo_name="$(basename "$(dirname "$cwd")")"
-    else
-      repo_name="$base_cwd"
-    fi
-    WINDOW_NAME="${repo_name} (${branch_name})"
+    [[ "$base_cwd" == "$branch_name" ]] && repo_name="$(basename "$(dirname "$cwd")")"
+    echo "${repo_name} (${branch_name})"
+  elif [[ "$base_cwd" == "$username" ]]; then
+    echo "~${username}"
   else
-    username="$(id --user --name)"
-    if [[ "$base_cwd" == "$username" ]]; then
-      WINDOW_NAME="$username"
-    else
-      WINDOW_NAME="$base_cwd"
-    fi
+    echo "$base_cwd"
   fi
 
   popd &> /dev/null || exit 1
@@ -42,127 +31,85 @@ _get_window_name() {
 
 _get_project_dir() {
   find "${HOME}/Development/Projects" -mindepth 2 -maxdepth 2 -type d \
-    | _tmux_fzf --reverse --no-multi --delimiter / --with-nth -2,-1 \
-      --preview="eza --color always --classify --no-user --no-permissions --long --all --git {} --"
+    | fzf-tmux -p --reverse --no-multi --delimiter / --with-nth -2,-1 \
+    --preview="eza --color always --classify --no-user --no-permissions --long --all --git {} --"
 }
 
 
-rename_window() {
-  [[ -z "$1" ]] && { echo "No directory provided" >&2; exit 1; }
-  _get_window_name "$1"
-  tmux rename-window "$WINDOW_NAME"
+_select_session() {
+  tmux list-session -F "#{session_name}" \
+    | fzf-tmux --no-multi -p --preview="tmux list-windows -t {} -F '#{window_name}' --"
 }
 
 
-open_project() {
-  local OPTIND project_dir cmd window_name session_name make_new_session; make_new_session=0
-  while getopts ":d:c:s" opt; do
-    case "$opt" in
-      d) project_dir="$OPTARG" ;;
-      c) cmd="$OPTARG" ;;
-      s) make_new_session=1 ;;
-      :) echo "-$OPTARG requires a value" >&2; exit 1 ;;
-     \?) echo "-$OPTARG is invalid" >&2; exit 1 ;;
-    esac
-  done
+# @cmd Rename window with Git branch info
+# @arg dir!
+rename() {
+  rename-window "$(_get_window_name "$argc_dir")"
+}
 
-  [[ -z "$project_dir" ]] && project_dir="$(_get_project_dir)"
-  [[ -z "$project_dir" ]] && exit 0
-  _get_window_name "$project_dir"
 
-  if [[ $make_new_session -eq 1 ]]; then
-    session_name="$(awk '{print $1}' <<< "$WINDOW_NAME")"
+# @cmd Open a project in a new window or session
+# @option -d --directory Project directory
+# @option -c --command Command to run in new window
+# @flag -s --new-session Open the window in a new session
+open() {
+  local window_name session_name
+
+  [[ -z "$argc_directory" ]] && argc_directory="$(_get_project_dir)"
+  [[ -z "$argc_directory" ]] && exit 0
+
+  window_name="$(_get_window_name "$argc_directory")"
+
+  if [[ -n $argc_new_session ]]; then
+    session_name="$(awk '{print $1}' <<< "$window_name")"
     if tmux has-session -t "$session_name" 2>/dev/null; then
-      tmux new-window -n "$WINDOW_NAME" -c "$project_dir" -d
+      tmux new-window -n "$window_name" -c "$argc_directory" -d
     else
-      tmux new-session -s "$session_name" -n "$WINDOW_NAME" -c "$project_dir" -d
+      tmux new-session -s "$session_name" -n "$window_name" -c "$argc_directory" -d
     fi
   else
     session_name="$(tmux display-message -p "#S")"
-    tmux new-window -n "$WINDOW_NAME" -c "$project_dir" -d
+    tmux new-window -n "$window_name" -c "$argc_directory" -d
   fi
 
-  tmux switch-client -t "${session_name}:${WINDOW_NAME}"
-  [[ -n "$cmd" ]] && tmux send-keys -t "${session_name}:${WINDOW_NAME}" "$cmd" Enter
+  tmux switch-client -t "${session_name}:${window_name}"
+  [[ -n "$argc_command" ]] && tmux send-keys -t "${session_name}:${window_name}" "$argc_command" Enter
 }
 
 
-move_windows() {
-  local OPTIND current_session session window window_to_move _index _window _key; current_session="$1"
-  local -A tmux_windows
+# @cmd Save pane output to file
+# @option -o --output <FILE> Output file
+dump() {
+  local window_name session_name output_dir output_temp
 
-  [[ -z $current_session ]] && current_session="$(tmux display-message -p "#{session_name}")"
+  session_name="$(tmux display-message -p "#{session_name}")"
+  output_temp="$(mktemp)"
 
-  while read -r session; do
-    while read -r window; do
-      _index="$(awk -F ':' '{print $1}' <<< "$window")"
-      _window="$(awk -F ':' '{print $2}' <<< "$window")"
-      _key="${session}: ${_window}"
-      tmux_windows["$_key"]="${session}:${_index}"
-    done < <(tmux list-windows -F "#{window_index}:#{window_name}" -t "$session")
-  done < <(tmux list-sessions -F "#{session_name}" -f "#{!=:#{session_name},${current_session}}")
+  if [[ -z $argc_output ]]; then
+    argc_output="${HOME}/Development/Logs/$(tmux display-message -p \
+      'tmux-%Y-%b-%d-%H%M-#{session_name}.log' | tr -cd '[:print:]')"
+  fi
 
-  [[ ${#tmux_windows[@]} -eq 0 ]] && return 1
+  output_dir="$(dirname "$argc_output")"
 
-  while read -r window_to_move; do
-    tmux move-window -s "${tmux_windows["$window_to_move"]}" -d
-  done < <(printf "%s\n" "${!tmux_windows[@]}" | sort | _tmux_fzf --multi)
-}
-
-
-select_layout() {
-  tmux list-keys \
-    | sed -rn "s/^bind-key.*M-[0-9]\s+select-layout\s(.*)/\1/p" \
-    | _tmux_fzf --no-multi \
-    | xargs tmux select-layout
-}
-
-
-dump_pane() {
-  local tmpfile log_dir filename filepath
-  tmpfile="$(mktemp)"
-  log_dir="${HOME}/Development/Logs"
-  filename="$(tmux display-message -p \
-    'tmux-%Y-%b-%d-%H%M-#{session_name}-#{b:pane_current_path}.out' | tr -cd '[:print:]')"
-  filepath="${log_dir}/${filename}"
+  mkdir --parents "$(dirname "$argc_output")"
   tmux capture-pane -S -
-  tmux save-buffer "$tmpfile"
-  cat -s "$tmpfile" > "$filepath"
-  rm "$tmpfile"
-  open_project -d "$log_dir" -c "vim $filepath"
+  tmux save-buffer "$output_temp"
+  cat -s "$output_temp" > "$argc_output"
+  rm "$output_temp"
+
+  window_name="$(_get_window_name "$output_dir")"
+  tmux new-window -n "${window_name}" -c "$output_dir" -d
+  tmux switch-client -t "${session_name}:${window_name}"
+  tmux send-keys -t "${session_name}:${window_name}" "vim ${argc_output}; clear" Enter
 }
 
 
-git_branch() {
-  local git_branch
-  cd "$1" || exit
-  if git_branch="$(git branch --show-current 2>/dev/null)"; then
-    echo -e "#[fg=colour64]${git_branch}#[fg=default]"
-  else
-    echo -e "#[fg=colour64]n/a#[fg=default]"
-  fi
-}
-
-
-save_session() {
+# @cmd Save session (tmux-resurrect)
+save() {
   "${HOME}/.local/share/tmux-resurrect/scripts/save.sh"
 }
 
 
-main() {
-  local subcommand; subcommand="$1"; shift
-  case "$subcommand" in
-    rename-window)  rename_window "$@" ;;
-    open-project)   open_project "$@" ;;
-    dump-pane)      dump_pane ;;
-    git-branch)     git_branch "$@" ;;
-    move-windows)   move_windows "$@" ;;
-    select-layout)  select_layout "$@" ;;
-    save)           save_session ;;
-    *)              echo "$1 not found" >&2; exit 1 ;;
-  esac
-}
-
-
-main "$@"
-unset WINDOW_NAME
+eval "$(argc --argc-eval "$0" "$@")"
