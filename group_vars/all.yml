@@ -223,6 +223,9 @@ tmux_plugins:
   - name: "tmux-resurrect"
     repo: "https://github.com/tmux-plugins/tmux-resurrect.git"
     exec: "resurrect.tmux"
+  - name: "tmux-continuum"
+    repo: "https://github.com/tmux-plugins/tmux-continuum.git"
+    exec: "continuum.tmux"
 
 
 # ============================================================================================ #

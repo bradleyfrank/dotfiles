@@ -105,6 +105,18 @@ let g:airline_stl_path_style = 'short'
 let g:airline_theme = 'solarized'
 
 
+" cursor settings
+" 0 => blinking block
+" 1 => blinking block (default)
+" 2 => steady block
+" 3 => blinking underline
+" 4 => steady underline
+" 5 => blinking bar (xterm)
+" 6 => steady bar (xterm)
+let &t_SI = "\e[6 q"  " insert mode
+let &t_EI = "\e[2 q"  " normal mode
+
+
 " hybrid line numbering with toggling
 augroup numbertoggle
   autocmd!
