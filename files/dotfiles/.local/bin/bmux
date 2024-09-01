@@ -74,7 +74,9 @@ open() {
   fi
 
   tmux switch-client -t "${session_name}:${window_name}"
-  [[ -n "$argc_command" ]] && tmux send-keys -t "${session_name}:${window_name}" "$argc_command" Enter
+  if [[ -n "$argc_command" ]]; then
+    tmux send-keys -t "${session_name}:${window_name}" "$argc_command" Enter
+  fi
 }
 
 
