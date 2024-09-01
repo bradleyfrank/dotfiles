@@ -50,7 +50,7 @@ rename() {
 
 
 # @cmd Open a project in a new window or session
-# @option -d --directory Project directory
+# @arg directory Project directory
 # @option -c --command Command to run in new window
 # @flag -s --new-session Open the window in a new session
 open() {
