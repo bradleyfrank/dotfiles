@@ -1,15 +1,15 @@
 ---
 
-# ============================================================================================ #
+# -----+
 # global
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 op_vault: "Private"
 
 
-# ============================================================================================ #
+# -----+
 # role: dotfiles
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 dotfiles_folders:
   - "Development/Projects"
@@ -33,21 +33,21 @@ dotfiles_templates:
     dest: "{{ zsh_rcd_dir }}"
 
 
-# ============================================================================================ #
+# -----+
 # role: fonts
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 fonts_to_install:
   - "JetBrainsMono"
   - "SourceCodePro"
 
 
-# ============================================================================================ #
+# -----+
 # role: git
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 git_ssh_authorized_keys_match: "[?contains(title,'{{ ansible_facts['user_id'] }}')&&!contains(title,'{{ ansible_facts['hostname'] }}')]"
-git_repos_as_worktrees: True
+git_repos_as_worktrees: true
 git_repos_path: "{{ ansible_facts['user_dir'] }}/Development/Projects"
 git_repos:
   - url: "ssh://git@github.com/bradleyfrank/dotfiles.git"
@@ -60,9 +60,9 @@ git_repos:
     branch: "gh-pages"
 
 
-# ============================================================================================ #
+# -----+
 # role: packages
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 packages_binaries:
   - name: "cht"
@@ -118,9 +118,9 @@ packages_pipx_packages:
   - "beets"
 
 
-# ============================================================================================ #
+# -----+
 # role: system
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 system_linux_dconf_defaults:
   - path: "/org/gnome"
@@ -139,7 +139,7 @@ system_linux_dconf_defaults:
       list-view/use-tree-view: "true"
       preferences/default-folder-viewer: "'list-view'"
       preferences/search-filter-time-type: "'last_modified'"
-      preferences/show-create-link : "true"
+      preferences/show-create-link: "true"
       preferences/show-delete-permanently: "true"
   - path: "/org/gnome/gedit/preferences"
     keys:
@@ -210,9 +210,9 @@ system_linux_dracut_settings:
     path: "/etc/dracut.conf.d/ble.conf"
 
 
-# ============================================================================================ #
+# -----+
 # role: tmux
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 tmux_profiles:
   - "tmux"
@@ -228,9 +228,9 @@ tmux_plugins:
     exec: "continuum.tmux"
 
 
-# ============================================================================================ #
+# -----+
 # role: vim
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 vim_extensions:
   - name: "vim-airline"
@@ -258,9 +258,9 @@ vim_extensions:
     repo: "https://github.com/preservim/vim-markdown.git"
 
 
-# ============================================================================================ #
+# -----+
 # role: zsh
-# -------------------------------------------------------------------------------------------- #
+# -----+
 
 zsh_completions:
   - name: "cht"
