@@ -48,10 +48,10 @@ packages_dnf_packages:
     - libmp4v2
     - libvirt-client
     - mkvtoolnix
+    - moreutils
     - most
     - msmtp
     - mtr
-    - ncdu
     - nmap
     - ocrmypdf
     - p7zip
@@ -110,12 +110,12 @@ packages_dnf_packages:
     - seahorse
     - solaar
     - system-config-printer
+    - thunderbird
     - timeshift
     - torbrowser-launcher
     - vlc
   gnome:
     - celluloid
-    - geary
     - gedit-plugin-codecomment
     - gedit-plugin-colorpicker
     - gedit-plugin-git

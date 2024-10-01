@@ -64,10 +64,10 @@ packages_apt_packages:
     - libmp4-info-perl
     - libvirt-clients
     - mkvtoolnix
+    - moreutils
     - most
     - msmtp
     - mtr
-    - ncdu
     - nmap
     - p7zip-*
     - par
@@ -89,6 +89,7 @@ packages_apt_packages:
     - toilet
     - trash-cli
     - tree
+    - trurl
     - vim
     - wget
     - xdelta
@@ -105,7 +106,6 @@ packages_apt_packages:
     - audacious
     - calibre
     - drawing
-    - flatpak
     - fonts-noto-color-emoji
     - ghostwriter
     - google-chrome-stable
@@ -117,6 +117,7 @@ packages_apt_packages:
     - shutter
     - solaar
     - system-config-printer
+    - thunderbird
     - timeshift
     - torbrowser-launcher
     - vlc
