@@ -34,6 +34,7 @@ export PATH
 export MANPATH
 export EDITOR=vim
 export VISUAL=vim
+export BASE16_SHELL="${HOME}/.local/share/base16-shell"
 export CHTSH_QUERY_OPTIONS="style=vs"
 export DOCKER_CLI_HINTS=false
 export DIRSTACKSIZE=10  # Max directories in auto_pushd stack
@@ -195,5 +196,6 @@ source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
 
 
 eval "$(batman --export-env)"
-eval "$(dircolors $HOME/.dir_colors)"
 eval "$(atuin init zsh)"
+
+base16_solarized-light

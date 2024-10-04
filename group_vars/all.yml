@@ -163,21 +163,13 @@ system_linux_dconf_defaults:
   - path: "/org/gnome/terminal/legacy/profiles:/:1846491d-b417-5d9b-a8ca-04fdec4403bf"
     keys:
       audible-bell: "false"
-      background-color: "'rgb(253,246,227)'"
-      bold-is-bright: "false"
       cursor-colors-set: "false"
       font: "'SauceCodePro Nerd Font 12'"
-      foreground-color: "'rgb(101,123,131)'"
       highlight-colors-set: "false"
-      palette: "['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)',
-        'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)',
-        'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)',
-        'rgb(147,161,161)', 'rgb(253,246,227)']"
       scroll-on-output: "true"
       scrollback-unlimited: "true"
       use-system-font: "false"
-      use-theme-colors: "false"
-      visible-name: "'Solarized-Light-Profile'"
+      visible-name: "'Custom-Profile'"
   - path: "/org/gnome/desktop"
     keys:
       datetime/automatic-timezone: "true"
@@ -277,3 +269,6 @@ zsh_plugins:
   - name: "zsh-vi-mode"
     repo: "https://github.com/jeffreytse/zsh-vi-mode.git"
     source: "zsh-vi-mode.plugin.zsh"
+  - name: "base16-shell"
+    repo: "https://github.com/chriskempson/base16-shell.git"
+    source: "profile_helper.sh"
