@@ -42,7 +42,6 @@ export FZF_DEFAULT_OPTS="--color info:33,prompt:33,pointer:166,marker:166,spinne
 export GH_PAGER=glow
 export KEYTIMEOUT=1
 export LESS="-R --mouse"
-export PRE_COMMIT_COLOR=never  # Colors are incompatible with solarized-light
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 {% if (ansible_facts['distribution'] == "MacOSX") or (zsh_prefer_homebrew) %}
 export HELPDIR={{ zsh_homebrew_prefix }}/Cellar/zsh/{{ zsh_current_version }}/share/zsh/help
@@ -80,6 +79,7 @@ export SQLITE_HISTORY="${XDG_CACHE_HOME}/sqlite_history"
 export W3M_DIR="${XDG_DATA_HOME}/w3m"
 
 
+alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
 alias leza='eza --color always --classify --long --all --group-directories-first --no-quotes'
 alias ld='leza --only-dirs'
 alias lg='leza --group'
@@ -88,7 +88,6 @@ alias lk='leza --sort type'
 alias ll='leza --octal-permissions'
 alias lt='leza --tree'
 alias lT='leza --sort time'
-alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
 alias lS='leza --sort size'
 
 {% if ansible_facts['os_family'] == "Debian" %}
@@ -130,7 +129,6 @@ jekyll() { docker run --rm --volume="${1:-$PWD}:/srv/jekyll" --publish "${2:-400
 tardir() { tar -czf "${1%/}".tar.gz "$1"; }
 tim() { tmux split-window -h -c "$(pwd)" "vim $@"; }
 gtop() { cd $(git rev-parse --show-toplevel | xargs realpath --relative-to .); }
-mkmv() { mkdir --parents "$(dirname "$2")" && mv "$1" "$2"; }
 numware() { echo "$(diceware -n "${1:-5}")-$(random "${1:-5}")"; }
 random() { pwgen -1Anr "$(echo {a..z})" "${1:-5}"; }
 zvm_after_init() { bindkey -M viins '^R' atuin-search; }  # rebind after zsh-vi-mode loads

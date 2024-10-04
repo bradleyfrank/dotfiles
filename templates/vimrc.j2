@@ -115,11 +115,3 @@ let g:airline_theme = 'solarized'
 " 6 = steady bar (xterm)
 let &t_SI = "\e[6 q"  " insert mode
 let &t_EI = "\e[2 q"  " normal mode
-
-
-" hybrid line numbering with toggling
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END
