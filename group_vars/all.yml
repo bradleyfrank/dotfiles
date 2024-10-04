@@ -99,6 +99,7 @@ packages_flatpak_packages:
     - "io.github.diegoivan.pdf_metadata_editor"
     - "io.github.seadve.Kooha"
     - "io.gitlab.news_flash.NewsFlash"
+    - "io.missioncenter.MissionCenter"
     - "io.posidon.Paper"
     - "nl.g4d.Girens"
     - "org.gnome.gitlab.somas.Apostrophe"
