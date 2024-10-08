@@ -26,41 +26,40 @@ set -s  @window_status           "#[bold] [#I] #W #[nobold]"
 set -s  @window_status_activity  "fg=violet,bg=default"
 {% endif %}
 
+set -g  pane-active-border-style "#{?window_zoomed_flag,#{@pane_border_zoom},#{?pane_synchronized,#{@pane_border_sync},#{@pane_border_regular}}}"
+set -g  pane-border-format "#{?window_zoomed_flag, ZOOM ,}"
+set -g  pane-border-indicators both
+set -g  pane-border-style "bg=default,#{?pane_synchronized,#{@pane_border_sync},fg=white}"
 set -gF pane-border-status "#{@pane_border_status}"
 set -gF pane-border-lines "#{@pane_border_lines}"
-set -gF pane-border-style "bg=default,#{?pane_synchronized,#{@pane_border_sync}}"
-set -gF pane-active-border-style "#{?window_zoomed_flag,#{@pane_border_zoom},#{?pane_synchronized,#{@pane_border_sync},#{@pane_border_regular}}}"
-set -gF pane-border-format "#[#{?window_zoomed_flag,#{@pane_border_zoom},#{?pane_synchronized,#{@pane_border_sync},#{?pane_active,fg=#{@pane_border_regular}}}]#{?window_zoomed_flag, ZOOM ,}"
 
+set -g  window-status-activity-style "#{window_status_activity}"
+set -g  window-status-current-style "#{window_status_current}"
 set -gF window-status-current-format "#{@window_format_bg}#{@window_status}"
 set -gF window-status-format "#{@window_format_fg}#{@window_status}"
-set -gF window-status-activity-style "#{window_status_activity}"
-set -gF window-status-current-style "#{window_status_current}"
 
-set -gF status on
-set -gF status-justify left
-set -gF status-left ""
-set -gF status-position "#{@status_position}"
+set -g  status on
+set -g  status-justify left
+set -g  status-left ""
+set -g  status-style "#{@status_style}"
 set -gF status-right "#{@status_right}"
-set -gF status-style "#{@status_style}"
+set -gF status-position "#{@status_position}"
 
-set -g message-command-style "fg=#002b36"
-set -g message-style "fg=#002b36"
-set -g mode-style "bg=#657b83,fg=#fdf6e3"
+set -g  message-style "bg=black,fg=default"
+set -g  mode-style "bg=white,fg=black"
 
-set -g aggressive-resize off
-set -g allow-passthrough on
-set -g allow-rename on
-set -g automatic-rename-format "#{b:pane_current_path}"
-set -g base-index 1
-set -g default-command "${SHELL}"
-set -g default-terminal "tmux-256color"
-set -g terminal-overrides "alacritty:RGB,xterm-256color:RGB,gnome*:RGB"
-set -g detach-on-destroy off
-set -g history-limit 10000
-set -g mouse on
-set -g renumber-windows on
-set -g status-interval 1
+set -g  aggressive-resize off
+set -g  allow-passthrough on
+set -g  allow-rename on
+set -g  automatic-rename-format "#{b:pane_current_path}"
+set -g  base-index 1
+set -g  default-command "${SHELL}"
+set -g  default-terminal "tmux-256color"
+set -g  detach-on-destroy off
+set -g  history-limit 10000
+set -g  mouse on
+set -g  renumber-windows on
+set -g  status-interval 1
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
