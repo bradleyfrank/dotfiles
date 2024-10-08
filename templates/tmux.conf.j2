@@ -74,9 +74,9 @@ bind 'D' run-shell -b "bmux dump"
 bind 'I' command-prompt -p "New session: "  "new-session -A -s '%%'"
 bind 'M' choose-tree -Zs "move-window -t %%"
 bind 'm' choose-tree -Z "move-pane -t %%"
-bind 'N' display-popup -E -w 90% -h 90% -b rounded -S "fg=color234" "tmux -L notes -f ~/.config/tmux/popup.conf new-session -As notes -c ~/Development/Scratch"
 bind 'O' run-shell -b "bmux open"
-{% if item != "popup" %}
+{% if item == "tmux" %}
+bind 'N' display-popup -E -w 90% -h 90% -b rounded -S "fg=color234" "tmux -L notes -f ~/.config/tmux/popup.conf new-session -As notes -c ~/Development/Scratch"
 bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/Development/Scratch"
 {% endif %}
 bind 'r' run-shell -b "bmux rename #{pane_current_path}"
