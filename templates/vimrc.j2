@@ -36,23 +36,21 @@ set showmatch
 syntax on
 set termguicolors
 set background=light
-colorscheme solarized8
-highlight LineNr            guifg=#586e75 guibg=#eee8d5 cterm=bold
-highlight SignColumn        guifg=NONE    guibg=#eee8d5
-highlight CursorLineNr      guifg=#fdf6e3 guibg=#586e75
-highlight ColorColumn       guifg=NONE    guibg=#eee8d5
-highlight GitGutterAdd      guifg=#859900 guibg=#eee8d5 cterm=bold
-highlight GitGutterChange   guifg=#b58900 guibg=#eee8d5 cterm=bold
-highlight GitGutterDelete   guifg=#dc322f guibg=#eee8d5 cterm=bold
-highlight IndentGuidesOdd   guifg=NONE    guibg=#eee8d5
-highlight IndentGuidesEven  guifg=NONE    guibg=#fdf6e3
-highlight Search            guifg=#eee8d5 guibg=#586e75 cterm=bold
-highlight IncSearch         guifg=#eee8d5 guibg=#268bd2 cterm=bold
-highlight CurSearch         guifg=#eee8d5 guibg=#268bd2 cterm=bold
+colorscheme solarized8_high
+highlight Normal                             guibg=NONE
+highlight LineNr            guifg=Gray40     guibg=Gray85       cterm=bold
+highlight SignColumn        guifg=NONE       guibg=LightGray
+highlight CursorLine        guifg=NONE       guibg=Gray85
+highlight CursorLineNr      guifg=Gray85     guibg=Gray40
+highlight ColorColumn       guifg=NONE       guibg=LightGray
+highlight GitGutterAdd      guifg=DarkGreen  guibg=LightGray    cterm=bold
+highlight GitGutterChange   guifg=DarkYellow guibg=LightGray    cterm=bold
+highlight GitGutterDelete   guifg=Red        guibg=LightGray    cterm=bold
+highlight IndentGuidesOdd   guifg=NONE       guibg=LightGray
+highlight IndentGuidesEven  guifg=NONE       guibg=NONE
 let g:is_bash = 1
 let g:is_posix = 1
-let g:solarized_statusline = "flat"
-let g:solarized_termtrans = 1
+let g:solarized_visibility = "high"
 if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
