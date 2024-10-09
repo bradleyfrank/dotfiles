@@ -136,8 +136,7 @@ zvm_after_init() { bindkey -M viins '^R' atuin-search; }  # rebind after zsh-vi-
 
 
 zstyle ':fzf-tab:*' switch-group '<' '>'
-zstyle ':fzf-tab:*' default-color $'\033[38;5;240m'
-zstyle ':fzf-tab:*' fzf-flags --color='hl:166:bold' --border='rounded' --height='~100%'
+zstyle ':fzf-tab:*' fzf-flags --color='light' --border='rounded' --height='~100%'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -Alo --group-directories-first --color=always --smart-group --no-permissions --no-filesize --time-style=relative $realpath'
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
