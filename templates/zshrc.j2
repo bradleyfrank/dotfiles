@@ -59,6 +59,7 @@ export INFOPATH={{ zsh_homebrew_prefix }}/share/info:"${INFOPATH:-}"
 export HELPDIR=/usr/share/zsh/{{ zsh_current_version }}/help
 {% endif %}
 {% if ansible_facts['distribution'] == "MacOSX" %}
+
 # Set XDG environment variables for MacOS
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -189,7 +190,6 @@ source /usr/share/doc/fzf/examples/completion.zsh
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 {% endif %}
 for rc in {{ zsh_rcd_dir }}/*; do source "$rc"; done
-
 source $HOME/.local/share/keychain/init id_rsa id_ed25519 google_compute_engine
 
 
