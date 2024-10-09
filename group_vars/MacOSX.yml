@@ -450,6 +450,7 @@ packages_homebrew_formulas:
   - "zsh-autosuggestions"
   - "zsh-syntax-highlighting"
 
+packages_homebrew_casks_install_options: ["no-quarantine"]
 packages_homebrew_casks:
   - "1password"
   - "1password-cli"
