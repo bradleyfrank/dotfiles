@@ -80,15 +80,15 @@ export W3M_DIR="${XDG_DATA_HOME}/w3m"
 
 
 alias ls='ls --color=auto --classify -l --almost-all --group-directories-first --human-readable'
-alias leza='eza --color always --classify --long --all --group-directories-first --no-quotes'
-alias ld='leza --only-dirs'
-alias lg='leza --group'
-alias lG='leza --git'
-alias lk='leza --sort type'
-alias ll='leza --octal-permissions'
-alias lt='leza --tree'
-alias lT='leza --sort time'
-alias lS='leza --sort size'
+alias lz='eza --color always --classify --long --all --group-directories-first --no-quotes'
+alias ld='lz --only-dirs'
+alias lg='lz --group'
+alias lG='lz --git'
+alias lk='lz --sort type'
+alias ll='lz --octal-permissions'
+alias lt='lz --tree'
+alias lT='lz --sort time'
+alias lS='lz --sort size'
 
 {% if ansible_facts['os_family'] == "Debian" %}
 alias bat='batcat'
