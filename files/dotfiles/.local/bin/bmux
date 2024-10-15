@@ -50,7 +50,7 @@ rename() {
 
 
 # @cmd Open a project in a new window or session
-# @option -d --directory Project directory
+# @arg directory Project directory
 # @option -c --command Command to run in new window
 # @flag -s --new-session Open the window in a new session
 open() {
@@ -74,7 +74,9 @@ open() {
   fi
 
   tmux switch-client -t "${session_name}:${window_name}"
-  [[ -n "$argc_command" ]] && tmux send-keys -t "${session_name}:${window_name}" "$argc_command" Enter
+  if [[ -n "$argc_command" ]]; then
+    tmux send-keys -t "${session_name}:${window_name}" "$argc_command" Enter
+  fi
 }
 
 
