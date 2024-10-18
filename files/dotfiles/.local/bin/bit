@@ -30,9 +30,8 @@ _error() {
 
 
 _open_in_tmux() {
-  [[ -z $TMUX ]] && return 0
-  [[ -n $argc_session ]] && bmux open "$1" --new-session
-  [[ -z $argc_session ]] && bmux open "$1"
+  if [[ -z $TMUX ]]; then return 0; fi
+  bmux open "$1"
 }
 
 
