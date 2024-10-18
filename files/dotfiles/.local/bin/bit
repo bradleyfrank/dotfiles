@@ -82,7 +82,7 @@ _github_repo_list() {
 # @cmd Create a new branch in a worktree
 # @option -n --branch-name Name of the branch to clone
 branch() {
-  local argc_branch_name branch_path
+  local branch_path
 
   _in_git_repo || exit 1
   cd "$GIT_TOPLEVEL_PATH" || exit 1
@@ -149,7 +149,7 @@ clone() {
 # @alias del,rm
 # @option -n --branch-name Name of the worktree/branch to delete
 delete() {
-  local worktree argc_branch_name
+  local worktree
 
   _in_git_repo || exit 1
 
@@ -174,7 +174,7 @@ lazy() {
 # @cmd Fetch and checkout a remote branch
 # @option -n --branch-name Name of the branch to clone
 pull() {
-  local argc_branch_name branch_path
+  local branch_path
 
   _in_git_repo || exit 1
   git fetch origin --prune
@@ -197,7 +197,7 @@ pull() {
 # @cmd Stash changes and untracked files across all worktrees
 # @flag -x --exclude-untracked Exclude untracked file(s) from stash
 stash() {
-  local common_dir argc_exclude_untracked
+  local common_dir
   _in_git_repo || exit 1
   common_dir="$(git rev-parse --git-common-dir)"
 
@@ -213,7 +213,7 @@ stash() {
 # @alias co,s
 # @option -n --branch-name Name of the branch to clone
 switch() {
-  local selected_branches branch argc_branch_name
+  local selected_branches branch
   _in_git_repo || exit 1
 
   selected_branches="$(_worktree_list "$argc_branch_name")"
