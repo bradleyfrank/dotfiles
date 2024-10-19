@@ -31,23 +31,6 @@ set number
 set showmatch
 
 
-" colorscheme/syntax
-syntax on
-set termguicolors
-set background=light
-colorscheme solarized8_high
-highlight Normal                             guibg=NONE
-highlight IndentGuidesOdd   guifg=NONE       guibg=LightGray
-highlight IndentGuidesEven  guifg=NONE       guibg=NONE
-let g:is_bash = 1
-let g:is_posix = 1
-let g:solarized_visibility = "high"
-if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-
-
 " tabs as spaces
 set autoindent
 set expandtab
@@ -93,7 +76,6 @@ let g:airline_solarized_normal_green = 1
 let g:airline_stl_path_style = 'short'
 let g:airline_theme = 'solarized'
 
-
 " cursor settings
 " 0 = blinking block
 " 1 = blinking block (default)
@@ -104,3 +86,15 @@ let g:airline_theme = 'solarized'
 " 6 = steady bar (xterm)
 let &t_SI = "\e[6 q"  " insert mode
 let &t_EI = "\e[2 q"  " normal mode
+
+
+" colorscheme/syntax
+let g:is_bash = 1
+let g:is_posix = 1
+syntax on
+set termguicolors
+set background=light
+colorscheme solarized8
+highlight Normal                             guibg=NONE
+highlight IndentGuidesOdd   guifg=NONE       guibg=Cornsilk1
+highlight IndentGuidesEven  guifg=NONE       guibg=NONE
