@@ -33,8 +33,8 @@ set -g  pane-border-style "bg=default,#{?pane_synchronized,#{@pane_border_sync},
 set -gF pane-border-status "#{@pane_border_status}"
 set -gF pane-border-lines "#{@pane_border_lines}"
 
-set -g  window-status-activity-style "#{window_status_activity}"
-set -g  window-status-current-style "#{window_status_current}"
+set -g  window-status-activity-style "#{@window_status_activity}"
+set -g  window-status-current-style "#{@window_status_current}"
 set -gF window-status-current-format "#{@window_format_bg}#{@window_status}"
 set -gF window-status-format "#{@window_format_fg}#{@window_status}"
 
@@ -60,6 +60,7 @@ set -g  history-limit 10000
 set -g  mouse on
 set -g  renumber-windows on
 set -g  status-interval 1
+set -g  terminal-overrides "alacritty:Tc,xterm-256color:Tc,gnome*:Tc"
 
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe {{ tmux_clipboard }}
 bind -T copy-mode-vi WheelDownPane send -N2 -X scroll-down  # fix scrolling speed
