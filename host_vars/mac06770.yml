@@ -1,27 +1,10 @@
 ---
 
 host_email_address: "bfrank@oreilly.com"
+host_has_desktop: true
 onepassword_vault: "Employee"
 
-dock_macos_items:
-  - item: "SPACER"
-  - item: "/Applications/Google Chrome.app"
-  - item: "/Users/bfrank/Applications/Chrome Apps.localized/Gmail.app"
-  - item: "/Users/bfrank/Applications/Chrome Apps.localized/Google Calendar.app"
-  - item: "/Users/bfrank/Applications/Chrome Apps.localized/Google Drive.app"
-  - item: "/Users/bfrank/Applications/Chrome Apps.localized/Google Meet.app"
-  - item: "SPACER"
-  - item: "/Applications/Cisco/Cisco Secure Client.app"
-  - item: "/Applications/Alacritty.app"
-  - item: "/Applications/Slack.app"
-  - item: "/Users/bfrank/Applications/Chrome Apps.localized/JIRA.app"
-  - item: "/Applications/NetNewsWire.app"
-  - item: "/Applications/1Password.app"
-  - item: "SPACER"
-  - item: "/Applications"
-    section: "others"
-
-dock_app_paths:
+desktop_app_paths:
   - "/Applications"
   - "{{ ansible_facts['user_dir'] }}/Applications/Chrome Apps.localized"
 

@@ -2,25 +2,6 @@
 
 host_hostname: "MacBookPro-m1"
 host_email_address: "bradfrank@fastmail.com"
+host_has_desktop: true
 cloud_packages: []
 onepassword_vault: "Franco-Puccini"
-dock_macos_items:
-  - item: "/Applications/Safari.app"
-  - item: "/Applications/Mail.app"
-  - item: "/Applications/Fantastical.app"
-  - item: "/Applications/Notes.app"
-  - item: "/Applications/Reminders.app"
-  - item: "SPACER"
-  - item: "/Applications/Messages.app"
-  - item: "/Applications/Signal.app"
-  - item: "SPACER"
-  - item: "/Applications/Alacritty.app"
-  - item: "/Applications/Transmit.app"
-  - item: "/Applications/Reeder.app"
-  - item: "/Applications/Raindrop.io.app"
-  - item: "/Applications/1Password.app"
-  - item: "SPACER"
-  - item: "/Applications/Plex.app"
-  - item: "/Applications/Plexamp.app"
-  - item: "/Applications"
-    section: "others"
