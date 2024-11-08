@@ -81,8 +81,8 @@ benv_msg() {
 benv_gar_auth() {
   local index_url domain backends
 
-	index_url="$(python3 -m pip config get "global.index-url" 2>/dev/null)" || return 0
-	domain="$(trurl --get "{host}" "$index_url")"
+  index_url="$(python3 -m pip config get "global.index-url" 2>/dev/null)" || return 0
+  domain="$(trurl --get "{host}" "$index_url")"
   grep --quiet "pkg.dev" <<< "$domain" || return 0
 
   benv_msg "authenticating" "$VIRTUAL_ENV_PROJECT"
