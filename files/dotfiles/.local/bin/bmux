@@ -45,7 +45,7 @@ _select_session() {
 # @cmd Rename window with Git branch info
 # @arg dir!
 rename() {
-  rename-window "$(_get_window_name "$argc_dir")"
+  tmux rename-window "$(_get_window_name "$argc_dir")"
 }
 
 
