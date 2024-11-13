@@ -163,6 +163,7 @@ packages_homebrew_taps:
 packages_homebrew_formulas:
   - atuin
   - csvlens
+  - doctl
   - eza
   - fastfetch
   - freeze
