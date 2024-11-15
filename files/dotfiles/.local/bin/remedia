@@ -3,67 +3,92 @@
 # @meta describe Renames media downloaded from torrents
 # @meta author Brad Frank
 # @meta require-tools mnamer
-# @meta combine-shorts
-
-DEST_MOVIES="${HOME}/Movies/Plex/movies"
-DEST_TV="${HOME}/Movies/Plex/tv_shows"
+# @flag -d --debug
 
 
-# @option -m --movie <DIR+>
-# @option -t --tv <DIR+>
-main() {
-  if [[ -n $argc_movie || -n $argc_tv ]]; then
-    for dir in "${argc_movie[@]}"; do  movies "$dir";    done
-    for dir in "${argc_tv[@]}"; do     tv_shows "$dir";  done
-  else
-    mnamer ./* \
-      --movie-directory "${DEST_MOVIES}/" \
-      --episode-directory "${DEST_TV}/{series}/Season_{season:02}" \
-      --movie-format "{name}.{year}{extension}" \
-      --episode-format "S{season:02}E{episode:02}.{title}{extension}"
+_title_parser() {
+  local filename extension filename_normalized segments
+  local -A title
+
+  filename="$1"
+  extension="${filename##*.}"
+
+  filename_normalized="$(echo "$filename" \
+    | tr '.' '_' \
+    | tr ' ' '_' \
+    | tr '[:lower:]' '[:upper:]' \
+    | sed 's/[^a-zA-Z0-9_]//g' \
+  )"
+
+  segments="$(sed --regexp-extended --quiet \
+    "s/^(.*)_((19|20)[0-9]{2})_([A-Z0-9_]*)(720|1080)P(.*)_(MKV|MP4)/\1\t\2\t\4/p" \
+    <<< "$filename_normalized" \
+    | sed -e 's/^_*//g' -e 's/_*$//g' \
+    | sed 's/.*/\L&/; s/[a-z]*/\u&/g' \
+  )"
+
+  title['name']="$(awk -F '\t' '{print $1}' <<< "$segments")."
+  title['year']="$(awk -F '\t' '{print $2}' <<< "$segments")."
+  title['edition']="$(awk -F '\t' '{print $3}' <<< "$segments" | tr '[:lower:]' '[:upper:]')"
+
+  if [[ "${title['edition']}" != "" ]]; then
+    title['edition']="$(sed \
+      -e 's/OPEN_MATTE/IMAX/' \
+      -e 's/_ANNIV/_ANNIVERSARY/' \
+      <<< "${title['edition']}" \
+    )"
+    title['edition']="{edition-${title['edition']}}."
   fi
 
-  rename --subst-all "'" "" --sanitize "$DEST_MOVIES"/**/*
-  rename --subst-all "'" "" --sanitize "$DEST_TV"/**/*
+  echo "${title['name']}${title['year']}${title['edition']}${extension}"
 }
 
 
-movies() {
-  local title dir; dir="$1"
+rarbg() {
+  local new_title dir; dir="$1"
 
-  cd "$dir" || exit 1
+  pushd "$dir" &> /dev/null || exit 1
 
-  find . -mindepth 1 -type f ! -name '*.srt' ! -name '*.mp4' -delete
-  find . -mindepth 2 -type f -iname '*eng*.srt' -exec mv --target-directory ./ -- {} \+
-  find . -mindepth 1 -type d -exec rm -rf {} \+
+  if [[ -d Subs ]]; then
+    find Subs/ -iname "*english*.srt" -type f -exec mv --target-directory ./ -- {} \;
+  fi
+
+  find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
+  find . -mindepth 1 ! -name '*.srt' ! -name '*.mp4' -delete
   find . -type f -name '*.srt' -printf '%s\t%p\n' \
     | sort --numeric-sort \
     | head --lines -1 \
     | awk --field-separator '\t' '{print $2}' \
     | xargs --no-run-if-empty -I {} rm {} \;
 
-  title="$(find . -name '*.mp4' -printf '%P\n' \
-    | tr '.' '_' \
-    | tr '[:lower:]' '[:upper:]' \
-    | sed 's/[^a-zA-Z0-9_]//g'
-  )"
+  new_title="$(_title_parser "*.mp4")"
 
-  # regex search for edition, which should be between release year and resolution
-  edition="$(sed --regexp-extended --quiet \
-    's/.*(19|20)[0-9]{2}_(.*)_[0-9]{3,4}p.*/\2/p' <<< "$title")"
-  if [[ -n "$edition" ]]; then edition="{edition-${edition}}."; fi
+  mv "*.mp4" "${new_title}.mp4"
+  mv "*.srt" "${new_title}.eng.srt"
 
-  mnamer ./*.mp4 --batch --movie-format "{name}.{year}.${edition}mp4"
+  popd &> /dev/null || exit 1
 
-  title="$(basename -s .mp4 -- *.mp4)"
-  mv --no-clobber "$(find . -name '*.srt' -printf '%P\n')" "${title}.eng.srt"
+  mv --no-clobber ./"$dir" "$(sed 's/{edition-.*}\.//g' <<< "$new_title")"
+}
 
-  dir_original="$(sed 's:/*$::' <<< "$dir")"
-  dir_rename="$(sed 's/{edition-.*}\.//g' <<< "$title")"
 
-  if [[ "$dir_original" != "$dir_rename" ]]; then
-    mv ./"$dir_original" "${DEST_MOVIES}/${dir_rename}"
-  fi
+main() {
+  local new_filename dir movie
+  local -r yellow="\033[0;136m" blue="\033[0;33m" reset="\033[0m"
+
+  if [[ -n $argc_debug ]]; then set -x; fi
+
+  while read -r dir; do
+    rarbg "$dir"
+  done < <(find . -maxdepth 1 -name '*-RARBG' -type d)
+
+  while read -r movie; do
+    new_filename="$(_title_parser "$movie")"
+    if [[ ! -e "$new_filename" ]]; then
+      echo -e "${yellow}${movie}${reset} ==> ${blue}${new_filename}${reset}"
+      mv "$movie" "$new_filename"
+    fi
+  done < <(find . -maxdepth 1 -type f \( -name '*.mkv' -o -name '*.mp4' \) -printf '%P\n')
 }
 
 
