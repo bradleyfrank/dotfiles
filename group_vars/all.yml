@@ -103,6 +103,7 @@ packages_flatpak_packages:
     - "io.posidon.Paper"
     - "nl.g4d.Girens"
     - "org.gnome.gitlab.somas.Apostrophe"
+    - "org.gnome.Papers"
     - "org.nickvision.tagger"
     - "org.ppsspp.PPSSPP"
     - "org.signal.Signal"
