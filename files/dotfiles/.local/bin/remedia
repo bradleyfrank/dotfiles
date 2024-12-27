@@ -2,14 +2,14 @@
 
 # @meta describe Renames media downloaded from torrents
 # @meta author Brad Frank
-# meta require-tools mnamer rsync uni2ascii
+# meta require-tools rename mnamer rsync uni2ascii trash
 
 
 _title_parser() {
   local filename_normalized segments
   local -A title
 
-  filename_normalized="$(echo "$1" \
+  filename_normalized="$(basename "$1" \
     | tr '.' '_' \
     | tr ' ' '_' \
     | uni2ascii -Bq \
@@ -49,16 +49,16 @@ _title_parser() {
 
 
 _latin_to_ascii() {
-  local dir; dir="$1"
+  local new_filename file dir; dir="$1"
 
   pushd "$dir" &> /dev/null || exit 1
 
-  while read -r obj; do
-    if [[ -d "$obj" ]]; then
-      _latin_to_ascii "$obj"
-    else
-      new_filename="$(uni2ascii -Bq <<< "$(basename "$obj")")"
-      mv --no-clobber "$obj" "./${new_filename// /_}"
+  while read -r file; do
+    if [[ -d "$file" ]]; then
+      _latin_to_ascii "$file"
+    elif [[ -f "$file" ]]; then
+      new_filename="$(uni2ascii -Bq <<< "$(basename "$file")")"
+      mv --no-clobber "$file" "./${new_filename// /_}"
     fi
   done < <(find . -mindepth 1 -maxdepth 1)
 
@@ -66,113 +66,106 @@ _latin_to_ascii() {
 }
 
 
-_movie_dir() {
-  local mp4_file srt_file new_title dir; dir="$1"
+# @cmd File renaming functions
+# @alias r
+# @option -m --movie <PATH+> Rename movie files
+# @option -t --tv <PATH+> Rename TV files
+rename() {
+  local path
 
-  pushd "$dir" &> /dev/null || exit 1
+  if [[ -n $argc_movie ]]; then
+    while read -r path; do
+      rename_movie "$path"
+    done <<< "${argc_movie[@]}"
+  fi
 
-  # collect all English SRT files and keep the largest (it should be the SDH version)
-  find . -mindepth 2 -iname "*eng*.srt" -type f -exec mv --target-directory ./ -- {} \;
-  find . -maxdepth 1 -type f -name '*.srt' -printf '%s\t%p\n' \
-    | sort --numeric-sort \
-    | head --lines -1 \
-    | awk --field-separator '\t' '{print $2}' \
-    | xargs --no-run-if-empty -I {} rm "{}"
-
-  find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
-  find . -mindepth 1 ! -name '*.srt' ! -name '*.mp4' -delete
-  find . -type f -iname '*sample*.mp4' -delete
-
-  mp4_file="$(find . -mindepth 1 -name '*.mp4')"
-  srt_file="$(find . -mindepth 1 -name '*.srt')"
-
-  new_title="$(_title_parser "$mp4_file")"
-
-  mv "$mp4_file" "${new_title}.mp4"
-  mv "$srt_file" "${new_title}.eng.srt"
-
-  popd &> /dev/null || exit 1
-
-  mv --no-clobber ./"$dir" "${new_title/{edition-*}./}"
+  if [[ -n $argc_tv ]]; then
+    while read -r path; do
+      if [[ ! -d "$path" ]]; then continue; fi
+      pushd "$path" &> /dev/null || exit 1
+      mnamer ./* \
+        --batch \
+        --episode-directory "Season_{season:02}" \
+        --episode-format "S{season:02}E{episode:02}.{title}{extension}"
+      find . -mindepth 1 -type d -empty -delete
+      _latin_to_ascii "$(pwd)"
+      rename -z ./**/*
+      popd &> /dev/null || exit 1
+    done <<< "${argc_tv[@]}"
+  fi
 }
 
-
-# @cmd File renaming functions
-rename() { :; }
-
-# @cmd Rename movie files
-# @option -d --dir <DIR+> Rename movie and subtitle files in specific directories
-# @option -f --file <FILE+> Rename individual movie files
-rename::movie() {
-  local new_filename dir filename
+rename_movie() {
+  local mp4_file srt_file new_title new_filename dir path extension; path="$1"
   local -r yellow="\033[0;136m" blue="\033[0;33m" reset="\033[0m"
 
-  if [[ -n $argc_dir ]]; then
-    for dir in "${argc_dir[@]}"; do
-      _movie_dir "$dir"
-    done
-  fi
+  # Rename movie files in a directory
+  if [[ -d "$path" ]]; then
+    pushd "$path" &> /dev/null || exit 1
 
-  if [[ -n $argc_file ]]; then
-    for filename in "${argc_file[@]}"; do
-      new_filename="$(_title_parser "$filename").${filename##*.}"
-      if [[ -e "$new_filename" ]]; then continue; fi
-      echo -e "${yellow}${filename}${reset} ==> ${blue}${new_filename}${reset}"
-      mv "$filename" "$new_filename"
-    done
-  fi
+    # collect all English SRT files and keep the largest (it should be the SDH version)
+    find . -mindepth 2 -iname "*eng*.srt" -type f -exec mv --target-directory ./ -- {} \;
+    find . -maxdepth 1 -type f -name '*.srt' -printf '%s\t%p\n' \
+      | sort --numeric-sort \
+      | head --lines -1 \
+      | awk --field-separator '\t' '{print $2}' \
+      | xargs --no-run-if-empty -I {} rm "{}"
 
-  find . -type f -name '.DS_Store' -delete
-}
+    find . -mindepth 1 -maxdepth 1 -type d -exec rm --recursive --force {} \;
+    find . -mindepth 1 ! -name '*.srt' ! -name '*.mp4' -delete
+    find . -type f -iname '*sample*.mp4' -delete
 
-# @cmd Rename tv show files
-# @option -d --dir! <DIR+>
-rename::tv() {
-  for dir in "${argc_dir[@]}"; do
-    if [[ ! -d "$dir" ]]; then continue; fi
-    pushd "$dir" &> /dev/null || exit 1
-    mnamer ./* \
-      --batch \
-      --episode-directory "Season_{season:02}" \
-      --episode-format "S{season:02}E{episode:02}.{title}{extension}"
-    find . -mindepth 1 -type d -empty -delete
-    _latin_to_ascii "$(pwd)"
-    rename -z ./**/*
+    mp4_file="$(find . -mindepth 1 -name '*.mp4')"
+    srt_file="$(find . -mindepth 1 -name '*.srt')"
+
+    new_title="$(_title_parser "$mp4_file")"
+
+    mv --no-clobber "$mp4_file" "${new_title}.mp4"
+
+    if [[ -n $srt_file ]]; then
+      mv --no-clobber "$srt_file" "${new_title}.eng.srt"
+    fi
+
     popd &> /dev/null || exit 1
-  done
+
+    mv --no-clobber --no-target-directory ./"$path" ./"${new_title/\{edition-*\}./}"
+  fi
+
+  # Rename movie files individually
+  if [[ -f $path ]]; then
+    extension="${path##*.}"
+    new_title="$(_title_parser "$path")"
+    new_filename="${new_title}.${extension}"
+
+    echo -e "${yellow}${path}${reset} ==> ${blue}${new_filename}${reset}"
+    mv --no-clobber "$path" "$new_filename"
+
+    if [[ "$extension" == "mp4" ]]; then
+      dir="${new_title/\{edition-*\}./}"
+      if [[ ! -d "$dir" ]]; then mkdir "$dir"; fi
+      mv "$new_filename" --target-directory "$dir"
+    fi
+  fi
 }
 
 
 # @cmd Upload movies to Plex
-# @flag -r --remote Use remote connection to server
-# @flag -x --delete Remove files/directories after uploading
-# @flag -s --sort Auto sort movies into decade
-# @option -f --file <FILE+> Upload specific files
-# @option -d --dir <DIR+> Upload specific directories
+# @alias u
+# @option -m --movie <PATH+> Upload movie files
+# @option -t --tv <PATH+> Upload TV files
 upload() {
-  local connection; connection="server"
-
-  if [[ -n $argc_remote ]]; then
-    connection="francopuccini"
-  fi
-
-  if [[ -z $argc_file && -z $argc_dir ]]; then
-    echo "<FILE> or <DIR> required" >&2
-    exit 1
-  fi
-
-  if [[ -n $argc_file ]]; then
-    rsync --archive --info=progress2 "${argc_file[@]}" "${connection}:/data/media/upload/"
-  fi
-
-  if [[ -n $argc_dir ]]; then
-    rsync --archive --info=progress2 "${argc_dir[@]%/}" "${connection}:/data/media/upload/"
+  set -e
+  if [[ -n $argc_movie ]]; then
+    rsync --archive --info=progress2 "${argc_movie[@]%/}" memory-alpha:/data/media/upload/
+    # shellcheck disable=SC2029
+    ssh memory-alpha "$(typeset -f sort_movie); sort_movie"
+    echo "Deleting..."
+    trash -vF "${argc_movie[@]%/}" | xargs -I {} echo "{} (DELETED)"
   fi
 }
 
 
-# @cmd Sort media in the 'upload' directory into movie decade directory (server-side)
-sort() {
+sort_movie() {
   cd /data/media/movies || exit 1
 
   decade="$(date +%Y | cut --characters 1-3 | xargs -I {} echo "{} + 1" | bc)"
@@ -185,9 +178,10 @@ sort() {
   cd /data/media/upload || exit 1
 
   while (( year < decade )); do
-    find . -maxdepth 1 -regex ".*\.${year}[0-9]\(\..*\|$\)" -exec mv {} "../movies/${year}0/" \+
+    find . -maxdepth 1 -regex ".*\.${year}[0-9]\(\..*\|$\)" -exec mv {} "../movies/${year}0/" \;
     year=$(( year+1 ))
   done
 }
 
+find . -type f -name '.DS_Store' -delete
 eval "$(argc --argc-eval "$0" "$@")"
