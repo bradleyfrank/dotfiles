@@ -402,7 +402,6 @@ packages_homebrew_formulas:
   - grep
   - gzip
   - hadolint
-  - helm
   - httpie
   - iftop
   - jq
@@ -455,7 +454,6 @@ packages_homebrew_casks:
   - 1password-cli
   - appcleaner
   - balenaetcher
-  - betterdisplay
   - calibre
   - expressions
   - fantastical
@@ -485,9 +483,10 @@ packages_homebrew_casks:
   - zoom
 
 packages_mas_apps:
-  - 1320666476  # Wipr
-  - 1516894961  # Codye
+  - 1320666476  # Wipr Safari extension
   - 1529448980  # Reeder
-  - 1549370672  # Save to Raindrop.io
+  - 1549370672  # Raindrop.io Safari extension
   - 1555925018  # Genki Arcade
   - 1569813296  # 1Password Safari extension
+  - 1591303229  # Vinegar Safari extension
+  - 1622835804  # Kagi Safari extension
