@@ -453,7 +453,6 @@ packages_homebrew_casks_install_options: ["no-quarantine"]
 packages_homebrew_casks:
   - 1password
   - 1password-cli
-  - alacritty
   - appcleaner
   - balenaetcher
   - betterdisplay
@@ -461,6 +460,7 @@ packages_homebrew_casks:
   - expressions
   - fantastical
   - firefox
+  - ghostty
   - iina
   - keepassxc
   - keepingyouawake
