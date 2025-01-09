@@ -75,7 +75,6 @@ packages_apt_packages:
     - tlp
     - toilet
     - tree
-    - trurl
     - vim
     - virtualenv
     - wget
@@ -119,6 +118,7 @@ packages_homebrew_taps:
 
 packages_homebrew_formulas:
   - atuin
+  - bat-extras
   - csvlens
   - doctl
   - eza
@@ -128,4 +128,5 @@ packages_homebrew_formulas:
   - lazygit
   - nb
   - qsv
+  - trurl
   - yq
