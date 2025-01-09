@@ -73,6 +73,7 @@ packages_dnf_packages:
     - tidy
     - tlp
     - tmux
+    - tmuxp
     - toilet
     - trash-cli
     - tree

@@ -438,6 +438,7 @@ packages_homebrew_formulas:
   - ssh-copy-id
   - tidy-html5
   - tmux
+  - tmuxp
   - trash
   - tree
   - trippy

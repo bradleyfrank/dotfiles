@@ -73,6 +73,8 @@ packages_apt_packages:
     - strace
     - tidy
     - tlp
+    - tmux
+    - tmuxp
     - toilet
     - tree
     - vim

@@ -86,6 +86,8 @@ packages_apt_packages:
     - strace
     - tidy
     - tlp
+    - tmux
+    - tmuxp
     - toilet
     - trash-cli
     - tree
