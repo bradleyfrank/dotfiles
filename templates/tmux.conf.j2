@@ -64,7 +64,7 @@ bind 'M' choose-tree -Zs "move-window -t %%"
 bind 'm' choose-tree -Z "move-pane -t %%"
 bind 'O' run-shell -b "bmux open"
 bind 'S' run-shell -b "bmux open --new-session"
-bind 'N' display-popup -E -w 90% -h 90% -b rounded -S "fg=color234" "tmux -L notes -f ~/.config/tmux/popup.conf new-session -As notes -c ~/Development/Scratch"
+bind 'N' display-popup -E -w 90% -h 90% -b rounded -S "fg=color234" "tmux -L notes -f ~/.config/tmux/popup.conf new-session -As notes -c ~/Development/Scratch 'tmuxp load nb -a'"
 bind 'P' display-popup -E -w 55% -h 100% -b rounded -S "fg=color234" "tmux -L popup -f ~/.config/tmux/popup.conf new-session -As popup -c ~/Development/Scratch"
 {% endif %}
 
