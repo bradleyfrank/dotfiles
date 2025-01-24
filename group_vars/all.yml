@@ -137,35 +137,6 @@ system_linux_dconf_defaults:
       preferences/search-filter-time-type: "'last_modified'"
       preferences/show-create-link: "true"
       preferences/show-delete-permanently: "true"
-  - path: "/org/gnome/gedit/preferences"
-    keys:
-      editor/auto-indent: "true"
-      editor/auto-save: "true"
-      editor/background-pattern: "'none'"
-      editor/bracket-matching: "true"
-      editor/display-line-numbers: "true"
-      editor/display-overview-map: "true"
-      editor/display-right-margin: "true"
-      editor/editor-font: "'SauceCodePro Nerd Font 11'"
-      editor/highlight-current-line: "true"
-      editor/insert-spaces: "true"
-      editor/right-margin-position: "uint32 100"
-      editor/scheme: "'solarized-light'"
-      editor/tabs-size: "uint32 2"
-      editor/use-default-font: "false"
-      editor/wrap-last-split-mode: "'word'"
-      ui/show-tabs-mode: "'auto'"
-      ui/side-panel-visible: "false"
-  - path: "/org/gnome/terminal/legacy/profiles:/:1846491d-b417-5d9b-a8ca-04fdec4403bf"
-    keys:
-      audible-bell: "false"
-      cursor-colors-set: "false"
-      font: "'SauceCodePro Nerd Font 12'"
-      highlight-colors-set: "false"
-      scroll-on-output: "true"
-      scrollback-unlimited: "true"
-      use-system-font: "false"
-      visible-name: "'Custom-Profile'"
   - path: "/org/gnome/desktop"
     keys:
       datetime/automatic-timezone: "true"
@@ -205,7 +176,6 @@ system_linux_dracut_settings:
 tmux_profiles:
   - "tmux"
   - "popup"
-  - "server"
 
 tmux_plugins:
   - name: "tmux-resurrect"
