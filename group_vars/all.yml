@@ -68,8 +68,6 @@ packages_binaries:
   - name: "cht"
     url: "https://raw.githubusercontent.com/chubin/cheat.sh/master/share/cht.sh.txt"
 
-packages_install_flatpak: "{{ system_has_desktop }}"
-
 packages_flatpak_remotes:
   - name: "flathub"
     url: "https://flathub.org/repo/flathub.flatpakrepo"
@@ -114,10 +112,6 @@ packages_flatpak_packages:
     - "us.zoom.Zoom"
   elementary:
     - "com.github.phase1geo.annotator"
-
-packages_pipx_packages:
-  - "black"
-  - "beets"
 
 
 # -----+
